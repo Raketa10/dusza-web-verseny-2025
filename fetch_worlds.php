@@ -6,7 +6,7 @@
         echo "[]";
     }
     else{
-        $statement = $connection->prepare("SELECT * FROM worlds WHERE user_id = ?");
+        $statement = $connection->prepare("SELECT world_id, name, cards_json, casemates_json FROM worlds WHERE user_id = ?");
         $statement->bind_param("s", $_SESSION["user_id"]);
         $statement->execute();
 
