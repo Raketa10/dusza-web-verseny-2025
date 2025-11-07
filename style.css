@@ -1,7 +1,211 @@
+:root {
+    --font: "Belwe Bold";
+    --clr-background: hsl(27, 23%, 17%);
+    --clr-text: hsl(27, 23%, 80%);
+    --clr-text-dark: hsl(27, 23%, 25%);
+}
+
+@font-face {
+    font-family: "Belwe Bold";
+    src: url("./assets/fonts/Belwe Bold.otf");
+}
+
 * {
     box-sizing: border-box;
+    font-family: "Belwe Bold";
 }
 
 body {
     margin: 0;
+    background-color: var(--clr-background);
+    color: var(--clr-text);
+    height: 100dvh;
+}
+
+button.svgbutton {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    transition: 0.2s;
+
+    &:hover {
+        filter: brightness(1.1);
+        scale: 1.05;
+    }
+}
+
+.screen-container {
+    display: flex;
+    height: 100%;
+    padding: min(2em, 4vh) min(3em, 6vw);
+}
+
+.screen-container[data-screen="home"] > .screen:not(.screen--home),
+.screen-container[data-screen="world"] > .screen:not(.screen--world)
+{
+    display: none;
+}
+
+
+
+.screen--home > .game-logo {
+    font-size: 3rem;
+    margin-top: 0;
+}
+
+.worlds-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.world {
+    position: relative;
+    background-color: hsl(from var(--clr-background) h s 80%);
+    color: var(--clr-text-dark);
+    padding: 0.5em 0.6em;
+    width: 200px;
+    min-height: 210px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.2s;
+
+    .world-title {
+        font-size: 1.3rem;
+    }
+
+    &:hover {
+        filter: brightness(1.1);
+        scale: 1.05;
+    }
+}
+
+.world--add svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 40%;
+    height: 40%;
+    fill: var(--clr-text-dark);
+}
+
+
+.world-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    h2 {
+        margin-block: 0;
+    }
+
+    .world-back-button svg {
+        width: 3em;
+        height: 3em;
+        fill: var(--clr-text);
+    }
+}
+
+.worldcards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 10px;
+}
+
+.worldcard {
+    width: 200px;
+    aspect-ratio: 241 / 344;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+    background-image: url("./assets/images/card-overlays.png"), url("./assets/images/card.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    
+    .worldcard-property {
+        color: white;
+    }
+
+    input, textarea {
+        font-size: 1.2rem;
+        border: none;
+        background-color: transparent;
+        resize: none;
+        width: 100%;
+        text-align: center;
+        color: white;
+        outline: none;
+    }
+
+    .worldcard-name {
+        padding: 0;
+        position: absolute;
+        top: 38px;
+        left: 50%;
+        translate: -50% 0;
+        width: 68%;
+        font-size: 1.4rem;
+        /* text-shadow: 0 0 5px black; */
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        /* -webkit-text-stroke: 1px black; */
+    }
+
+    .worldcard-property-container {
+        display: grid;
+        justify-items: center;
+        grid-template-rows: 15px 1fr 15px;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 23px;
+
+        .worldcard-property-arrow {
+            width: 15px;
+            height: 15px;
+            fill: white;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        input[type='number'] {
+            color: white;
+            appearance: textfield;
+            padding: 0;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+
+    .worldcard-attack-container {
+        left: 28px;
+    }
+    .worldcard-health-container {
+        right: 30px;
+    }
+}
+
+.worldcard--add {
+    background-image: url("./assets/images/card-add.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+    cursor: pointer;
+
+    svg {
+        fill: white;
+    }
+
+    &:hover {
+        filter: brightness(1.1);
+        scale: 1.05;
+    }
 }
