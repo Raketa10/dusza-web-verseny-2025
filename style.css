@@ -1,18 +1,18 @@
 :root {
-    --font: "Belwe Bold";
+    --font: "Voska";
     --clr-background: hsl(27, 23%, 17%);
     --clr-text: hsl(27, 23%, 80%);
     --clr-text-dark: hsl(27, 23%, 25%);
 }
 
 @font-face {
-    font-family: "Belwe Bold";
-    src: url("./assets/fonts/Belwe Bold.otf");
+    font-family: "Voska";
+    src: url("./assets/fonts/Voska.otf");
 }
 
 * {
     box-sizing: border-box;
-    font-family: "Belwe Bold";
+    font-family: var(--font);
 }
 
 body {
@@ -23,17 +23,34 @@ body {
 }
 
 button.svgbutton {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
     margin: 0;
     padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.svgbutton {
+    cursor: pointer;
     transition: 0.2s;
 
     &:hover {
         filter: brightness(1.1);
         scale: 1.05;
     }
+
+    &:active {
+        scale: 0.8;
+        opacity: 0.8;
+    }
+}
+
+input.input:is([type="text"], [type="number"]) {
+    border-radius: 5px;
+    font-size: 1.2rem;
+    padding: 0.2em 0.6em;
+    background-color: transparent;
+    border: 1px solid var(--clr-text);
+    color: var(--clr-text);
 }
 
 .screen-container {
@@ -96,7 +113,7 @@ button.svgbutton {
 .world-nav {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 
     h2 {
         margin-block: 0;
@@ -109,7 +126,7 @@ button.svgbutton {
     }
 }
 
-.worldcards-container {
+.worldcards, .worldcards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 5px 10px;
@@ -126,6 +143,14 @@ button.svgbutton {
     background-repeat: no-repeat;
     position: relative;
     
+    .worldcard-delete {
+        fill: white;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
     .worldcard-property {
         color: white;
     }
@@ -139,6 +164,7 @@ button.svgbutton {
         text-align: center;
         color: white;
         outline: none;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     }
 
     .worldcard-name {
@@ -160,12 +186,14 @@ button.svgbutton {
         grid-template-rows: 15px 1fr 15px;
         border-radius: 50%;
         position: absolute;
-        bottom: 23px;
+        bottom: 16px;
 
         .worldcard-property-arrow {
             width: 15px;
             height: 15px;
             fill: white;
+            stroke: black;
+            stroke-width: 30px;
             cursor: pointer;
             user-select: none;
         }
@@ -174,6 +202,7 @@ button.svgbutton {
             color: white;
             appearance: textfield;
             padding: 0;
+            font-size: 2rem;
         }
 
         input::-webkit-outer-spin-button,
@@ -183,10 +212,10 @@ button.svgbutton {
     }
 
     .worldcard-attack-container {
-        left: 28px;
+        left: 9px;
     }
     .worldcard-health-container {
-        right: 30px;
+        right: 12px;
     }
 }
 
