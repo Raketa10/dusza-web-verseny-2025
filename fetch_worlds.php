@@ -3,7 +3,7 @@
     require_once "connection.php";
 
     if(!isset($_SESSION["user_id"])){
-        echo "[]";
+        echo json_encode([]);
     }
     else{
         $statement = $connection->prepare("SELECT world_id, name, cards_json, casemates_json FROM worlds WHERE user_id = ?");
@@ -31,7 +31,7 @@
         echo json_encode($worlds);
         }
         else{
-            echo "[]";
+            echo json_encode([]);
         }
     }
 ?>
