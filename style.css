@@ -1,6 +1,8 @@
 :root {
     --font: "Voska";
     --clr-background: hsl(27, 23%, 17%);
+    --clr-ui-bg: hsl(27, 23%, 75%);
+    --clr-ui-bg-dark: hsl(27, 23%, 55%);
     --clr-text: hsl(27, 23%, 80%);
     --clr-text-dark: hsl(27, 23%, 25%);
     --clr-boss-highlight: hsl(120, 68%, 45%);
@@ -21,9 +23,10 @@
 
 body {
     margin: 0;
-    background-color: var(--clr-background);
+    /* background-color: var(--clr-background); */
+    background: url("./assets/images/body_bg.png");
     color: var(--clr-text);
-    height: 100dvh;
+    min-height: 100dvh;
 }
 
 button.svgbutton {
@@ -31,6 +34,7 @@ button.svgbutton {
     padding: 0;
     border: none;
     background-color: transparent;
+    user-select: none;
 }
 
 .svgbutton {
@@ -48,19 +52,55 @@ button.svgbutton {
     }
 }
 
-input.input:is([type="text"], [type="number"]) {
+input.input:is([type="text"], [type="number"]), select.input {
     border-radius: 5px;
     font-size: 1.2rem;
     padding: 0.2em 0.6em;
-    background-color: transparent;
-    border: 1px solid var(--clr-text);
-    color: var(--clr-text);
+    /* background-color: transparent; */
+    /* border: 1px solid var(--clr-text); */
+    /* color: var(--clr-text); */
+    border: none;
+
+    background-color: var(--clr-ui-bg-dark);
+    color: var(--clr-text-dark);
+
+    &::placeholder {
+        color: hsl(from var(--clr-text-dark) h s l / 0.5)
+    }
 }
+
+select.input {
+    cursor: pointer;
+
+    option {
+        background-color: var(--clr-ui-bg);
+        color: var(--clr-text-dark);
+    }
+}
+
+/* select.input {
+    cursor: pointer;
+    appearance: base-select;
+}
+
+select.input::picker-icon {
+    content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211.15%22%20height%3D%226.55%22%20viewBox%3D%220%200%202.95%201.733%22%20xmlns%3Av%3D%22https%3A%2F%2Fvecta.io%2Fnano%22%3E%3Cpath%20d%3D%22M1.475%201.733q-.053%200-.099-.017Q1.33%201.7%201.29%201.66L.073.443Q0%20.37%200%20.258%200%20.145.073.072.146%200%20.258%200%20.37%200%20.443.072l1.032%201.032L2.507.072Q2.58%200%202.692%200q.112%200%20.185.073.073.073.073.185%200%20.112-.073.185L1.66%201.66q-.04.04-.086.056-.046.017-.099.017z%22%2F%3E%3C%2Fsvg%3E");
+    transition: 0.2s;
+}
+
+select.input:open::picker-icon {
+    rotate: 180deg;
+    translate: 0 5px;
+}
+
+select.input option {
+    padding-inline: 0.4em;
+} */
 
 .screen-container {
     display: flex;
     height: 100%;
-    padding: min(2em, 4vh) min(3em, 6vw);
+    padding: min(2rem, 4vh) min(3rem, 6vw);
 }
 
 .screen-container[data-screen="home"] > .screen:not(.screen--home),
@@ -70,6 +110,9 @@ input.input:is([type="text"], [type="number"]) {
 }
 
 
+.screen {
+    width: 100%;
+}
 
 .screen--home > .game-logo {
     font-size: 3rem;
@@ -84,7 +127,7 @@ input.input:is([type="text"], [type="number"]) {
 
 .world {
     position: relative;
-    background-color: hsl(from var(--clr-background) h s 80%);
+    background-color: var(--clr-ui-bg);
     color: var(--clr-text-dark);
     padding: 0.5em 0.6em;
     width: 200px;
@@ -114,6 +157,12 @@ input.input:is([type="text"], [type="number"]) {
 }
 
 
+.world-grid {
+    display: grid;
+    grid-template-columns: 5fr 4fr 33ch;
+    gap: 40px;
+}
+
 .world-nav {
     display: flex;
     align-items: center;
@@ -130,14 +179,34 @@ input.input:is([type="text"], [type="number"]) {
     }
 }
 
+
+.screen--world section {
+    overflow-y: auto;
+    height: calc(100dvh - 50px - 2 * min(2rem, 4vh));
+}
+
+.section--worldcards {
+    padding: 5px;
+}
+
+.section--casemates {
+    padding-inline: 10px;
+}
+
 .worldcards, .worldcards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 15px 5px;
 }
 
+.worldcards-container, .casemate-cards-container, .casemate-boss-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+    padding: 5px;
+}
+
 .worldcard {
-    width: 200px;
+    /* width: 200px; */
     aspect-ratio: 241 / 344;
     border-radius: 20px;
     color: white;
@@ -147,17 +216,24 @@ input.input:is([type="text"], [type="number"]) {
         width: 100%;
         height: 100%;
         text-align: center;
-        background-image: url("./assets/images/card.png");
+        background-image: url("./assets/images/card-bg-earth.webp");
         background-size: contain;
         background-repeat: no-repeat;
         position: relative;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: 50% 1fr;
+        grid-template-rows: 40% 1fr;
         justify-items: center;
         padding-inline: 10cqmin;
         padding-top: 5cqh;
         padding-bottom: 2cqh;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            backdrop-filter: brightness(.8);
+        }
     }
     
     .worldcard-delete {
@@ -174,7 +250,6 @@ input.input:is([type="text"], [type="number"]) {
     }
 
     input, textarea {
-        font-size: 1.2rem;
         border: none;
         background-color: transparent;
         resize: none;
@@ -186,14 +261,19 @@ input.input:is([type="text"], [type="number"]) {
     }
 
     .worldcard-name {
-        padding: 10px 15px;
+        padding: 5cqw 6cqw;
         margin: 0 auto;
-        font-size: 1.4rem;
+        font-size: 13cqmin;
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         grid-column: 1 / -1;
-        background: url("./assets/images/text-banner.webp");
+        background-image: url("./assets/images/text-banner.webp");
         background-size: contain;
         background-repeat: no-repeat;
+        background-position: center;
+
+        &::placeholder {
+            color: var(--clr-text);
+        }
     }
 
     .worldcard-name::placeholder {
@@ -204,7 +284,7 @@ input.input:is([type="text"], [type="number"]) {
         display: grid;
         justify-items: center;
         align-items: center;
-        grid-template-rows: 50px 15px 1fr 15px;
+        grid-template-rows: auto auto auto auto;
         border-radius: 50%;
         align-self: end;
 
@@ -222,12 +302,13 @@ input.input:is([type="text"], [type="number"]) {
         }
 
         .worldcard-promote {
-            height: 40px;
+            height: 20cqmin;
             filter: var(--card-button-shadow);
             transition: 0.2s;
             cursor: pointer;
             user-select: none;
             fill: white;
+            margin-bottom: 1cqh;
             
             &:hover {
                 /* filter: drop-shadow(0 0 4px black) brightness(1.2); */
@@ -261,7 +342,7 @@ input.input:is([type="text"], [type="number"]) {
             color: white;
             appearance: textfield;
             padding: 0;
-            font-size: 2rem;
+            font-size: min(2rem, 16cqmin);
         }
 
         input::-webkit-outer-spin-button,
@@ -328,6 +409,26 @@ input.input:is([type="text"], [type="number"]) {
         }
     }
 
+    &:has(.worldcard-type-picker input[type="radio"][value="earth"]:checked) .worldcard-grid {
+        background-image: url("./assets/images/card-bg-earth.webp");
+    }
+    &:has(.worldcard-type-picker input[type="radio"][value="fire"]:checked) .worldcard-grid {
+        background-image: url("./assets/images/card-bg-fire.webp");
+    }
+    &:has(.worldcard-type-picker input[type="radio"][value="water"]:checked) .worldcard-grid {
+        background-image: url("./assets/images/card-bg-water.webp");
+    }
+    &:has(.worldcard-type-picker input[type="radio"][value="air"]:checked) .worldcard-grid {
+        background-image: url("./assets/images/card-bg-air.webp");
+    }
+
+    &.readonly {
+        .worldcard-type-picker {
+            pointer-events: none;
+            filter: none;
+        }
+    }
+
     &.boss {
         .worldcard-property-arrow {
             visibility: hidden;
@@ -375,6 +476,72 @@ input.input:is([type="text"], [type="number"]) {
 
     &:hover {
         filter: brightness(1.1);
+        scale: 1.05;
+    }
+}
+
+
+.casemate-cards-container, .casemate-boss-container {
+    min-height: 100px;
+}
+
+
+.casemates-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-left: 10px;
+}
+
+.casemate {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    gap: 10px 5px;
+    background-color: var(--clr-ui-bg);
+    /* background: url("./assets/images/casemate-bg.png"); */
+    background-position: center;
+    padding: 12px;
+    color: var(--clr-text-dark);
+    border-radius: 10px;
+    transition: 0.2s;
+    cursor: pointer;
+
+    .casemate-type-container {
+        grid-column: 1 / -1;
+    }
+
+    .casemate-delete {
+        fill: var(--clr-text-dark);
+    }
+
+    .casemate-type-container:not(:has(select)) {
+        pointer-events: none;
+    }
+    
+    .input {
+        background-color: var(--clr-ui-bg-dark) !important;
+        color: var(--clr-text-dark) !important;
+    }
+    
+    &.selected {
+        border: 4px solid var(--clr-ui-bg-dark);
+        box-shadow: 1px 2px 10px var(--clr-ui-bg-dark);
+        scale: 1.06;
+        transform-origin: right;
+    }
+}
+
+.casemate--add {
+    padding: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+
+    svg {
+        height: 80px;
+        fill: var(--clr-ui-bg-dark);
+    }
+
+    &:hover {
         scale: 1.05;
     }
 }
