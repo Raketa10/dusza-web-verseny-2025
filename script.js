@@ -743,6 +743,22 @@ document.querySelector(".login-button--login").addEventListener("click", functio
 document.querySelector(".login-button--register").addEventListener("click", function() {
     document.getElementById("dialog--register").showModal();
 });
+document.getElementById("account-btn-change-username").addEventListener("click", function() {
+    document.getElementById("dialog--change-username").showModal();
+});
+
+document.getElementById("account-btn-change-password").addEventListener("click", function() {
+    document.getElementById("dialog--change-password").showModal();
+});
+
+document.getElementById("account-btn-delete-account").addEventListener("click", function() {
+    document.getElementById("dialog--delete-account").showModal();
+});
+
+document.getElementById("account-btn-logout").addEventListener("click", function() {
+    // Logout
+});
+
 document.querySelectorAll("dialog").forEach(dialog => {
     dialog.querySelector(".dialog-close")?.addEventListener("click", function() {
         dialog.close();
@@ -760,6 +776,12 @@ document.querySelector(".section--casemates .collection").addEventListener("clic
     renderCasemates();
     renderCasemateCards();
 });
+
+document.querySelectorAll(".account-menu-item").forEach(button => {
+    button.addEventListener("click", function() {
+        document.getElementById("account-menu-opened").checked = false;
+    });
+})
 
 
 renderWorlds();
