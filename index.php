@@ -1,3 +1,12 @@
+<?php
+    session_start();
+    if (isset($_GET["logout"])) {
+        session_unset();
+        session_destroy();
+        header("Location: index.php"); // Redirect after logout
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +22,13 @@
             <nav>
                 <h1 class="game-logo">Damareen</h1>
                 <div class="login-buttons">
-                    <button class="button login-button--login">Bejelentkezés</button>
-                    <button class="button login-button--register">Regisztráció</button>
+                    <?php
+                        if (isset($_SESSION["username"])){
+                            echo "<h1>" . $_SESSION['username'] . "</h1>";
+                        } else {
+                            echo '<button class="button login-button--login">Bejelentkezés</button><button class="button login-button--register">Regisztráció</button>';
+                        }
+                    ?>
                 </div>
             </nav>
             <section class="section-worlds">
@@ -117,7 +131,7 @@
     </div>
 
     <dialog class="dialog dialog-login" id="dialog--login">
-        <form action="login_process.php" method="post">
+        <form action="process_login.php" method="POST">
             <label>
                 Felhasználónév:
                 <input class="input" type="text" name="username">
@@ -131,7 +145,7 @@
     </dialog>
     
     <dialog class="dialog dialog-login" id="dialog--register">
-        <form action="sign_in_process.php" method="post">
+        <form action="process_sign_in.php" method="POST">
             <label>
                 Felhasználónév:
                 <input class="input" type="text" name="username">
@@ -144,7 +158,7 @@
                 Jelszó még egyszer:
                 <input type="password" name="password-repeat" class="input">
             </label>
-            <button type="submit">Bejelentkezés</button>
+            <button type="submit">Regisztráció</button>
         </form>
     </dialog>
 
