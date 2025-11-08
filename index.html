@@ -137,11 +137,11 @@
         <form action="valami.php" method="post" id="form-login">
             <label>
                 Felhasználónév:
-                <input class="input" type="text" minlength="4" maxlength="32" name="username" required>
+                <input class="input" type="text" minlength="4" maxlength="32" name="username" autocomplete="username" required>
             </label>
             <label>
                 Jelszó:
-                <input type="password" name="password" minlength="6" class="input" required>
+                <input type="password" name="password" minlength="6" class="input" autocomplete="new-password" required>
             </label>
             <button class="button" type="submit">Bejelentkezés</button>
             <div class="form-error"></div>
@@ -154,15 +154,15 @@
         <form action="valami.php" method="post" id="form-register">
             <label>
                 Felhasználónév:
-                <input class="input" type="text" name="username" minlength="4" maxlength="32" required>
+                <input class="input" type="text" name="username" minlength="4" maxlength="32" autocomplete="username" required>
             </label>
             <label>
                 Jelszó:
-                <input type="password" name="password" class="input" minlength="6" required>
+                <input type="password" name="password" class="input" minlength="6" autocomplete="new-password" required>
             </label>
             <label>
                 Jelszó még egyszer:
-                <input type="password" name="password-repeat" class="input" minlength="6" required>
+                <input type="password" name="password-repeat" class="input" minlength="6" autocomplete="new-password" required>
             </label>
             <button class="button" type="submit">Bejelentkezés</button>
             <div class="form-error"></div>
