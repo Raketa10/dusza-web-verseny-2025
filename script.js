@@ -1,3 +1,5 @@
+import {clsx} from "./clsx.js";
+
 let worlds = [
     {
         id: 1,
@@ -44,11 +46,11 @@ function renderCards(cards) {
     let html = "";
     for (const card of cards) {
         html += `
-            <div class="worldcard ${card.isBoss ? "boss" : ""}" data-card-id="${card.id}">
+            <div class="${clsx("worldcard", card.isBoss && "boss", card.isBoss && `boss--${card.bossType}`)}" data-card-id="${card.id}">
                 <div class="worldcard-grid">
                     <textarea name="worldcard-name" minlength="1" maxlength="16" class="worldcard-property worldcard-name" rows="2">${card.name || "Új kártya"}</textarea>
                     <div class="worldcard-property-container worldcard-attack-container">
-                        <img class="worldcard-boss-upgrade" data-boss-type="attack" src="./assets/images/${card.isBoss && card.bossType === "attack" ? "boss-selected.png" : "boss.png"}" alt="Vezér létrehozása">
+                        <svg class="worldcard-promote" data-boss-type="attack" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
                         <svg data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                         <div class="worldcard-property-icon-container">
                             <img src="./assets/images/attack.webp" alt="Sebzés" class="worldcard-property-icon">
@@ -58,7 +60,7 @@ function renderCards(cards) {
                     </div>
                     <div></div>
                     <div class="worldcard-property-container worldcard-health-container">
-                    <img class="worldcard-boss-upgrade" data-boss-type="health" src="./assets/images/${card.isBoss && card.bossType === "health" ? "boss-selected.png" : "boss.png"}" alt="Vezér létrehozása">
+                        <svg class="worldcard-promote" data-boss-type="health" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
                         <svg data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                         <div class="worldcard-property-icon-container">
                             <img src="./assets/images/health.webp" alt="Élet" class="worldcard-property-icon">
@@ -123,7 +125,7 @@ function renderCards(cards) {
 
             renderCards(cards);
         });
-        cardElement.querySelectorAll(".worldcard-boss-upgrade").forEach(button => {
+        cardElement.querySelectorAll(".worldcard-promote").forEach(button => {
             button.addEventListener("click", function() {
                 const bossType = button.dataset.bossType;
 

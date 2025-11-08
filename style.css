@@ -3,6 +3,7 @@
     --clr-background: hsl(27, 23%, 17%);
     --clr-text: hsl(27, 23%, 80%);
     --clr-text-dark: hsl(27, 23%, 25%);
+    --clr-boss-highlight: hsl(120, 68%, 45%);
 }
 
 @font-face {
@@ -216,23 +217,26 @@ input.input:is([type="text"], [type="number"]) {
             filter: drop-shadow(0 0 6px black);
         }
 
-        .worldcard-property, .worldcard-property-arrow, .worldcard-boss-upgrade {
+        .worldcard-property, .worldcard-property-arrow, .worldcard-promote {
             position: relative;
             z-index: 1;
         }
 
-        .worldcard-boss-upgrade {
+        .worldcard-promote {
             height: 40px;
             filter: drop-shadow(0 0 4px black);
             transition: 0.2s;
             cursor: pointer;
             user-select: none;
-
+            fill: white;
+            
             &:hover {
-                filter: drop-shadow(0 0 4px black) brightness(1.2);
+                /* filter: drop-shadow(0 0 4px black) brightness(1.2); */
+                filter: drop-shadow(0 0 6px black);
                 scale: 1.05;
+                translate: 0 -5px;
             }
-
+            
             &:active {
                 scale: 0.8;
             }
@@ -272,6 +276,18 @@ input.input:is([type="text"], [type="number"]) {
         .worldcard-property-arrow {
             visibility: hidden;
         }
+    }
+
+    &.boss--health .worldcard-promote[data-boss-type="health"],
+    &.boss--attack .worldcard-promote[data-boss-type="attack"]
+    {
+        fill: var(--clr-boss-highlight);
+    }
+
+    &.boss--health .worldcard-property[name="health"],
+    &.boss--attack .worldcard-property[name="attack"]
+    {
+        color: var(--clr-boss-highlight);
     }
 }
 
