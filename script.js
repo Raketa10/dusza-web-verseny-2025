@@ -166,6 +166,7 @@ function renderWorlds() {
                 <div class="world-buttons">
                     <svg class="world-play svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-200v-560l440 280-440 280Z"/></svg>
                     <svg class="world-edit svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/></svg>
+                    <svg class="world-delete svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
                 </div>
             </div>
         `;
@@ -190,7 +191,8 @@ function renderWorlds() {
 
     for (const worldElement of document.querySelectorAll(".worlds-container > .world:not(.world--add)")) {
         const worldId = parseInt(worldElement.dataset.worldId);
-        const world = worlds.find(world => world.id === worldId);
+        const worldIndex = worlds.findIndex(world => world.id === worldId);
+        const world = worlds[worldIndex];
 
         worldElement.querySelector(".world-play").addEventListener("click", function() {
             currentWorld = world.id;
@@ -202,6 +204,10 @@ function renderWorlds() {
             editWorld(worldId);
         });
 
+        worldElement.querySelector(".world-delete").addEventListener("click", function() {
+            worlds.splice(worldIndex, 1);
+            renderWorlds();
+        });
     }
 
     document.querySelector(".worlds-container > .world--add").addEventListener("click", function() {
