@@ -580,5 +580,42 @@ new Sortable(casemateBossTargetElement, {
 });
 
 
+async function uploadWorld(worldJson) {
+    return fetch('push_world.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(worldJson)
+    })
+    // Error logging
+    .then(response => {
+        if (response.ok) {
+            console.log("Request sent successfully, but no data returned.");
+        } else {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function fetchWorlds() {
+    fetch("fetch_worlds.php")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json(); // Parse the JSON response
+        })
+        .then(data => {
+            worlds = data; // Store the data in the variable
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);  // Handle errors
+        });
+}
+
 renderCards();
 renderCasemates();
