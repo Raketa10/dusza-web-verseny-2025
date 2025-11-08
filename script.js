@@ -275,3 +275,7 @@ function uploadWorld(worldJson) {
         console.error('Error:', error);
     });
 }
+
+function fetchWorlds() {
+    worlds = fetch("fetch_worlds.php");
+}
