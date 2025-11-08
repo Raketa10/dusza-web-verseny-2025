@@ -53,6 +53,11 @@ button.svgbutton {
         scale: 0.8;
         opacity: 0.8;
     }
+
+    &[data-disabled="true"] {
+        pointer-events: none;
+        opacity: 0.5;
+    }
 }
 
 input.input:is([type="text"], [type="number"], [type="password"], [type="email"]), select.input, button.button {
