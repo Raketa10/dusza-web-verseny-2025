@@ -1,11 +1,12 @@
 Frontend:
     ☐ Edit card type
-    ☐ Upgrade card to boss
+    ✔ Upgrade card to boss @done(25-11-08 09:23)
+    ☐ Convert images to webp
 
 Backend:
 
 
 UI:
-    ☐ Card property increment button hover and disabled state
+    ✔ Card property increment button hover and disabled state @done(25-11-08 10:02)
     ☐ Equal card icon border
     ☐ Boss buttons disabled state
