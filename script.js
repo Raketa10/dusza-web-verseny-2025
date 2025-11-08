@@ -253,3 +253,25 @@ document.querySelector(".world--add").addEventListener("click", function() {
 document.querySelector(".world-back-button").addEventListener("click", () => setScreen("home"));
 
 renderCards(getWorldById(currentWorld).cards);
+
+
+function uploadWorld(worldJson) {
+    return fetch('your_php_file.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(worldJson)
+    })
+    // Error logging
+    .then(response => {
+        if (response.ok) {
+            console.log("Request sent successfully, but no data returned.");
+        } else {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
