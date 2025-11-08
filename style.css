@@ -271,7 +271,7 @@ dialog.dialog {
         grid-template-rows: 40% 1fr;
         justify-items: center;
         padding-inline: 10cqmin;
-        padding-top: 5cqh;
+        padding-top: 3.5cqh;
         padding-bottom: 2cqh;
 
         /* &::before {
@@ -559,11 +559,16 @@ dialog.dialog {
     background-size: contain;
     background-repeat: no-repeat;
     filter: grayscale(0.5);
-    animation: placeholder-pulse 1s alternate infinite;
     opacity: 0.5;
-
+    order: 999;
+    
     &.hidden {
-        visibility: hidden;
+        /* background: red; */
+        opacity: 0;
+    }
+    
+    &:not(.hidden) {
+        animation: placeholder-pulse 1s alternate infinite;
     }
     
     &.boss {

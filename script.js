@@ -19,14 +19,44 @@ let worlds = [
         cards: [
             {
                 id: 1,
-                name: "Első Kártya Neve",
+                name: "A",
                 health: 1,
                 attack: 2,
                 type: "earth",
                 isBoss: false,
                 bossSource: null,
                 bossType: null
-            }
+            },
+            {
+                id: 2,
+                name: "B",
+                health: 1,
+                attack: 2,
+                type: "fire",
+                isBoss: false,
+                bossSource: null,
+                bossType: null
+            },
+            {
+                id: 3,
+                name: "C",
+                health: 1,
+                attack: 2,
+                type: "water",
+                isBoss: false,
+                bossSource: null,
+                bossType: null
+            },
+            {
+                id: 4,
+                name: "D",
+                health: 1,
+                attack: 2,
+                type: "air",
+                isBoss: false,
+                bossSource: null,
+                bossType: null
+            },
         ],
         casemates: [
             {
@@ -121,6 +151,12 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
     `;
 }
 
+function renderWorlds() {
+    for (const world of worlds) {
+
+    }
+}
+
 function renderCards() {
     const cards = getWorldById(currentWorld).cards;
 
@@ -137,42 +173,6 @@ function renderCards() {
             (card.isBoss && cards.some(_card => _card.bossSource === card.bossSource && _card.bossType === "attack"))
         );
 
-        /* html += `
-            <form class="worldcard ${card.isBoss ? "boss" : ""} ${card.isBoss ? `boss--${card.bossType}` : ""}" data-card-id="${card.id}">
-                <div class="worldcard-grid">
-                    <textarea placeholder="A kártya neve" name="worldcard-name" minlength="1" maxlength="16" class="worldcard-property worldcard-name" rows="2">${card.name}</textarea>
-                    <div class="worldcard-property-container worldcard-attack-container">
-                        <svg class="worldcard-promote" data-disabled="${attackPromoteDisabled}" data-boss-type="attack" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
-                        <svg data-disabled="${card.attack >= maxAttack}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
-                        <div class="worldcard-property-icon-container">
-                            <img src="./assets/images/attack.webp" alt="Sebzés" class="worldcard-property-icon">
-                            <input type="number" name="attack" min="${minAttack}" max="${maxAttack}" class="worldcard-property min-max-control integer worldcard-attack" value="${card.attack}" ${card.isBoss ? "readonly" : ""}>
-                        </div>
-                        <svg data-disabled="${card.attack <= minAttack}" data-increment="-1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 262" xmlns:v="https://vecta.io/nano"><path d="M223-698q-8 0-15-2.5-7-2.5-13-8.5L11-893Q0-904 0-921q0-17 11-28 11-11 28-11 17 0 28 11l156 156 156-156q11-11 28-11 17 0 28 11 11 11 11 28 0 17-11 28L251-709q-6 6-13 8.5-7 2.5-15 2.5z" /></svg>
-                    </div>
-                    <div class="worldcard-type-picker">
-                        <form>
-                            <input type="radio" name="type" value="earth" ${card.type === "earth" ? "checked" : ""}>
-                            <input type="radio" name="type" value="fire" ${card.type === "fire" ? "checked" : ""}>
-                            <input type="radio" name="type" value="water" ${card.type === "water" ? "checked" : ""}>
-                            <input type="radio" name="type" value="air" ${card.type === "air" ? "checked" : ""}>
-                        </form>
-                    </div>
-                    <div class="worldcard-property-container worldcard-health-container">
-                        <svg class="worldcard-promote" data-disabled="${healthPromoteDisabled}" data-boss-type="health" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
-                        <svg data-disabled="${card.health >= maxHealth}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
-                        <div class="worldcard-property-icon-container">
-                            <img src="./assets/images/health.webp" alt="Élet" class="worldcard-property-icon">
-                            <input type="number" name="health" min="${minHealth}" max="${maxHealth}" class="worldcard-property min-max-control integer worldcard-health" value="${card.health}" ${card.isBoss ? "readonly" : ""}>
-                        </div>
-                        <svg data-disabled="${card.health <= minHealth}" data-increment="-1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 262" xmlns:v="https://vecta.io/nano"><path d="M223-698q-8 0-15-2.5-7-2.5-13-8.5L11-893Q0-904 0-921q0-17 11-28 11-11 28-11 17 0 28 11l156 156 156-156q11-11 28-11 17 0 28 11 11 11 11 28 0 17-11 28L251-709q-6 6-13 8.5-7 2.5-15 2.5z" /></svg>
-                    </div>
-                    <div class="worldcard-delete svgbutton">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-                    </div>
-                </div>
-            </form>
-        `; */
         html += cardElementAsText(card.id, true, {healthPromoteDisabled, attackPromoteDisabled, ...card});
     }
 
@@ -348,6 +348,11 @@ function renderCasemateCards() {
     const casemateType = casemateTypes[casemate.type];
     const ordinaryCards = casemate.cards.filter(cardId => !getCardById(cardId).isBoss).length;
     const bossCards = casemate.cards.filter(cardId => getCardById(cardId).isBoss).length;
+    for (let i = 0; i < casemateType.ordinary - ordinaryCards; i++) {
+        htmlOrdinary += `
+            <div class="worldcard-placeholder hidden"></div>
+        `;
+    }
     for (let i = 0; i < casemateType.ordinary; i++) {
         htmlOrdinaryPlaceholder += `
             <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
@@ -428,7 +433,8 @@ function renderCasemates() {
         casemateElement.addEventListener("click", function(event) {
             if (event.target === this) {
                 currentCasemate = casemate.id;
-                renderCasemates(casemates);
+                renderCasemates();
+                renderCasemateCards();
             }
         })
 
@@ -451,7 +457,8 @@ function renderCasemates() {
             if (currentCasemate === casemate.id) {
                 currentCasemate = casemates[casemateIndex]?.id || casemates[casemateIndex - 1]?.id
             }
-            renderCasemates(casemates);
+            renderCasemates();
+            renderCasemateCards();
         });
     }
 
@@ -473,7 +480,8 @@ function createCasemate({name = "", type = 0, cards = []} = {}) {
     const id = world.casemates.reduce((a, casemate) => Math.max(a, casemate?.id || 0), 1) + 1;
     world.casemates.push({id, name, type, cards});
     currentCasemate = id;
-    renderCasemates(world.casemates);
+    renderCasemates();
+    renderCasemateCards();
 }
 
 function updateCasemateCards() {
@@ -544,22 +552,12 @@ document.querySelector(".world-back-button").addEventListener("click", () => set
 new Sortable(casemateCardSourceElement, {
     group: {
         name: casemateCardSourceGroup,
-       /*  pull: function (to, from, element) {
-            // Disable drop if the card is already in the casemate's cards.
-            const cardId = parseInt(element.dataset.cardId);
-            const world = getWorldById(currentWorld);
-            const casemate = getCasemateById(currentCasemate);
-
-            return casemate.cards.includes(cardId) ? false : "clone";
-        }, */
         pull: "clone",
         put: false
     },
     sort: false,
     animation: 150,
     ghostClass: 'sortable-ghost',
-    filter: '.worldcard--add',
-    preventOnFilter: true,
 });
 
 new Sortable(casemateCardTargetElement, {
@@ -587,8 +585,11 @@ new Sortable(casemateCardTargetElement, {
     sort: true,
     animation: 150,
     ghostClass: 'sortable-ghost',
+    filter: '.worldcard-placeholder',
+    preventOnFilter: true,
 
     onAdd: function(event) {
+        console.log("Ald")
         const cardId = parseInt(event.item.dataset.cardId);
         const card = getCardById(cardId);
         event.item.outerHTML = cardElementAsText(card.id, false, card);
