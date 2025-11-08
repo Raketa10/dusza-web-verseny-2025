@@ -1,5 +1,6 @@
 // Constants
 const casemateTypes = [
+    {name: "Gyűjtemény", ordinary: Infinity, boss: 0},
     {name: "Egyszerű találkozás", ordinary: 1, boss: 0},
     {name: "Kis kazamata", ordinary: 3, boss: 1}, 
     {name: "Nagy kazamata", ordinary: 5, boss: 1}
@@ -62,10 +63,11 @@ let worlds = [
             {
                 id: 1,
                 name: "Első Kazamata",
-                type: 0,
+                type: 1,
                 cards: []
             }
-        ]
+        ],
+        collections: [{type: 0, cards: []}]
     }
 ];
 
@@ -88,14 +90,19 @@ function setScreen(screen) {
 }
 
 
-function getWorldById(id) {
+function getWorldById(id = currentWorld) {
     return worlds.find(world => world.id === id);
 }
 function getCardById(id) {
     return getWorldById(currentWorld).cards.find(card => card.id === id);
 }
 function getCasemateById(id) {
-    return getWorldById(currentWorld).casemates.find(casemate => casemate.id === id);
+    const world = getWorldById(currentWorld);
+    if (id === -1) {
+        return world.collections[0];
+    } else {
+        return world.casemates.find(casemate => casemate.id === id);
+    }
 }
 
 function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, type = "earth", isBoss = false, bossSource = null, bossType = null, attackPromoteDisabled = false, healthPromoteDisabled = false, deleteButton = false} = {}) {
@@ -203,7 +210,8 @@ function renderWorlds() {
             id: newId,
             name: "Új világ",
             cards: [],
-            casemates: [{id: 1, name: "Első kazamata", type: 0, cards: []}]
+            casemates: [{id: 1, name: "Első kazamata", type: 1, cards: []}],
+            collections: [{type: 0, cards: []}]
         });
 
         editWorld(newId);
@@ -218,11 +226,6 @@ function renderWorldEditor() {
     renderCards();
     renderCasemates();
     renderCasemateCards();
-
-    document.querySelector(".screen--world .world-name").addEventListener("change", function() {
-        world.name = this.value.slice(0, parseInt(this.getAttribute("maxlength")));
-        renderWorlds();
-    });
 }
 
 function renderCards() {
@@ -416,26 +419,30 @@ function renderCasemateCards() {
     const casemateType = casemateTypes[casemate.type];
     const ordinaryCards = casemate.cards.filter(cardId => !getCardById(cardId).isBoss).length;
     const bossCards = casemate.cards.filter(cardId => getCardById(cardId).isBoss).length;
-    for (let i = 0; i < casemateType.ordinary - ordinaryCards; i++) {
-        htmlOrdinary += `
-            <div class="worldcard-placeholder hidden"></div>
-        `;
-    }
-    for (let i = 0; i < casemateType.ordinary; i++) {
-        htmlOrdinaryPlaceholder += `
-            <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
-        `;
-    }
-    for (let i = 0; i < casemateType.boss; i++) {
-        htmlBossPlaceholder += `
-            <div class="worldcard-placeholder ${i < bossCards ? "hidden" : ""} boss"></div>
-        `;
+    if (casemate.type !== 0) {
+        for (let i = 0; i < casemateType.ordinary - ordinaryCards; i++) {
+            htmlOrdinary += `
+                <div class="worldcard-placeholder hidden"></div>
+            `;
+        }
+        for (let i = 0; i < casemateType.ordinary; i++) {
+            htmlOrdinaryPlaceholder += `
+                <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
+            `;
+        }
+        for (let i = 0; i < casemateType.boss; i++) {
+            htmlBossPlaceholder += `
+                <div class="worldcard-placeholder ${i < bossCards ? "hidden" : ""} boss"></div>
+            `;
+        }
     }
 
     document.querySelector(".casemate-ordinary-container").innerHTML = htmlOrdinary;
     document.querySelector(".casemate-ordinary-placeholder").innerHTML = htmlOrdinaryPlaceholder;
     document.querySelector(".casemate-boss-container").innerHTML = htmlBoss;
     document.querySelector(".casemate-boss-placeholder").innerHTML = htmlBossPlaceholder;
+
+    document.querySelector(".casemate-cards-boss-wrapper").classList.toggle("hidden", casemate.type === 0);
 
     // Adding event handlers
     for (const cardElement of document.querySelectorAll(":is(.casemate-cards-container, .casemate-boss-container) > .worldcard")) {
@@ -468,8 +475,8 @@ function renderCasemates() {
                         !selected ? casemateTypes[casemate.type].name : 
                         `
                             <select class="input casemate-type" name="type">
-                                ${casemateTypes.map(({name}, index) => (
-                                    `<option ${casemate.type === index ? "selected" : ""} value="${index}">${name}</option>`
+                                ${casemateTypes.slice(1).map(({name}, index) => (
+                                    `<option ${casemate.type === index + 1 ? "selected" : ""} value="${index + 1}">${name}</option>`
                                 )).join("")}
                             </select>
                         `
@@ -488,6 +495,9 @@ function renderCasemates() {
 
     const container = document.querySelector(".casemates-container");
     container.innerHTML = html;
+
+    document.querySelector(".casemate-cards-h3").textContent = currentCasemate === -1 ? "A gyűjtemény kártyái" : "A kazamata kártyái";
+    document.querySelector(".section--casemates .collection").classList.toggle("selected", currentCasemate === -1);
 
     // Adding event handlers
     for (const casemateElement of document.querySelectorAll(".casemates-container > .casemate:not(.casemate--add)")) {
@@ -614,11 +624,6 @@ document.querySelectorAll(".worldcard-property-container").forEach(container => 
     });
 });
 
-
-document.querySelector(".world--add").addEventListener("click", function() {
-    createWorld();
-});
-
 document.querySelector(".world-back-button").addEventListener("click", () => setScreen("home"));
 
 new Sortable(casemateCardSourceElement, {
@@ -661,7 +666,6 @@ new Sortable(casemateCardTargetElement, {
     preventOnFilter: true,
 
     onAdd: function(event) {
-        console.log("Ald")
         const cardId = parseInt(event.item.dataset.cardId);
         const card = getCardById(cardId);
         event.item.outerHTML = cardElementAsText(card.id, false, card);
@@ -725,6 +729,18 @@ document.querySelectorAll("dialog").forEach(dialog => {
     dialog.querySelector(".dialog-close")?.addEventListener("click", function() {
         dialog.close();
     });
+});
+
+document.querySelector(".screen--world .world-name").addEventListener("change", function() {
+    const world = getWorldById(currentWorld);
+    world.name = this.value.slice(0, parseInt(this.getAttribute("maxlength")));
+    renderWorlds();
+});
+
+document.querySelector(".section--casemates .collection").addEventListener("click", function() {
+    currentCasemate = -1;
+    renderCasemates();
+    renderCasemateCards();
 });
 
 
