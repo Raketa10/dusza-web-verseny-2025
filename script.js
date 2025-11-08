@@ -19,14 +19,44 @@ let worlds = [
         cards: [
             {
                 id: 1,
-                name: "Első Kártya Neve",
+                name: "A",
                 health: 1,
                 attack: 2,
                 type: "earth",
                 isBoss: false,
                 bossSource: null,
                 bossType: null
-            }
+            },
+            {
+                id: 2,
+                name: "B",
+                health: 1,
+                attack: 2,
+                type: "fire",
+                isBoss: false,
+                bossSource: null,
+                bossType: null
+            },
+            {
+                id: 3,
+                name: "C",
+                health: 1,
+                attack: 2,
+                type: "water",
+                isBoss: false,
+                bossSource: null,
+                bossType: null
+            },
+            {
+                id: 4,
+                name: "D",
+                health: 1,
+                attack: 2,
+                type: "air",
+                isBoss: false,
+                bossSource: null,
+                bossType: null
+            },
         ],
         casemates: [
             {
@@ -46,19 +76,15 @@ let currentCasemate = 1;
 // Elements
 const screenContainer = document.querySelector(".screen-container");
 const casemateCardSourceElement = document.querySelector(".worldcards-container");
-const casemateCardTargetElement = document.querySelector(".casemate-cards-container");
+const casemateCardTargetElement = document.querySelector(".casemate-ordinary-container");
 const casemateBossTargetElement = document.querySelector(".casemate-boss-container");
 const casemateCardSourceGroup = "casemateCardSource";
-const casemateCardTargetGroup = "casemateCardTarget";
+const casemateCardTargetGroup = "casemateOrdinaryTarget";
 const casemateBossTargetGroup = "casemateBossTarget";
 
 
 function setScreen(screen) {
     screenContainer.dataset.screen = screen;
-}
-
-function createWorld() {
-    setScreen("world");
 }
 
 
@@ -121,6 +147,84 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
     `;
 }
 
+function renderWorlds() {
+    let html = "";
+    for (const world of worlds) {
+        html += `
+            <div class="world" data-world-id="${world.id}">
+                <div class="world-title">${world.name}</div>
+                <div>Kártyák: ${world.cards.length}</div>
+                <div>Vezérkártyák: ${world.cards.filter(card => card.isBoss).length}</div>
+                <div>Kazamaták: ${world.casemates.length}</div>
+                <div class="world-buttons">
+                    <svg class="world-play svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-200v-560l440 280-440 280Z"/></svg>
+                    <svg class="world-edit svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/></svg>
+                </div>
+            </div>
+        `;
+    }
+
+    html += `
+        <div class="world world--add">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+        </div>
+    `;
+
+    document.querySelector(".worlds-container").innerHTML = html;
+
+    // Adding event handlers
+    function editWorld(worldId = currentWorld) {
+        currentWorld = worldId;
+        currentCasemate = 1;
+
+        setScreen("world");
+        renderWorldEditor();
+    }
+
+    for (const worldElement of document.querySelectorAll(".worlds-container > .world:not(.world--add)")) {
+        const worldId = parseInt(worldElement.dataset.worldId);
+        const world = worlds.find(world => world.id === worldId);
+
+        worldElement.querySelector(".world-play").addEventListener("click", function() {
+            currentWorld = world.id;
+            renderCasemates();
+            renderCards();
+        });
+
+        worldElement.querySelector(".world-edit").addEventListener("click", function() {
+            editWorld(worldId);
+        });
+
+    }
+
+    document.querySelector(".worlds-container > .world--add").addEventListener("click", function() {
+        const newId = worlds.reduce((maxId, world) => Math.max(maxId, world.id), 0) + 1;
+        worlds.push({
+            id: newId,
+            name: "Új világ",
+            cards: [],
+            casemates: [{id: 1, name: "Első kazamata", type: 0, cards: []}]
+        });
+
+        editWorld(newId);
+        renderWorlds();
+    });
+}
+
+function renderWorldEditor() {
+    const world = getWorldById(currentWorld);
+    document.querySelector(".screen--world .world-name").value = world.name;
+
+    renderCards();
+    renderCasemates();
+    renderCasemateCards();
+
+    document.querySelector(".screen--world .world-name").addEventListener("change", function() {
+        world.name = this.value.slice(0, parseInt(this.getAttribute("maxlength")));
+        renderWorlds();
+    });
+}
+
 function renderCards() {
     const cards = getWorldById(currentWorld).cards;
 
@@ -137,42 +241,6 @@ function renderCards() {
             (card.isBoss && cards.some(_card => _card.bossSource === card.bossSource && _card.bossType === "attack"))
         );
 
-        /* html += `
-            <form class="worldcard ${card.isBoss ? "boss" : ""} ${card.isBoss ? `boss--${card.bossType}` : ""}" data-card-id="${card.id}">
-                <div class="worldcard-grid">
-                    <textarea placeholder="A kártya neve" name="worldcard-name" minlength="1" maxlength="16" class="worldcard-property worldcard-name" rows="2">${card.name}</textarea>
-                    <div class="worldcard-property-container worldcard-attack-container">
-                        <svg class="worldcard-promote" data-disabled="${attackPromoteDisabled}" data-boss-type="attack" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
-                        <svg data-disabled="${card.attack >= maxAttack}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
-                        <div class="worldcard-property-icon-container">
-                            <img src="./assets/images/attack.webp" alt="Sebzés" class="worldcard-property-icon">
-                            <input type="number" name="attack" min="${minAttack}" max="${maxAttack}" class="worldcard-property min-max-control integer worldcard-attack" value="${card.attack}" ${card.isBoss ? "readonly" : ""}>
-                        </div>
-                        <svg data-disabled="${card.attack <= minAttack}" data-increment="-1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 262" xmlns:v="https://vecta.io/nano"><path d="M223-698q-8 0-15-2.5-7-2.5-13-8.5L11-893Q0-904 0-921q0-17 11-28 11-11 28-11 17 0 28 11l156 156 156-156q11-11 28-11 17 0 28 11 11 11 11 28 0 17-11 28L251-709q-6 6-13 8.5-7 2.5-15 2.5z" /></svg>
-                    </div>
-                    <div class="worldcard-type-picker">
-                        <form>
-                            <input type="radio" name="type" value="earth" ${card.type === "earth" ? "checked" : ""}>
-                            <input type="radio" name="type" value="fire" ${card.type === "fire" ? "checked" : ""}>
-                            <input type="radio" name="type" value="water" ${card.type === "water" ? "checked" : ""}>
-                            <input type="radio" name="type" value="air" ${card.type === "air" ? "checked" : ""}>
-                        </form>
-                    </div>
-                    <div class="worldcard-property-container worldcard-health-container">
-                        <svg class="worldcard-promote" data-disabled="${healthPromoteDisabled}" data-boss-type="health" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
-                        <svg data-disabled="${card.health >= maxHealth}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
-                        <div class="worldcard-property-icon-container">
-                            <img src="./assets/images/health.webp" alt="Élet" class="worldcard-property-icon">
-                            <input type="number" name="health" min="${minHealth}" max="${maxHealth}" class="worldcard-property min-max-control integer worldcard-health" value="${card.health}" ${card.isBoss ? "readonly" : ""}>
-                        </div>
-                        <svg data-disabled="${card.health <= minHealth}" data-increment="-1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 262" xmlns:v="https://vecta.io/nano"><path d="M223-698q-8 0-15-2.5-7-2.5-13-8.5L11-893Q0-904 0-921q0-17 11-28 11-11 28-11 17 0 28 11l156 156 156-156q11-11 28-11 17 0 28 11 11 11 11 28 0 17-11 28L251-709q-6 6-13 8.5-7 2.5-15 2.5z" /></svg>
-                    </div>
-                    <div class="worldcard-delete svgbutton">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-                    </div>
-                </div>
-            </form>
-        `; */
         html += cardElementAsText(card.id, true, {healthPromoteDisabled, attackPromoteDisabled, ...card});
     }
 
@@ -331,28 +399,53 @@ function renderCasemateCards() {
 
     // Generating HTML
     let htmlOrdinary = "";
+    let htmlOrdinaryPlaceholder = ""
     let htmlBoss = "";
+    let htmlBossPlaceholder = "";
     for (const cardId of casemate.cards) {
         const card = getCardById(cardId);
-        const html = cardElementAsText(cardId, false, {deleteButton: true, ...card});
+        const cardHtml = cardElementAsText(cardId, false, {deleteButton: true, ...card});
+        
         if (!card.isBoss) {
-            htmlOrdinary += html;
+            htmlOrdinary += cardHtml;
         } else {
-            htmlBoss += html;
+            htmlBoss += cardHtml;
         }
     }
-    document.querySelector(".casemate-cards-container").innerHTML = htmlOrdinary;
+
+    const casemateType = casemateTypes[casemate.type];
+    const ordinaryCards = casemate.cards.filter(cardId => !getCardById(cardId).isBoss).length;
+    const bossCards = casemate.cards.filter(cardId => getCardById(cardId).isBoss).length;
+    for (let i = 0; i < casemateType.ordinary - ordinaryCards; i++) {
+        htmlOrdinary += `
+            <div class="worldcard-placeholder hidden"></div>
+        `;
+    }
+    for (let i = 0; i < casemateType.ordinary; i++) {
+        htmlOrdinaryPlaceholder += `
+            <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
+        `;
+    }
+    for (let i = 0; i < casemateType.boss; i++) {
+        htmlBossPlaceholder += `
+            <div class="worldcard-placeholder ${i < bossCards ? "hidden" : ""} boss"></div>
+        `;
+    }
+
+    document.querySelector(".casemate-ordinary-container").innerHTML = htmlOrdinary;
+    document.querySelector(".casemate-ordinary-placeholder").innerHTML = htmlOrdinaryPlaceholder;
     document.querySelector(".casemate-boss-container").innerHTML = htmlBoss;
+    document.querySelector(".casemate-boss-placeholder").innerHTML = htmlBossPlaceholder;
 
     // Adding event handlers
     for (const cardElement of document.querySelectorAll(":is(.casemate-cards-container, .casemate-boss-container) > .worldcard")) {
         const cardId = parseInt(cardElement.dataset.cardId);
-        const card = getCardById(cardId);
 
         cardElement.querySelector(".worldcard-delete").addEventListener("click", function() {
             casemate.cards.splice(casemate.cards.indexOf(cardId), 1);
 
             renderCasemateCards();
+            renderCasemates();
         });
     }
 }
@@ -364,9 +457,10 @@ function renderCasemates() {
     let html = "";
     for (const casemate of casemates) {
         const selected = currentCasemate === casemate.id;
+        const incomplete = casemate.cards.length < casemateTypes[casemate.type].ordinary + casemateTypes[casemate.type].boss;
 
         html += `
-            <form class="casemate ${selected ? "selected" : ""}" data-casemate-id="${casemate.id}">
+            <form class="casemate ${selected ? "selected" : ""} ${incomplete ? "incomplete" : ""}" data-casemate-id="${casemate.id}">
                 <input class="input casemate-name"type="text" name="name" placeholder="Kazamata neve" maxlength="32" value="${casemate.name}">
                 <svg class="casemate-delete svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
                 <div class="casemate-type-container">
@@ -381,6 +475,7 @@ function renderCasemates() {
                         `
                     }
                 </div>
+                <svg title="Befejezetlen kazamata" class="casemate-incomplete" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg"><path d="M176 432c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80zM25.26 25.199l13.6 272C39.499 309.972 50.041 320 62.83 320h66.34c12.789 0 23.331-10.028 23.97-22.801l13.6-272C167.425 11.49 156.496 0 142.77 0H49.23C35.504 0 24.575 11.49 25.26 25.199z"/></svg>
             </form>
         `;
     }
@@ -408,7 +503,8 @@ function renderCasemates() {
         casemateElement.addEventListener("click", function(event) {
             if (event.target === this) {
                 currentCasemate = casemate.id;
-                renderCasemates(casemates);
+                renderCasemates();
+                renderCasemateCards();
             }
         })
 
@@ -418,6 +514,9 @@ function renderCasemates() {
 
         casemateElement.querySelector(".casemate-type")?.addEventListener("change", function() {
             casemate.type = parseInt(this.value);
+
+            renderCasemateCards();
+            renderCasemates();
         });
 
         casemateElement.querySelector(".casemate-delete").addEventListener("click", function() {
@@ -429,7 +528,8 @@ function renderCasemates() {
             if (currentCasemate === casemate.id) {
                 currentCasemate = casemates[casemateIndex]?.id || casemates[casemateIndex - 1]?.id
             }
-            renderCasemates(casemates);
+            renderCasemates();
+            renderCasemateCards();
         });
     }
 
@@ -451,7 +551,8 @@ function createCasemate({name = "", type = 0, cards = []} = {}) {
     const id = world.casemates.reduce((a, casemate) => Math.max(a, casemate?.id || 0), 1) + 1;
     world.casemates.push({id, name, type, cards});
     currentCasemate = id;
-    renderCasemates(world.casemates);
+    renderCasemates();
+    renderCasemateCards();
 }
 
 function updateCasemateCards() {
@@ -461,15 +562,16 @@ function updateCasemateCards() {
     getCasemateById(currentCasemate).cards = cardIds;
 }
 
-async function uploadWorld(worldJson) {
+
+
+async function uploadWorld(world) {
     return fetch('push_world.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(worldJson)
+        body: JSON.stringify(world)
     })
-    // Error logging
     .then(response => {
         if (response.ok) {
             console.log("Request sent successfully, but no data returned.");
@@ -522,14 +624,6 @@ document.querySelector(".world-back-button").addEventListener("click", () => set
 new Sortable(casemateCardSourceElement, {
     group: {
         name: casemateCardSourceGroup,
-       /*  pull: function (to, from, element) {
-            // Disable drop if the card is already in the casemate's cards.
-            const cardId = parseInt(element.dataset.cardId);
-            const world = getWorldById(currentWorld);
-            const casemate = getCasemateById(currentCasemate);
-
-            return casemate.cards.includes(cardId) ? false : "clone";
-        }, */
         pull: "clone",
         put: false
     },
@@ -563,8 +657,11 @@ new Sortable(casemateCardTargetElement, {
     sort: true,
     animation: 150,
     ghostClass: 'sortable-ghost',
+    filter: '.worldcard-placeholder',
+    preventOnFilter: true,
 
     onAdd: function(event) {
+        console.log("Ald")
         const cardId = parseInt(event.item.dataset.cardId);
         const card = getCardById(cardId);
         event.item.outerHTML = cardElementAsText(card.id, false, card);
@@ -572,6 +669,7 @@ new Sortable(casemateCardTargetElement, {
         renderCards();
         updateCasemateCards();
         renderCasemateCards();
+        renderCasemates();
     },
 
     onUpdate: updateCasemateCards
@@ -611,6 +709,7 @@ new Sortable(casemateBossTargetElement, {
         renderCards();
         updateCasemateCards();
         renderCasemateCards();
+        renderCasemates();
     },
 
     onUpdate: updateCasemateCards
@@ -622,7 +721,11 @@ document.querySelector(".login-button--login").addEventListener("click", functio
 document.querySelector(".login-button--register").addEventListener("click", function() {
     document.getElementById("dialog--register").showModal();
 });
+document.querySelectorAll("dialog").forEach(dialog => {
+    dialog.querySelector(".dialog-close")?.addEventListener("click", function() {
+        dialog.close();
+    });
+});
 
 
-renderCards();
-renderCasemates();
+renderWorlds();
