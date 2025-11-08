@@ -46,10 +46,10 @@ let currentCasemate = 1;
 // Elements
 const screenContainer = document.querySelector(".screen-container");
 const casemateCardSourceElement = document.querySelector(".worldcards-container");
-const casemateCardTargetElement = document.querySelector(".casemate-cards-container");
+const casemateCardTargetElement = document.querySelector(".casemate-ordinary-container");
 const casemateBossTargetElement = document.querySelector(".casemate-boss-container");
 const casemateCardSourceGroup = "casemateCardSource";
-const casemateCardTargetGroup = "casemateCardTarget";
+const casemateCardTargetGroup = "casemateOrdinaryTarget";
 const casemateBossTargetGroup = "casemateBossTarget";
 
 
@@ -331,18 +331,38 @@ function renderCasemateCards() {
 
     // Generating HTML
     let htmlOrdinary = "";
+    let htmlOrdinaryPlaceholder = ""
     let htmlBoss = "";
+    let htmlBossPlaceholder = "";
     for (const cardId of casemate.cards) {
         const card = getCardById(cardId);
-        const html = cardElementAsText(cardId, false, {deleteButton: true, ...card});
+        const cardHtml = cardElementAsText(cardId, false, {deleteButton: true, ...card});
+        
         if (!card.isBoss) {
-            htmlOrdinary += html;
+            htmlOrdinary += cardHtml;
         } else {
-            htmlBoss += html;
+            htmlBoss += cardHtml;
         }
     }
-    document.querySelector(".casemate-cards-container").innerHTML = htmlOrdinary;
+
+    const casemateType = casemateTypes[casemate.type];
+    const ordinaryCards = casemate.cards.filter(cardId => !getCardById(cardId).isBoss).length;
+    const bossCards = casemate.cards.filter(cardId => getCardById(cardId).isBoss).length;
+    for (let i = 0; i < casemateType.ordinary; i++) {
+        htmlOrdinaryPlaceholder += `
+            <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
+        `;
+    }
+    for (let i = 0; i < casemateType.boss; i++) {
+        htmlBossPlaceholder += `
+            <div class="worldcard-placeholder ${i < bossCards ? "hidden" : ""} boss"></div>
+        `;
+    }
+
+    document.querySelector(".casemate-ordinary-container").innerHTML = htmlOrdinary;
+    document.querySelector(".casemate-ordinary-placeholder").innerHTML = htmlOrdinaryPlaceholder;
     document.querySelector(".casemate-boss-container").innerHTML = htmlBoss;
+    document.querySelector(".casemate-boss-placeholder").innerHTML = htmlBossPlaceholder;
 
     // Adding event handlers
     for (const cardElement of document.querySelectorAll(":is(.casemate-cards-container, .casemate-boss-container) > .worldcard")) {
@@ -418,6 +438,8 @@ function renderCasemates() {
 
         casemateElement.querySelector(".casemate-type")?.addEventListener("change", function() {
             casemate.type = parseInt(this.value);
+
+            renderCasemateCards();
         });
 
         casemateElement.querySelector(".casemate-delete").addEventListener("click", function() {
@@ -536,6 +558,8 @@ new Sortable(casemateCardSourceElement, {
     sort: false,
     animation: 150,
     ghostClass: 'sortable-ghost',
+    filter: '.worldcard--add',
+    preventOnFilter: true,
 });
 
 new Sortable(casemateCardTargetElement, {
@@ -625,4 +649,5 @@ document.querySelector(".login-button--register").addEventListener("click", func
 
 
 renderCards();
+renderCasemateCards();
 renderCasemates();

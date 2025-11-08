@@ -10,6 +10,6 @@ Backend:
 UI:
     ✔ Card property increment button hover and disabled state @done(25-11-08 10:02)
     ☐ Equal card icon border
-    ☐ Boss buttons disabled state
+    ✔ Boss buttons disabled state @done(25-11-08 17:23)
     ☐ Card rendering order
     ☐ Style select

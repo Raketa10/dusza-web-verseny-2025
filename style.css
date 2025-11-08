@@ -226,6 +226,7 @@ dialog.dialog {
 
 
 .screen--world section {
+    overflow-x: hidden;
     overflow-y: auto;
     height: calc(100dvh - 50px - 2 * min(2rem, 4vh));
 }
@@ -244,7 +245,7 @@ dialog.dialog {
     gap: 15px 5px;
 }
 
-.worldcards-container, .casemate-cards-container, .casemate-boss-container {
+.worldcards-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, auto));
     padding: 5px;
@@ -273,12 +274,12 @@ dialog.dialog {
         padding-top: 5cqh;
         padding-bottom: 2cqh;
 
-        &::before {
+        /* &::before {
             content: "";
             position: absolute;
             inset: 0;
             backdrop-filter: brightness(.8);
-        }
+        } */
     }
     
     .worldcard-delete {
@@ -344,6 +345,7 @@ dialog.dialog {
             left: 50%;
             translate: -50% -50%;
             filter: var(--card-property-shadow);
+            user-select: none;
         }
 
         .worldcard-promote {
@@ -526,8 +528,70 @@ dialog.dialog {
 }
 
 
-.casemate-cards-container, .casemate-boss-container {
+
+.casemate-cards-wrapper {
+    position: relative;
+}
+
+.casemate-cards-container, .casemate-cards-placeholder {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+    gap: 20px 5px;
+    padding: 5px;
+}
+
+.casemate-cards-container {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    height: min-content;
+    padding-bottom: 300px;
+}
+
+.casemate-cards-container {
+    z-index: 1;
+}
+
+.worldcard-placeholder {
+    aspect-ratio: 241 / 344;
+    border-radius: 20px;
+    background-image: url("./assets/images/card-bg-placeholder.webp");
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: grayscale(0.5);
+    animation: placeholder-pulse 1s alternate infinite;
+    opacity: 0.5;
+
+    &.hidden {
+        visibility: hidden;
+    }
+    
+    &.boss {
+        background-image: url("./assets/images/card-bg-placeholder-boss.webp");
+    }
+}
+
+.casemate-cards-ordinary-wrapper {
+    margin-bottom: 40px;
+}
+
+@keyframes placeholder-pulse {
+    from {
+        filter: grayscale(0.7) brightness(1);
+        scale: 1;
+    }
+    to {
+        filter: grayscale(0.6) brightness(1.2);
+        scale: 1.03;
+    }
+}
+
+.casemate-ordinary-container, .casemate-boss-container {
     min-height: 100px;
+}
+
+.section--casemate-cards:not(:has(.casemate-cards-placeholder.casemate-boss-placeholder > .worldcard-placeholder)) .casemate-boss-cards-h3 {
+    display: none;
 }
 
 
