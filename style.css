@@ -25,6 +25,7 @@ body {
     margin: 0;
     /* background-color: var(--clr-background); */
     background: url("./assets/images/body_bg.png");
+    background-size: contain;
     color: var(--clr-text);
     min-height: 100dvh;
 }
@@ -52,7 +53,7 @@ button.svgbutton {
     }
 }
 
-input.input:is([type="text"], [type="number"]), select.input {
+input.input:is([type="text"], [type="number"], [type="password"], [type="email"]), select.input, button.button {
     border-radius: 5px;
     font-size: 1.2rem;
     padding: 0.2em 0.6em;
@@ -66,6 +67,21 @@ input.input:is([type="text"], [type="number"]), select.input {
 
     &::placeholder {
         color: hsl(from var(--clr-text-dark) h s l / 0.5)
+    }
+}
+
+button.button {
+    transition: 0.2s;
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(1.1);
+        scale: 1.05;
+    }
+
+    &:active {
+        filter: brightness(1.1);
+        scale: 0.8;
     }
 }
 
@@ -97,6 +113,17 @@ select.input option {
     padding-inline: 0.4em;
 } */
 
+dialog.dialog {
+    width: min(100%, 60ch);
+    border-radius: 10px;
+
+    &::backdrop {
+        background-color: hsl(0 0 0 / 0.5);
+    }
+}
+
+
+
 .screen-container {
     display: flex;
     height: 100%;
@@ -117,6 +144,24 @@ select.input option {
 .screen--home > .game-logo {
     font-size: 3rem;
     margin-top: 0;
+}
+
+.screen--home nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .login-buttons {
+        display: flex;
+        gap: 10px;
+    }
+}
+
+.dialog-login form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .worlds-container {

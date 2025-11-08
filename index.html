@@ -10,7 +10,13 @@
 <body>
     <div class="screen-container" data-screen="home">
         <div class="screen screen--home">
-            <h1 class="game-logo">Damareen</h1>
+            <nav>
+                <h1 class="game-logo">Damareen</h1>
+                <div class="login-buttons">
+                    <button class="button login-button--login">Bejelentkezés</button>
+                    <button class="button login-button--register">Regisztráció</button>
+                </div>
+            </nav>
             <section class="section-worlds">
                 <h3>Világok</h3>
                 <div class="worlds-container">
@@ -109,6 +115,38 @@
             </div>
         </div>
     </div>
+
+    <dialog class="dialog dialog-login" id="dialog--login">
+        <form action="valami.php" method="post">
+            <label>
+                Felhasználónév:
+                <input class="input" type="text" name="username">
+            </label>
+            <label>
+                Jelszó:
+                <input type="password" name="password" class="input">
+            </label>
+            <button type="submit">Bejelentkezés</button>
+        </form>
+    </dialog>
+    
+    <dialog class="dialog dialog-login" id="dialog--register">
+        <form action="valami.php" method="post">
+            <label>
+                Felhasználónév:
+                <input class="input" type="text" name="username">
+            </label>
+            <label>
+                Jelszó:
+                <input type="password" name="password" class="input">
+            </label>
+            <label>
+                Jelszó még egyszer:
+                <input type="password" name="password-repeat" class="input">
+            </label>
+            <button type="submit">Bejelentkezés</button>
+        </form>
+    </dialog>
 
     <script src="script.js"></script>
 </body>
