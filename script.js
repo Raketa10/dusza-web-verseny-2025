@@ -277,5 +277,17 @@ function uploadWorld(worldJson) {
 }
 
 function fetchWorlds() {
-    worlds = fetch("fetch_worlds.php");
+    fetch("fetch_worlds.php")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json(); // Parse the JSON response
+        })
+        .then(data => {
+            worlds = data; // Store the data in the variable
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);  // Handle errors
+        });
 }
