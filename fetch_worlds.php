@@ -6,7 +6,7 @@
         echo json_encode([]);
     }
     else{
-        $statement = $connection->prepare("SELECT world_id, name, cards_json, casemates_json FROM worlds WHERE user_id = ?");
+        $statement = $connection->prepare("SELECT world_id, name, cards_json, casemates_json, collection_json FROM worlds WHERE user_id = ?");
         $statement->bind_param("i", $_SESSION["user_id"]);
         $statement->execute();
 
@@ -21,6 +21,7 @@
                 'name' => $row['name'],
                 'cards' => json_decode($row['cards_json'], true), // Decode JSON if needed
                 'casemates' => json_decode($row['casemates_json'], true) // Decode JSON if needed
+                'collection' => json_decode($row['collection_json'], true) // Decode JSON if needed
             ];
 
             // Add world to the result array
