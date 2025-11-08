@@ -4,6 +4,9 @@
     --clr-text: hsl(27, 23%, 80%);
     --clr-text-dark: hsl(27, 23%, 25%);
     --clr-boss-highlight: hsl(120, 68%, 45%);
+
+    --card-button-shadow: drop-shadow(0 0 6px black);
+    --card-property-shadow: drop-shadow(0 0 6px black);
 }
 
 @font-face {
@@ -151,6 +154,7 @@ input.input:is([type="text"], [type="number"]) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: 50% 1fr;
+        justify-items: center;
         padding-inline: 10cqmin;
         padding-top: 5cqh;
         padding-bottom: 2cqh;
@@ -214,17 +218,12 @@ input.input:is([type="text"], [type="number"]) {
             top: 50%;
             left: 50%;
             translate: -50% -50%;
-            filter: drop-shadow(0 0 6px black);
-        }
-
-        .worldcard-property, .worldcard-property-arrow, .worldcard-promote {
-            position: relative;
-            z-index: 1;
+            filter: var(--card-property-shadow);
         }
 
         .worldcard-promote {
             height: 40px;
-            filter: drop-shadow(0 0 4px black);
+            filter: var(--card-button-shadow);
             transition: 0.2s;
             cursor: pointer;
             user-select: none;
@@ -232,7 +231,7 @@ input.input:is([type="text"], [type="number"]) {
             
             &:hover {
                 /* filter: drop-shadow(0 0 4px black) brightness(1.2); */
-                filter: drop-shadow(0 0 6px black);
+                /* filter: var(--card-button-shadow); */
                 scale: 1.05;
                 translate: 0 -5px;
             }
@@ -251,6 +250,12 @@ input.input:is([type="text"], [type="number"]) {
             cursor: pointer;
             user-select: none;
         }
+
+        .worldcard-property-arrow[data-disabled="true"] {
+            pointer-events: none;
+            fill: #aaa;
+            opacity: 0.6;
+        }
         
         input[type='number'] {
             color: white;
@@ -265,16 +270,72 @@ input.input:is([type="text"], [type="number"]) {
         }
     }
 
-    .worldcard-attack-container {
-        left: 5%;
+    .worldcard-property, .worldcard-property-arrow, .worldcard-promote, .worldcard-type-picker {
+        position: relative;
+        z-index: 1;
     }
-    .worldcard-health-container {
-        right: 6%;
+
+    .worldcard-type-picker {
+        width: 25cqmin;
+        height: 25cqmin;
+        background-image: url("./assets/images/earth_icon.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        align-self: center;
+        position: relative;
+        filter: var(--card-button-shadow);
+        transition: 0.2s;
+
+        &:hover {
+            scale: 1.05;
+            filter: var(--card-button-shadow) brightness(1.1);
+        }
+
+        &:active {
+            scale: 0.9;
+            filter: var(--card-button-shadow);
+        }
+
+        input[type="radio"] {
+            position: absolute;
+            inset: 0;
+            appearance: none;
+            cursor: pointer;
+            user-select: none;
+            margin: 0;
+            z-index: 1;
+        }
+
+        &:has(input[type="radio"][value="earth"]:checked) {
+            background-image: url("./assets/images/earth_icon.png");
+        }
+        &:has(input[type="radio"][value="fire"]:checked) {
+            background-image: url("./assets/images/fire_icon.png");
+        }
+        &:has(input[type="radio"][value="water"]:checked) {
+            background-image: url("./assets/images/water_icon.png");
+        }
+        &:has(input[type="radio"][value="air"]:checked) {
+            background-image: url("./assets/images/wind_icon.png");
+        }
+
+        &:has(input[type="radio"][value="earth"]:checked) input[type="radio"]:not([value="fire"]),
+        &:has(input[type="radio"][value="fire"]:checked) input[type="radio"]:not([value="water"]),
+        &:has(input[type="radio"][value="water"]:checked) input[type="radio"]:not([value="air"]),
+        &:has(input[type="radio"][value="air"]:checked) input[type="radio"]:not([value="earth"])
+        {
+            display: none;
+        }
     }
 
     &.boss {
         .worldcard-property-arrow {
             visibility: hidden;
+        }
+
+        .worldcard-type-picker {
+            pointer-events: none;
+            filter: none;
         }
     }
 
@@ -282,6 +343,13 @@ input.input:is([type="text"], [type="number"]) {
     &.boss--attack .worldcard-promote[data-boss-type="attack"]
     {
         fill: var(--clr-boss-highlight);
+        pointer-events: none;
+        filter: none;
+    }
+    
+    .worldcard-promote[data-disabled="true"] {
+        pointer-events: none;
+        filter: none;
     }
 
     &.boss--health .worldcard-property[name="health"],
