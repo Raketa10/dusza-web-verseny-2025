@@ -87,10 +87,6 @@ function setScreen(screen) {
     screenContainer.dataset.screen = screen;
 }
 
-function createWorld() {
-    setScreen("world");
-}
-
 
 function getWorldById(id) {
     return worlds.find(world => world.id === id);
@@ -152,9 +148,81 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
 }
 
 function renderWorlds() {
+    let html = "";
     for (const world of worlds) {
+        html += `
+            <div class="world" data-world-id="${world.id}">
+                <div class="world-title">${world.name}</div>
+                <div>Kártyák: ${world.cards.length}</div>
+                <div>Vezérkártyák: ${world.cards.filter(card => card.isBoss).length}</div>
+                <div>Kazamaták: ${world.casemates.length}</div>
+                <div class="world-buttons">
+                    <svg class="world-play svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-200v-560l440 280-440 280Z"/></svg>
+                    <svg class="world-edit svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/></svg>
+                </div>
+            </div>
+        `;
+    }
+
+    html += `
+        <div class="world world--add">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+        </div>
+    `;
+
+    document.querySelector(".worlds-container").innerHTML = html;
+
+    // Adding event handlers
+    function editWorld(worldId = currentWorld) {
+        currentWorld = worldId;
+        currentCasemate = 1;
+
+        setScreen("world");
+        renderWorldEditor();
+    }
+
+    for (const worldElement of document.querySelectorAll(".worlds-container > .world:not(.world--add)")) {
+        const worldId = parseInt(worldElement.dataset.worldId);
+        const world = worlds.find(world => world.id === worldId);
+
+        worldElement.querySelector(".world-play").addEventListener("click", function() {
+            currentWorld = world.id;
+            renderCasemates();
+            renderCards();
+        });
+
+        worldElement.querySelector(".world-edit").addEventListener("click", function() {
+            editWorld(worldId);
+        });
 
     }
+
+    document.querySelector(".worlds-container > .world--add").addEventListener("click", function() {
+        const newId = worlds.reduce((maxId, world) => Math.max(maxId, world.id), 0) + 1;
+        worlds.push({
+            id: newId,
+            name: "Új világ",
+            cards: [],
+            casemates: [{id: 1, name: "Első kazamata", type: 0, cards: []}]
+        });
+
+        editWorld(newId);
+        renderWorlds();
+    });
+}
+
+function renderWorldEditor() {
+    const world = getWorldById(currentWorld);
+    document.querySelector(".screen--world .world-name").value = world.name;
+
+    renderCards();
+    renderCasemates();
+    renderCasemateCards();
+
+    document.querySelector(".screen--world .world-name").addEventListener("change", function() {
+        world.name = this.value.slice(0, parseInt(this.getAttribute("maxlength")));
+        renderWorlds();
+    });
 }
 
 function renderCards() {
@@ -372,12 +440,12 @@ function renderCasemateCards() {
     // Adding event handlers
     for (const cardElement of document.querySelectorAll(":is(.casemate-cards-container, .casemate-boss-container) > .worldcard")) {
         const cardId = parseInt(cardElement.dataset.cardId);
-        const card = getCardById(cardId);
 
         cardElement.querySelector(".worldcard-delete").addEventListener("click", function() {
             casemate.cards.splice(casemate.cards.indexOf(cardId), 1);
 
             renderCasemateCards();
+            renderCasemates();
         });
     }
 }
@@ -389,9 +457,10 @@ function renderCasemates() {
     let html = "";
     for (const casemate of casemates) {
         const selected = currentCasemate === casemate.id;
+        const incomplete = casemate.cards.length < casemateTypes[casemate.type].ordinary + casemateTypes[casemate.type].boss;
 
         html += `
-            <form class="casemate ${selected ? "selected" : ""}" data-casemate-id="${casemate.id}">
+            <form class="casemate ${selected ? "selected" : ""} ${incomplete ? "incomplete" : ""}" data-casemate-id="${casemate.id}">
                 <input class="input casemate-name"type="text" name="name" placeholder="Kazamata neve" maxlength="32" value="${casemate.name}">
                 <svg class="casemate-delete svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
                 <div class="casemate-type-container">
@@ -406,6 +475,7 @@ function renderCasemates() {
                         `
                     }
                 </div>
+                <svg title="Befejezetlen kazamata" class="casemate-incomplete" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg"><path d="M176 432c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80zM25.26 25.199l13.6 272C39.499 309.972 50.041 320 62.83 320h66.34c12.789 0 23.331-10.028 23.97-22.801l13.6-272C167.425 11.49 156.496 0 142.77 0H49.23C35.504 0 24.575 11.49 25.26 25.199z"/></svg>
             </form>
         `;
     }
@@ -446,6 +516,7 @@ function renderCasemates() {
             casemate.type = parseInt(this.value);
 
             renderCasemateCards();
+            renderCasemates();
         });
 
         casemateElement.querySelector(".casemate-delete").addEventListener("click", function() {
@@ -491,15 +562,16 @@ function updateCasemateCards() {
     getCasemateById(currentCasemate).cards = cardIds;
 }
 
-async function uploadWorld(worldJson) {
+
+
+async function uploadWorld(world) {
     return fetch('push_world.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(worldJson)
+        body: JSON.stringify(world)
     })
-    // Error logging
     .then(response => {
         if (response.ok) {
             console.log("Request sent successfully, but no data returned.");
@@ -597,6 +669,7 @@ new Sortable(casemateCardTargetElement, {
         renderCards();
         updateCasemateCards();
         renderCasemateCards();
+        renderCasemates();
     },
 
     onUpdate: updateCasemateCards
@@ -636,6 +709,7 @@ new Sortable(casemateBossTargetElement, {
         renderCards();
         updateCasemateCards();
         renderCasemateCards();
+        renderCasemates();
     },
 
     onUpdate: updateCasemateCards
@@ -647,8 +721,11 @@ document.querySelector(".login-button--login").addEventListener("click", functio
 document.querySelector(".login-button--register").addEventListener("click", function() {
     document.getElementById("dialog--register").showModal();
 });
+document.querySelectorAll("dialog").forEach(dialog => {
+    dialog.querySelector(".dialog-close")?.addEventListener("click", function() {
+        dialog.close();
+    });
+});
 
 
-renderCards();
-renderCasemateCards();
-renderCasemates();
+renderWorlds();
