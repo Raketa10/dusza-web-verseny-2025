@@ -256,7 +256,7 @@ renderCards(getWorldById(currentWorld).cards);
 
 
 function uploadWorld(worldJson) {
-    return fetch('your_php_file.php', {
+    return fetch('push_world.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
