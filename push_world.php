@@ -16,12 +16,12 @@
         $result = $statement->get_result();
         
         if ($result->num_rows > 0) {
-            $statement = $connection->prepare("UPDATE world SET name = ?, cards_json = ?, casemates_json = ? WHERE world_id = ? AND user_id = ?");
-            $statement->bind_param("sssii", $world['name'], $world['cards'], $world['casemates'], $_SESSION["user_id"], $world['id']);
+            $statement = $connection->prepare("UPDATE world SET name = ?, cards_json = ?, casemates_json = ?, collection_json = ? WHERE world_id = ? AND user_id = ?");
+            $statement->bind_param("ssssii", $world['name'], $world['cards'], $world['casemates'], $world['collection'], $_SESSION["user_id"], $world['id']);
             $statement->execute();
         } else{
-            $statement = $connection->prepare("INSERT INTO worlds (world_id, name, cards_json, casemates_json, user_id) VALUES(?, ?, ?, ?, ?)");
-            $statement->bind_param("isssi", $world['id'], $world['name'], $world['cards'], $world['casemates'], $_SESSION["user_id"]);
+            $statement = $connection->prepare("INSERT INTO worlds (world_id, name, cards_json, casemates_json, collection_json, user_id) VALUES(?, ?, ?, ?, ?, ?)");
+            $statement->bind_param("isssi", $world['id'], $world['name'], $world['cards'], $world['casemates'], $world['collection'], $_SESSION["user_id"]);
             $statement->execute();
         }
     }
