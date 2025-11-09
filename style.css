@@ -6,6 +6,7 @@
     --clr-text: hsl(27, 23%, 80%);
     --clr-text-dark: hsl(27, 23%, 25%);
     --clr-boss-highlight: hsl(120, 68%, 45%);
+    --clr-error: hsl(0 70 30);
 
     --bg-card-ui: var(--clr-ui-bg);
 
@@ -80,6 +81,17 @@ input.input:is([type="text"], [type="number"], [type="password"], [type="email"]
 button.button {
     transition: 0.2s;
     cursor: pointer;
+    background-image:
+        url("./assets/images/btn-bg-left.webp"),
+        url("./assets/images/btn-bg-right.webp"),
+        url("./assets/images/btn-bg-center.webp");
+
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    background-size: contain;
+    background-position: left, right, center;
+    background-color: transparent;
+    padding: 1em 1.2em !important;
+    border-radius: 0;
 
     &:hover {
         filter: brightness(1.1);
@@ -169,6 +181,9 @@ dialog.dialog {
 
         input, button {
             font-size: 1.4rem !important;
+        }
+
+        input {
             padding: 0.4em 0.6em !important;
         }
         
@@ -178,7 +193,7 @@ dialog.dialog {
         }
         
         .form-error, .input-error {
-            color: hsl(0 70 30);
+            color: var(--clr-error);
             font-size: 1.2rem;
             align-self: flex-start;
             min-height: 1lh;
@@ -322,6 +337,16 @@ dialog.dialog {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+
+    &[data-loading="true"]::before {
+        content: "A világok betöltés alatt...";
+        font-size: 1.2rem;
+    }
+
+    .error-message {
+        font-size: 1.2rem;
+        color: hsl(from var(--clr-error) h s 60%);
+    }
 }
 
 .world {
@@ -471,6 +496,17 @@ dialog.dialog {
         right: 10px;
         cursor: pointer;
         user-select: none;
+    }
+
+    .worldcard-boss-icon {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        translate: -50% 10px;
+
+        img {
+            width: 30cqw;
+        }
     }
 
     .worldcard-property {
@@ -659,6 +695,8 @@ dialog.dialog {
     }
 
     &.boss {
+        filter: hue-rotate(10deg);
+
         .worldcard-property-arrow {
             visibility: hidden;
         }
@@ -666,6 +704,10 @@ dialog.dialog {
         .worldcard-type-picker {
             pointer-events: none;
             filter: none;
+        }
+
+        .worldcard-name {
+            color: var(--clr-boss-highlight);
         }
     }
 
