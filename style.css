@@ -812,7 +812,7 @@ body[data-logged-in="false"] .section--games {
 }
 
 .worldcard--add {
-    background-image: url("./assets/images/card-add.png");
+    background-image: url("./assets/images/card-bg-placeholder-gray.webp");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
@@ -980,9 +980,11 @@ body[data-logged-in="false"] .section--games {
     padding: 5px;
     cursor: pointer;
     transition: 0.2s;
+    padding: 15px;
+    text-align: center;
 
-    svg {
-        height: 80px;
+    img {
+        height: 50px;
         fill: var(--clr-ui-bg-dark);
     }
 
