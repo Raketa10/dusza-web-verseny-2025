@@ -244,7 +244,7 @@ function casemateElementAsText(id, editable, {name = "", type = 1, selected = fa
 function renderGames() {
     let html = "";
 
-    if (game) {
+    if (lastGame) {
         html = `
             <div class="game">
                 <div class="game-title">Utolsó játék folytatása</div>
@@ -259,14 +259,13 @@ function renderGames() {
 
     document.querySelector(".games-container").innerHTML = html;
 
-    if (!game)
-        return;
-
     const container = document.querySelector(".games-container > .game");
     container.querySelector(".world-play").addEventListener("click", function() {
-        if (!game)
+        if (!lastGame)
             return;
-        startGame(game.cards, game.collection, game.casemates);
+        game = lastGame;
+        console.log(lastGame);
+        startGame(lastGame.cards, lastGame.collection, lastGame.casemates);
     });
 }
 
@@ -722,10 +721,12 @@ function renderGameCollection() {
         return false;
 
     const collection = game.collection;
+    console.log(collection);
 
     // Generating HTML
     let html = "";
     for (const card of collection) {
+        console.log(card);
         const cardId = card.id;
         html += cardElementAsText(cardId, false, card);
     }
@@ -912,6 +913,7 @@ function renderCardUpgrade(upgradeType, upgradeValue) {
 
 function startGame(cards, collection, casemates, deck = []) {
     game = structuredClone({
+        cards: cards.map(card => structuredClone(card)),
         collection: collection.map(cardId => structuredClone(getCardById(cardId, cards))),
         deck: deck.map(cardId => structuredClone(getCardById(cardId, cards))),
         playerCards: deck.map(cardId => structuredClone(getCardById(cardId, cards))),
@@ -924,7 +926,7 @@ function startGame(cards, collection, casemates, deck = []) {
             }
         ))
     });
-    console.log(game.casemates);
+    console.log(game);
     currentCasemate = casemates[0].id;
     setScreen("game-deck");
     renderGameCollection();
@@ -1120,7 +1122,8 @@ function fetchLastGame() {
         })
         .then(data => {
             statusMessage.textContent = "";
-            lastGame = data;
+            console.log(data);
+            lastGame = JSON.parse(data);
             renderGames();
         })
         .catch(error => {
