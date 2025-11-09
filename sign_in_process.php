@@ -19,6 +19,26 @@
                 exit();
             }
 
+            if (strlen($username) < 4){
+                $_SESSION['sign_in_error'] = "A felhasználónév túl rövid.";
+                header("Location:index.php");
+                exit();
+            } elseif (strlen($username) > 32){
+                $_SESSION['sign_in_error'] = "A felhasználónév túl hosszú.";
+                header("Location:index.php");
+                exit();
+            }
+
+            if (strlen($password) < 5){
+                $_SESSION['sign_in_error'] = "A jelszó túl rövid.";
+                header("Location:index.php");
+                exit();
+            } elseif (strlen($password) > 32){
+                $_SESSION['sign_in_error'] = "A jelszó túl hosszú.";
+                header("Location:index.php");
+                exit();
+            }
+
             // Seraching for same username in DB
             $statement = $connection->prepare("SELECT user_id FROM users WHERE username = ?");
             if ($statement === false) {

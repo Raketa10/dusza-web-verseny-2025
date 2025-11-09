@@ -25,6 +25,26 @@
                 exit();
             }
 
+            if (strlen($password) < 5){
+                $_SESSION['sign_in_error'] = "A jelszó túl rövid.";
+                header("Location:index.php");
+                exit();
+            } elseif (strlen($password) > 32){
+                $_SESSION['sign_in_error'] = "A jelszó túl hosszú.";
+                header("Location:index.php");
+                exit();
+            }
+
+            if (strlen($new_password) < 5){
+                $_SESSION['sign_in_error'] = "Az új jelszó túl rövid.";
+                header("Location:index.php");
+                exit();
+            } elseif (strlen($new_password) > 32){
+                $_SESSION['sign_in_error'] = "Az új jelszó túl hosszú.";
+                header("Location:index.php");
+                exit();
+            }
+
             $statement = $connection->prepare("SELECT password_hash FROM users WHERE username = ?");
             if ($statement === false) {
                 // Check if prepare() fails
