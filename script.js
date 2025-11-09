@@ -712,7 +712,7 @@ function createCard({name = "", health = 1, attack = 2, type = "earth", isBoss =
     renderCards(world.cards);
 }
 
-function createCasemate({name = "", type = 0, cards = []} = {}) {
+function createCasemate({name = "", type = 1, cards = []} = {}) {
     const world = getWorldById(currentWorld);
     const id = world.casemates.reduce((a, casemate) => Math.max(a, casemate?.id || 0), 1) + 1;
     world.casemates.push({id, name, type, cards});
