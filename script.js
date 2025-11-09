@@ -1000,8 +1000,10 @@ async function animateBattle() {
 
         while (_casemateCard.health > 0 && _playerCard.health > 0 && (_casemateCard.attack > 0 || _playerCard.attack > 0)) {
             await delay(delayTime);
-            _casemateCard.health--;
-            _playerCard.health--;
+            if (_playerCard.attack > 0)
+                _casemateCard.health--;
+            if (_casemateCard.attack > 0)
+                _playerCard.health--;
 
             if (_casemateCard.attack > 0)
                 _casemateCard.attack--;

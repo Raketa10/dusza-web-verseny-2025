@@ -678,6 +678,12 @@ body[data-logged-in="false"] .section--games {
             filter: var(--card-button-shadow);
         }
 
+        &:has(input[type="radio"]:disabled) {
+            &, input {
+                pointer-events: none;
+            }
+        }
+
         input[type="radio"] {
             position: absolute;
             inset: 0;
