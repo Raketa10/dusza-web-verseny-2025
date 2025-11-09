@@ -328,12 +328,12 @@
     </dialog>
 
 
-    <script src="script.js"></script>
     <script>
-        loggedIn = <?php echo isset($_SESSION["user_id"]) ? "true" : "false";?>;
+        let loggedIn = <?php echo isset($_SESSION["user_id"]) ? "true" : "false";?>;
         if (false) {
             openDialog("<?php echo $dialog_id ?>")
         }
     </script>
+    <script src="script.js"></script>
 </body>
 </html>

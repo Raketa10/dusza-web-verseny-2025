@@ -12,7 +12,7 @@ const minAttack = 2;
 const maxAttack = 100;
 const battleAnimationDuration = 4000;
 
-let loggedIn = false;
+// let loggedIn = false;
 
 // Globals
 let worlds = [
