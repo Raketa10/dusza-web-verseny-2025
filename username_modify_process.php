@@ -63,7 +63,7 @@
                     $statement = $connection->prepare("UPDATE users SET username = ? WHERE user_id = ?");
                     $statement->bind_param("si", $new_username, $_SESSION["user_id"]);
                     $statement->execute();
-                    $_SESSION["username"] = $new_username
+                    $_SESSION["username"] = $new_username;
                 } else {
                     $_SESSION['username_modify_error'] = "Nem jó jelszó.";
                     header("Location:index.php");
