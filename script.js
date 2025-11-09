@@ -1113,7 +1113,7 @@ document.getElementById("account-btn-delete-account").addEventListener("click", 
 
 document.getElementById("account-btn-logout").addEventListener("click", function() {
     const a = document.createElement("a");
-    a.href = "logout.php";
+    a.href = "logout_process.php";
     a.click();
 });
 
