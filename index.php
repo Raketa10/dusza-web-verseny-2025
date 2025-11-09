@@ -355,11 +355,13 @@
             openDialog("delete-account");
         }
 
-        unset($_SESSION["login_error"]);
-        unset($_SESSION["sign_in_error"]);
-        unset($_SESSION["username_modify_error"]);
-        unset($_SESSION["password_modify_error"]);
-        unset($_SESSION["account_delete_error"]);
+        <?php
+            unset($_SESSION["login_error"]);
+            unset($_SESSION["sign_in_error"]);
+            unset($_SESSION["username_modify_error"]);
+            unset($_SESSION["password_modify_error"]);
+            unset($_SESSION["account_delete_error"]);
+        ?>
     </script>
 </body>
 </html>
