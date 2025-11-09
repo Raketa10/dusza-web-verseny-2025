@@ -13,6 +13,18 @@
         <div class="screen screen--home">
             <nav>
                 <h1 class="game-logo">Damareen</h1>
+                <?php
+                    echo $_SESSION["account_delete_error"];
+                    echo $_SESSION["login_error"];
+                    echo $_SESSION["password_modify_error"];
+                    echo $_SESSION["sign_in_error"];
+                    echo $_SESSION["username_modify_error"];
+                    unset($_SESSION["account_delete_error"]);
+                    unset($_SESSION["login_error"]);
+                    unset($_SESSION["password_modify_error"]);
+                    unset($_SESSION["sign_in_error"]);
+                    unset($_SESSION["username_modify_error"]);
+                    ?>
                 <div class="account-section" data-logged-in=<?php if (isset($_SESSION["user_id"])){echo "true";}else{echo "false";}?>>
                     <div class="account-section-content account-logged-out">
                         <button class="button login-button--login">Bejelentkezés</button>
@@ -68,7 +80,7 @@
         <div class="screen screen--world">
             <div class="world-nav">
                 <button class="svgbutton world-back-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m432-480 156 156q11 11 11 28t-11 28q-11 11-28 11t-28-11L348-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 28-11t28 11q11 11 11 28t-11 28L432-480Z"/></svg>
+                    <img src="./assets/images/btn-back.webp" alt="Vissza">
                 </button>
                 <h2>Világ létrehozása</h2>
                 <input type="text" name="world-name" maxlength="32" class="input world-name" placeholder="A világ neve">
