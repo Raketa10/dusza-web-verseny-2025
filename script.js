@@ -11,6 +11,7 @@ const maxHealth = 100;
 const minAttack = 2;
 const maxAttack = 100;
 
+let loggedIn = false;
 
 // Globals
 let worlds = [
@@ -58,18 +59,36 @@ let worlds = [
                 bossSource: null,
                 bossType: null
             },
+            {
+                id: 5,
+                name: "D Boss",
+                health: 1,
+                attack: 2,
+                type: "air",
+                isBoss: true,
+                bossSource: 4,
+                bossType: "attack"
+            },
         ],
         casemates: [
             {
                 id: 1,
                 name: "Első Kazamata",
                 type: 1,
-                cards: []
-            }
+                cards: [2]
+            },
+            {
+                id: 2,
+                name: "Kis kazamata",
+                type: 2,
+                cards: [2, 3, 1, 5]
+            },
         ],
-        collections: [{type: 0, cards: []}]
+        collections: [{type: 0, cards: [1, 2, 3, 4]}]
     }
 ];
+let lastGame = null;
+let game = null;
 
 let currentWorld = 1;
 let currentCasemate = 1;
@@ -158,6 +177,21 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 ` : ""}
             </div>
         </form>
+    `;
+}
+
+
+function renderGames() {
+    if (!game)
+        return;
+
+    document.querySelector(".games-container").innerHTML = `
+        <div class="game">
+            <div class="game-title">Utolsó játék folytatása</div>
+            <div class="game-buttons">
+                <img class="world-play svgbutton" src="./assets/images/btn-play.png"></img>
+            </div>
+        </div>
     `;
 }
 
@@ -598,8 +632,16 @@ function updateCasemateCards() {
 }
 
 
+function startGame(world) {
+    game = {collection: world.collections[0], cards: world.cards, casemates: world.casemates};
+    setScreen("game");
+}
+
+
 
 async function uploadWorld(world) {
+    const statusMessageEditor = document.querySelector(".status-message--world-save");
+    const statusMessageHome = document.querySelector(".status-message--worlds");
     return fetch('push_world.php', {
         method: 'POST',
         headers: {
@@ -610,18 +652,27 @@ async function uploadWorld(world) {
     .then(response => {
         if (response.ok) {
             console.log("Request sent successfully, but no data returned.");
+            
+            statusMessageHome.textContent = "";
+            statusMessageEditor.dataset.type = "success";
+            statusMessageEditor.textContent = "Világ mentve";
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
         }
     })
     .catch(error => {
+        [statusMessageEditor, statusMessageHome].forEach(element => {
+            element.dataset.type = "error";
+            element.textContent = "Nem sikerült menteni a világot";
+        });
         console.error('Error:', error);
     });
 }
 
 function fetchWorlds() {
-    const container = document.querySelector(".worlds-container");
-    container.dataset.loading = true;
+    const statusMessage = document.querySelector(".status-message--worlds");
+    statusMessage.dataset.type = "neutral";
+    statusMessage.textContent = "Betöltés...";
 
     fetch("fetch_worlds.php")
         .then(res => {
@@ -631,15 +682,35 @@ function fetchWorlds() {
             return res.json();
         })
         .then(data => {
-            container.dataset.loading = false;
+            statusMessage.textContent = "";
             worlds = data;
             renderWorlds();
         })
         .catch(error => {
-            container.dataset.loading = false;
-            container.innerHTML = `
-                <div class="error-message">A világokat nem sikerült betölteni!</div>
-            `;
+            statusMessage.dataset.type = "error";
+            statusMessage.textContent = "Nem sikerült betölteni a mentett világokat";
+            console.error("Fetch error:", error);
+        });
+}
+
+function fetchLastGame() {
+    const statusMessage = document.querySelector(".status-message--games");
+    statusMessage.dataset.type = "neutral";
+    statusMessage.textContent = "Betöltés...";
+    fetch("fetch_last_game.php")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json();
+        })
+        .then(data => {
+            lastGame = data;
+            renderGames();
+        })
+        .catch(error => {
+            statusMessage.dataset.type = "error";
+            statusMessage.textContent = "Nem sikerült betölteni az utolsó játékot";
             console.error("Fetch error:", error);
         });
 }
@@ -657,8 +728,6 @@ document.querySelectorAll(".worldcard-property-container").forEach(container => 
         });
     });
 });
-
-document.querySelector(".world-back-button").addEventListener("click", () => setScreen("home"));
 
 new Sortable(casemateCardSourceElement, {
     group: {
@@ -787,6 +856,17 @@ document.querySelector(".screen--world .world-name").addEventListener("change", 
     renderWorlds();
 });
 
+document.querySelector(".screen--world .world-save-button").addEventListener("click", function() {
+    const world = getWorldById(currentWorld);
+    uploadWorld(world);
+});
+
+document.querySelector(".world-back-button").addEventListener("click", function() {
+    const world = getWorldById(currentWorld);
+    uploadWorld(world);
+    setScreen("home");
+});
+
 document.querySelector(".section--casemates .collection").addEventListener("click", function() {
     currentCasemate = -1;
     renderCasemates();
@@ -800,5 +880,9 @@ document.querySelectorAll(".account-menu-item").forEach(button => {
 })
 
 
-// fetchWorlds();
-renderWorlds();
+if (loggedIn) {
+    fetchWorlds();
+    fetchLastGame();
+} else {
+    renderWorlds();
+}

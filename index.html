@@ -7,7 +7,7 @@
     <title>Damareen</title>
     <script src="sortable.min.js"></script>
 </head>
-<body>
+<body data-logged-in="false">
     <div class="screen-container" data-screen="home">
         <div class="screen screen--home">
             <nav>
@@ -32,9 +32,22 @@
                     </div>
                 </div>
             </nav>
-            <section class="section-worlds">
+            <section class="section--games">
+                <h3>Játékok</h3>
+                <div class="status-message status-message--games"></div>
+                <div class="games-container">
+                    <!-- <div class="game">
+                        <div class="game-title">Utolsó játék folytatása</div>
+                        <div class="game-buttons">
+                            <img class="world-play svgbutton" src="./assets/images/btn-play.png"></img>
+                        </div>
+                    </div> -->
+                </div>
+            </section>
+            <section class="section--worlds">
                 <h3>Világok</h3>
-                <div class="worlds-container" data-loading="false">
+                <div class="status-message status-message--worlds"></div>
+                <div class="worlds-container">
                     <!-- <div class="world">
                         <div class="world-title">Első világ</div>
                         <div>Kártyák: 9</div>
@@ -58,6 +71,8 @@
                 </button>
                 <h2>Világ létrehozása</h2>
                 <input type="text" name="world-name" maxlength="32" class="input world-name" placeholder="A világ neve">
+                <button class="button world-save-button">Mentés</button>
+                <div class="status-message status-message--world-save"></div>
             </div>
             <div class="world-grid">
                 <section class="section--worldcards">
@@ -147,6 +162,9 @@
                     </div>
                 </section>
             </div>
+        </div>
+        <div class="screen screen--game">
+
         </div>
     </div>
 
