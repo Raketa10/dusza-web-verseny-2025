@@ -14,15 +14,27 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
 
 ## Használat
 
-#### Regisztráció
-  - Jobb-felső
+#### Fiókok kezelése
+  - A "Bejelentkezés" és "Regisztráció" gombok a Jobb-felső sarokban találhatóak  
+    • Regisztráció: 
+        - Felhasználónév és jelszó kétszeres megadásával
+    • Bejelentkezés:
+        - Felhasználónév és jelszó megadásával
+    • Fiók törlése: 
+        - Felhasználónév és jelszó megadásával
 
 ### Szerepkörök
 
 #### Játékmester
   - Játékvilágok létrehozása/módosítása
   - Világkártyák létrehozása (név, sebzés, életerő, típus)
-  - Vezérkártyák származtatása (sebzés vagy életerő duplázás)
+    • Sebzés és életerő meghatározása: 
+        - sebzés és életerő ikonok fölötti és alatti nyilak segítségével
+    • Kártyatípus meghatározása: 
+        - sebzés és életerő ikonok közötti gombra kattintással váltogathat
+  - Vezérkártyák létrehozása (sebzés vagy életerő duplázása): 
+    • Sima kártyán a sebzés és életerő ikonok fölötti gombokkal, annak megfelelően, hogy melyik tulajdonság fölött van (életerő fölött ⇒ életerő duplázás)
+    • Minden más tulajdonság a származtatott **sima kártya** tulajdonságától függ
   - Kazamaták összeállítása (kártyák sorrendje)
   - Kezdő gyűjtemény beállítása
 
@@ -30,10 +42,12 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
 
 1. **Pakli összeállítása:** Rakd össze a paklidat a gyűjteményből
     - Kártya létrehozása
+
 2. **Játék indítása:** Válassz meglévő világaid közül, vagy hozz létre újat
     • "Világok" menüpont alatti '+' gombra kattintva
 
 3. **Harc:** Válassz kazamatát (pakli == kazamata)
+
 4. **Győzelem esetén:** Jutalom: tetszőleges kártya fejlesztése
 
 ### Csata
