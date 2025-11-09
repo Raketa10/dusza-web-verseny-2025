@@ -21,7 +21,7 @@
             $statement->execute();
         } else{
             $statement = $connection->prepare("INSERT INTO worlds (world_id, name, cards_json, casemates_json, collection_json, user_id) VALUES(?, ?, ?, ?, ?, ?)");
-            $statement->bind_param("isssi", $world['id'], $world['name'], json_encode($world['cards']), json_encode($world['casemates']), json_encode($world['collection']), $_SESSION["user_id"]);
+            $statement->bind_param("issssi", $world['id'], $world['name'], json_encode($world['cards']), json_encode($world['casemates']), json_encode($world['collection']), $_SESSION["user_id"]);
             $statement->execute();
         }
     }
