@@ -78,7 +78,7 @@ input.input:is([type="text"], [type="number"], [type="password"], [type="email"]
     }
 }
 
-input:read-only {
+:is(textarea, input):read-only {
     pointer-events: none;
 }
 
@@ -172,7 +172,9 @@ dialog.dialog {
     h1 {
         text-align: center;
     }
+}
 
+.dialog-account {
     form {
         display: flex;
         justify-content: center;
@@ -487,6 +489,16 @@ body[data-logged-in="false"] .section--games {
 
     &.no-drag {
         cursor: default;
+    }
+
+    &.clickable {
+        cursor: pointer !important;
+        transition: 0.2s;
+
+        &:hover {
+            filter: brightness(1.1);
+            scale: 1.05;
+        }
     }
 
     .worldcard-grid {
@@ -941,6 +953,7 @@ body[data-logged-in="false"] .section--games {
     display: flex;
     align-items: center;
     gap: 20px;
+    height: 4rem;
 
     .game-back-button img {
         width: 1.5rem;
@@ -954,14 +967,14 @@ body[data-logged-in="false"] .section--games {
     grid-template-areas:
         "title          title           title"
         "collection     casemate-cards  casemates"
-        "collection     game-start      casemates"
         "collection     player-cards    casemates";
-    grid-template-columns: min(330px, 25%) auto 25ch;
+    grid-template-columns: min(300px, 25%) auto 25ch;
+    grid-template-rows: 4rem 1fr 1fr;
     gap: 20px;
 
 
-    .game-title {
-        grid-area: title
+    .game-titlebar {
+        grid-area: title;
     }
 
     .game-collection {
@@ -972,12 +985,12 @@ body[data-logged-in="false"] .section--games {
         grid-area: casemate-cards;
     }
     
-    .game-start {
+    /* .game-start {
         grid-area: game-start;
         display: flex;
         justify-content: center;
         align-items: center;
-    }
+    } */
 
     .game-casemates {
         grid-area: casemates;
@@ -993,7 +1006,7 @@ body[data-logged-in="false"] .section--games {
     }
 
     .game-collection, .game-casemate {
-        height: calc(100dvh - 60px - 100px);
+        height: calc(100dvh - 60px - 60px);
         overflow-y: auto;
     }
 
@@ -1009,13 +1022,20 @@ body[data-logged-in="false"] .section--games {
 
         .worldcard, .worldcard-placeholder {
             /* max-height: 20vh !important; */
-            height: min(22dvh, calc(60vw / 6));
+            height: min(25dvh, calc(67vw / 6));
         }
+    }
+
+    .game-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
     }
 
     .game-player-cards-wrapper {
         position: relative;
         overflow: hidden;
+        height: 100%;
     }
 
     .game-player-cards-container, .game-player-cards-placeholder {
@@ -1080,26 +1100,47 @@ body[data-logged-in="false"] .section--games {
         scale: 0.85;
     }
 
-    .battle-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
+    .battle-container {
+        display: grid;
+        grid-template-rows: repeat(3, auto);
+        grid-template-columns: 1fr auto;
+        justify-items: center;
     }
-
-    .battle-cards {
-        flex-grow: 1;
+    
+    .battle-cards, .battle-scores {
+        display: grid;
     }
-
+    
     .battle-score {
         display: flex;
         align-items: center;
         font-size: 2rem;
         gap: 10px;
-
+        
         img {
             height: 3rem;
         }
+    }
+
+    .battle-cards {
+        position: relative;
+    }
+
+    .battle-result {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        font-weight: bold;
+        color: var(--clr-text);
+        transition: 0.2s;
+        font-size: 0rem;
+        text-shadow: 0 0 6px black;
+        width: max-content;
+    }
+
+    .battle-result.show {
+        font-size: min(5rem, 10vw);
     }
 }
 
@@ -1118,5 +1159,35 @@ body[data-logged-in="false"] .section--games {
     }
     to {
         scale: 1.2;
+    }
+}
+
+
+dialog.dialog-upgrade-cards {
+    width: min(90%, 1000px);
+    height: 90%;
+    padding: 0.4rem 2rem;
+    outline: none;
+    background-color: var(--clr-ui-bg-dark);
+
+    .cards-upgrade-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+        gap: 10px;
+        padding: 5px;
+        overflow-y: auto;
+        height: calc(100% - 12rem);
+    }
+
+    .upgrades-to-spend {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        font-size: 1.5rem;
+
+        img {
+            height: 5rem;
+        }
     }
 }
