@@ -26,19 +26,25 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
 ### Szerepkörök
 
 #### Játékmester
-  - Játékvilágok létrehozása/módosítása a 
-  - Világkártyák létrehozása:
-    • Név meghatározása: 
-        - A kártya tetején található névdobozba kattintással
-    • Sebzés és életerő meghatározása: 
-        - sebzés és életerő ikonok fölötti és alatti nyilak segítségével
-    • Kártyatípus meghatározása: 
-        - sebzés és életerő ikonok közötti gombra kattintással váltogathat
+  - Világok létrehozása a "Világok" alatt lévő '+' gombbal
+    • Világnév megadása/módosítása 
+        - bal felső sarok
   - Vezérkártyák létrehozása (sebzés vagy életerő duplázása): 
     • Sima kártyán a sebzés és életerő ikonok fölötti gombokkal, annak megfelelően, hogy melyik tulajdonság fölött van (életerő fölött ⇒ életerő duplázás)
-    • Minden más tulajdonság a származtatott **sima kártya** tulajdonságától függ
-  - Kazamaták összeállítása (kártyák sorrendje)
-  - Kezdő gyűjtemény beállítása
+    • Minden tulajdonság a származtató sima kártya tulajdonságaitól függ
+  - Világkártyák létrehozása:
+    • Név megadása/módosítása: 
+        - A kártya tetején található névdobozba kattintással
+    • Sebzés és életerő megadása/módosítása: 
+        - sebzés és életerő ikonok fölötti és alatti nyilak segítségével
+    • Kártyatípus megadása/módosítása: 
+        - sebzés és életerő ikonok közötti gombra kattintással váltogathat
+  - Világok módosítása:
+    • Világon középen-alul található toll gombbal
+    • Név meghatározása: 
+        - A kártya tetején található névdobozba kattintással
+ 
+
 
 #### Játékos
 
