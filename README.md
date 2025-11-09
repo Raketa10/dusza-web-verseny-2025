@@ -62,7 +62,7 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
    - 💧 Víz     ⋙   🍃 Levegő
    - 🍃 Levegő  ⋙   🔥 Tűz
 
-3. **Döntetlen:** Kazamata nyer 💀
+3. **Döntetlen:** A kazamata nyer 💀
 
 #### Harc eredménye:
 A játékos akkor nyer, ha legalább annyi kártyája győzött, mint amennyi kártya van a kazamatában. 👑
