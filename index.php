@@ -340,18 +340,20 @@
 
     <script>
         let loggedIn = <?php echo isset($_SESSION["user_id"]) ? "true" : "false"; ?>;
+    </script>
+    <script src="script.js"></script>
+    <script>
         if (<?php echo isset($_SESSION["login_error"]) ? "true" : "false"; ?>) {
             openDialog("login");
-        }elseif (<?php echo isset($_SESSION["sign_in_error"]) ? "true" : "false"; ?>) {
+        } else if (<?php echo isset($_SESSION["sign_in_error"]) ? "true" : "false"; ?>) {
             openDialog("register");
-        }elseif ()(<?php echo isset($_SESSION["username_modify_error"]) ? "true" : "false"; ?>) {
+        } else if (<?php echo isset($_SESSION["username_modify_error"]) ? "true" : "false"; ?>) {
             openDialog("change-username");
-        }elseif ()(<?php echo isset($_SESSION["password_modify_error"]) ? "true" : "false"; ?>) {
+        } else if (<?php echo isset($_SESSION["password_modify_error"]) ? "true" : "false"; ?>) {
             openDialog("change-password");
-        }elseif ()(<?php echo isset($_SESSION["account_delete_error"]) ? "true" : "false"; ?>) {
+        } else if (<?php echo isset($_SESSION["account_delete_error"]) ? "true" : "false"; ?>) {
             openDialog("delete-account");
         }
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
