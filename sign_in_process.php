@@ -29,7 +29,7 @@
                 exit();
             }
 
-            if (strlen($password) < 5){
+            if (strlen($password) < 6){
                 $_SESSION['sign_in_error'] = "A jelszó túl rövid.";
                 header("Location:index.php");
                 exit();
