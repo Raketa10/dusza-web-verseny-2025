@@ -941,6 +941,36 @@ function fetchLastGame() {
         });
 }
 
+async function uploadLastGame(game) {
+    const statusMessage = document.querySelector(".status-message--games");
+    return fetch('push_last_game.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(game)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("Request sent successfully, but no data returned.");
+            
+            statusMessage.dataset.type = "success";
+            statusMessage.textContent = "Játék mentve";
+        } else {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+    })
+    .catch(error => {
+        statusMessage.dataset.type = "error";
+        statusMessage.textContent = "Nem sikerült menteni a világot";
+        console.error('Error:', error);
+    });
+}
+
+function openDialog(dialog) {
+    document.getElementById(`dialog--${dialog}`).showModal();
+}
+
 
 
 document.querySelectorAll(".worldcard-property-container").forEach(container => {
@@ -1139,6 +1169,11 @@ document.querySelector(".world-back-button").addEventListener("click", function(
     const world = getWorldById(currentWorld);
     if (loggedIn)
         uploadWorld(world);
+    setScreen("home");
+});
+document.querySelector(".game-back-button").addEventListener("click", function() {
+    if (loggedIn)
+        uploadLastGame(game);
     setScreen("home");
 });
 
