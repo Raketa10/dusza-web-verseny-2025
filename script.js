@@ -14,7 +14,7 @@ const maxAttack = 100;
 const battleAnimationDuration = 4000;
 const fightAnimationDuration = 500;
 
-let loggedIn = false;
+// let loggedIn = false;
 
 // Globals
 let worlds = [
