@@ -102,6 +102,11 @@ button.button {
         filter: brightness(1.1);
         scale: 0.8;
     }
+
+    &:disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
 }
 
 select.input {
@@ -930,12 +935,17 @@ body[data-logged-in="false"] .section--games {
     height: 100%;
     display: grid;
     grid-template-areas:
+        "title          title           title"
         "collection     casemate-cards  casemates"
-        "collection     .               casemates"
+        "collection     game-start      casemates"
         "collection     player-cards    casemates";
     grid-template-columns: min(330px, 25%) auto 25ch;
     gap: 20px;
 
+
+    .game-title {
+        grid-area: title
+    }
 
     .game-collection {
         grid-area: collection;
@@ -943,6 +953,13 @@ body[data-logged-in="false"] .section--games {
 
     .game-casemate-cards {
         grid-area: casemate-cards;
+    }
+    
+    .game-start {
+        grid-area: game-start;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .game-casemates {
@@ -953,12 +970,23 @@ body[data-logged-in="false"] .section--games {
         grid-area: player-cards;
     }
 
+
+    .game-title {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .game-back-button img {
+            width: 1.5rem;
+        }
+    }
+
     .game-collection-container {
         --breakpoint: 120px;
     }
 
     .game-collection, .game-casemate {
-        height: calc(100dvh - 60px);
+        height: calc(100dvh - 60px - 90px);
         overflow-y: auto;
     }
 
@@ -970,6 +998,11 @@ body[data-logged-in="false"] .section--games {
         display: grid;
         grid-template-columns: repeat(6, 1fr) !important;
         gap: 5px;
+        max-height: 20vh;
+
+        .worldcard, .worldcard-placeholder {
+            max-height: 20vh !important;
+        }
     }
 
     .game-player-cards-wrapper {

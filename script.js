@@ -941,6 +941,26 @@ function fetchLastGame() {
         });
 }
 
+function uploadLastGame() {
+    const statusMessage = document.querySelector(".status-message--games");
+    fetch("upload_last_game.php")
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json();
+        })
+        .then(data => {
+            lastGame = data;
+            renderGames();
+        })
+        .catch(error => {
+            statusMessage.dataset.type = "error";
+            statusMessage.textContent = "Nem sikerült elmenteni az utolsó játékot";
+            console.error("Fetch error:", error);
+        });
+}
+
 
 
 document.querySelectorAll(".worldcard-property-container").forEach(container => {
@@ -1139,6 +1159,11 @@ document.querySelector(".world-back-button").addEventListener("click", function(
     const world = getWorldById(currentWorld);
     if (loggedIn)
         uploadWorld(world);
+    setScreen("home");
+});
+document.querySelector(".game-back-button").addEventListener("click", function() {
+    if (loggedIn)
+        uploadLastGame(game);
     setScreen("home");
 });
 
