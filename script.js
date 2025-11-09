@@ -218,7 +218,7 @@ function casemateElementAsText(id, editable, {name = "", type = 1, selected = fa
                 <div class="casemate-name">${name}</div>
             `}
             ${editable ? `
-                <svg class="casemate-delete svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+                <img class="casemate-delete svgbutton" src="./assets/images/btn-delete.webp"></img>
             ` : "<div></div>"}
             <div class="casemate-type-container">
                 ${
@@ -232,7 +232,7 @@ function casemateElementAsText(id, editable, {name = "", type = 1, selected = fa
                     `
                 }
             </div>
-            <svg title="Befejezetlen kazamata" class="casemate-incomplete" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg"><path d="M176 432c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80zM25.26 25.199l13.6 272C39.499 309.972 50.041 320 62.83 320h66.34c12.789 0 23.331-10.028 23.97-22.801l13.6-272C167.425 11.49 156.496 0 142.77 0H49.23C35.504 0 24.575 11.49 25.26 25.199z"/></svg>
+            <img title="Befejezetlen kazamata" class="casemate-incomplete" src="./assets/images/icon-error.webp"></img>
         </form>
     `;
 }
@@ -284,8 +284,8 @@ function renderWorlds() {
                 <div>Kazamaták: ${world.casemates.length}</div>
                 <div class="world-buttons">
                     <img class="world-play svgbutton" data-disabled=${!isFinished} src="./assets/images/btn-play.png"></img>
-                    <svg class="world-edit svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z"/></svg>
-                    <svg class="world-delete svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+                    <img class="world-edit svgbutton" src="./assets/images/btn-edit.webp"></img>
+                    <img class="world-delete svgbutton" src="./assets/images/btn-delete.webp"></img>
                 </div>
             </div>
         `;
@@ -293,7 +293,7 @@ function renderWorlds() {
 
     html += `
         <div class="world world--add">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+            <img src="./assets/images/btn-add.webp"></img>
         </div>
     `;
 
@@ -372,7 +372,7 @@ function renderCards() {
 
     html += `
         <div class="worldcard worldcard--add">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+            <img src="./assets/images/btn-add.webp"></img>
         </div>
     `;
 

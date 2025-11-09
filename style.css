@@ -395,7 +395,7 @@ body[data-logged-in="false"] .section--games {
     transition: 0.2s;
     user-select: none;
 
-    svg {
+    img {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -431,10 +431,10 @@ body[data-logged-in="false"] .section--games {
         margin-block: 0;
     }
 
-    .world-back-button svg {
-        width: 3em;
-        height: 3em;
-        fill: var(--clr-text);
+    .world-back-button img {
+        /* width: 3em; */
+        height: 1.5rem;
+        /* fill: var(--clr-text); */
     }
 }
 
@@ -442,7 +442,7 @@ body[data-logged-in="false"] .section--games {
 .screen--world section {
     overflow-x: hidden;
     overflow-y: auto;
-    height: calc(100dvh - 50px - 2 * min(2rem, 4vh));
+    height: calc(100dvh - 50px - 2 * min(2.5rem, 6vh));
 }
 
 .section--worldcards {
@@ -753,8 +753,8 @@ body[data-logged-in="false"] .section--games {
     transition: 0.2s;
     cursor: pointer;
 
-    svg {
-        fill: white;
+    img {
+        width: 50%;
     }
 
     &:hover {
@@ -879,6 +879,8 @@ body[data-logged-in="false"] .section--games {
 
     .casemate-delete {
         fill: var(--clr-text-dark);
+        height: 20px;
+        justify-self: center;
     }
 
     .casemate-type-container:not(:has(select)) {
@@ -891,9 +893,9 @@ body[data-logged-in="false"] .section--games {
     }
 
     .casemate-incomplete {
-        fill: hsl(from var(--clr-ui-bg-dark) 0 70% l);
-        width: 20px;
-        height: 20px;
+        /* fill: hsl(from var(--clr-ui-bg-dark) 0 70% l); */
+        height: 30px;
+        justify-self: center;
     }
 
     &:not(.incomplete) .casemate-incomplete {
