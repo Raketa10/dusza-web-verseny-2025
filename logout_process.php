@@ -12,6 +12,6 @@
             $params["httponly"]
         );
     }
-    header("Location: index.php"); // Redirect after logout
+    header("Location:index.php"); // Redirect after logout
     exit();
 ?>
