@@ -971,7 +971,8 @@ async function animateBattle() {
     const casemate = getCasemateById(currentCasemate, game.casemates);
 
     const casemateCards = casemate.cards;
-    const playerCards = game.deck.map(cardId => getCardById(cardId, game.cards));
+    const playerCards = game.deck.map(cardId => getCardById(cardId, game.collection));
+    console.log(casemateCards, playerCards);
 
     let casemateScore = 0;
     let playerScore = 0;
@@ -997,12 +998,15 @@ async function animateBattle() {
         const iterations = Math.min(Math.max(_casemateCard.health, _playerCard.attack), Math.max(_casemateCard.attack, _playerCard.health));
         const delayTime = battleAnimationDuration / iterations;
 
-        while (_casemateCard.health > 0 && _playerCard.health > 0 && _casemateCard.attack > 0 && _playerCard.attack > 0) {
+        while (_casemateCard.health > 0 && _playerCard.health > 0 && (_casemateCard.attack > 0 || _playerCard.attack > 0)) {
             await delay(delayTime);
             _casemateCard.health--;
-            _casemateCard.attack--;
             _playerCard.health--;
-            _playerCard.attack--;
+
+            if (_casemateCard.attack > 0)
+                _casemateCard.attack--;
+            if (_playerCard.attack > 0)
+                _playerCard.attack--;
             
             casemateCardElement.querySelector(".worldcard-health").value = _casemateCard.health;
             casemateCardElement.querySelector(".worldcard-attack").value = _casemateCard.attack;
@@ -1051,8 +1055,13 @@ async function animateBattle() {
         await delay(2000);
         const {upgradeType, upgradeValue} = casemateTypes[casemate.type];
         renderCardUpgrade(upgradeType, upgradeValue);
+    } else {
+        await delay(2000);
+        setScreen("game-deck");
+        renderGameCollection();
+        renderGameCasemateCards();
+        renderGamePlayerCards();
     }
-
 }
 
 
