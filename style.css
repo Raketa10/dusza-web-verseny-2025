@@ -646,13 +646,14 @@ body[data-logged-in="false"] .section--games {
         }
 
         .worldcard-promote {
-            height: 20cqmin;
+            height: 21cqmin;
             filter: var(--card-button-shadow);
             transition: 0.2s;
             cursor: pointer;
             user-select: none;
             fill: white;
             margin-bottom: 1cqh;
+            filter: brightness(1.1) drop-shadow(0 0 4px black);
             
             &:hover {
                 /* filter: drop-shadow(0 0 4px black) brightness(1.2); */
@@ -799,12 +800,15 @@ body[data-logged-in="false"] .section--games {
     &.boss--health .worldcard-promote[data-boss-type="health"],
     &.boss--attack .worldcard-promote[data-boss-type="attack"]
     {
-        fill: var(--clr-boss-highlight);
+        filter: brightness(0.8) !important;
+        opacity: 0.8;
+        /* fill: var(--clr-boss-highlight); */
         pointer-events: none;
         filter: none;
     }
     
     .worldcard-promote[data-disabled="true"] {
+        filter: brightness(0.8) !important;
         pointer-events: none;
         filter: none;
     }
@@ -1227,7 +1231,7 @@ dialog.dialog-upgrade-cards {
         gap: 10px;
         padding: 5px;
         overflow-y: auto;
-        height: calc(100% - 12rem);
+        height: calc(100% - 11rem);
     }
 
     .upgrades-to-spend {
