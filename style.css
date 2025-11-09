@@ -78,7 +78,21 @@ input.input:is([type="text"], [type="number"], [type="password"], [type="email"]
     }
 }
 
-:is(textarea, input):read-only {
+input.input:is([type="text"], [type="number"], [type="password"], [type="email"]) {
+    background-image:
+        url("./assets/images/input-bg-left.webp"),
+        url("./assets/images/input-bg-right.webp"),
+        url("./assets/images/input-bg-center.webp");
+
+    background-repeat: no-repeat, no-repeat, repeat-x;
+    background-size: contain;
+    background-position: left, right, center;
+    background-color: transparent;
+    color: var(--clr-text);
+    padding: 0.5em 0.8em !important;
+}
+
+:is(textarea, input)[readonly] {
     pointer-events: none;
 }
 
@@ -143,7 +157,7 @@ select.input option {
 } */
 
 dialog.dialog {
-    width: min(100%, 50ch);
+    width: min(100%, 65ch);
     min-height: 80%;
     border-radius: 10px;
     background: var(--bg-card-ui);
@@ -153,6 +167,29 @@ dialog.dialog {
     border: none;
     padding: 4vw 7vh;
     position: relative;
+    transition: 0.2s;
+    transition-behavior: allow-discrete;
+    position: fixed;
+
+    &:not([open]) {
+        scale: 0;
+        opacity: 0;
+        translate: 0 100%;
+
+        &::backdrop {
+            opacity: 0;
+        }
+    }
+
+    @starting-style {
+        scale: 0;
+        opacity: 0;
+        translate: 0 100%;
+
+        &::backdrop {
+            opacity: 0;
+        }
+    }
 
 
     &::backdrop {
@@ -692,10 +729,6 @@ body[data-logged-in="false"] .section--games {
             user-select: none;
             margin: 0;
             z-index: 4;
-
-            &, &:read-only {
-                pointer-events: all;
-            }
         }
 
         &:has(input[type="radio"][value="earth"]:checked) {
