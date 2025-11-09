@@ -182,17 +182,32 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
 
 
 function renderGames() {
+    let html = "";
+
+    if (game) {
+        html = `
+            <div class="game">
+                <div class="game-title">Utolsó játék folytatása</div>
+                <div class="game-buttons">
+                    <img class="world-play svgbutton" src="./assets/images/btn-play.png"></img>
+                </div>
+            </div>
+        `;
+    } else {
+        html = "Még nem keztél el egy játékot sem.";
+    }
+
+    document.querySelector(".games-container").innerHTML = html;
+
     if (!game)
         return;
 
-    document.querySelector(".games-container").innerHTML = `
-        <div class="game">
-            <div class="game-title">Utolsó játék folytatása</div>
-            <div class="game-buttons">
-                <img class="world-play svgbutton" src="./assets/images/btn-play.png"></img>
-            </div>
-        </div>
-    `;
+    const container = document.querySelector(".games-container > .game");
+    container.querySelector(".world-play").addEventListener("click", function() {
+        if (!game)
+            return;
+        startGame(game.cards, game.collection, game.casemates);
+    });
 }
 
 function renderWorlds() {
@@ -242,9 +257,7 @@ function renderWorlds() {
         const world = worlds[worldIndex];
 
         worldElement.querySelector(".world-play").addEventListener("click", function() {
-            currentWorld = world.id;
-            renderCasemates();
-            renderCards();
+            startGame(world.cards, world.collections[0], world.casemates);
         });
 
         worldElement.querySelector(".world-edit").addEventListener("click", function() {
@@ -632,8 +645,8 @@ function updateCasemateCards() {
 }
 
 
-function startGame(world) {
-    game = {collection: world.collections[0], cards: world.cards, casemates: world.casemates};
+function startGame(cards, collection, casemates) {
+    game = {cards, collection, casemates};
     setScreen("game");
 }
 
