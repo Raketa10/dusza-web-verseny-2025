@@ -327,6 +327,7 @@ function renderWorlds() {
         worldElement.querySelector(".world-delete").addEventListener("click", function() {
             worlds.splice(worldIndex, 1);
             renderWorlds();
+            deleteWorld(world);
         });
     }
 
@@ -1167,6 +1168,30 @@ async function uploadLastGame(game) {
     .catch(error => {
         statusMessage.dataset.type = "error";
         statusMessage.textContent = "Nem sikerült menteni a világot";
+        console.error('Error:', error);
+    });
+}
+
+async function deleteWorld(world) {
+    const statusMessage = document.querySelector(".status-message--worlds");
+    return fetch('delete_world.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(world)
+    })
+    .then(response => {
+        if (response.ok) {
+            statusMessage.dataset.type = "success";
+            statusMessage.textContent = "Világ törölve";
+        } else {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+    })
+    .catch(error => {
+        statusMessage.dataset.type = "error";
+        statusMessage.textContent = "Nem sikerült törölni a világot";
         console.error('Error:', error);
     });
 }
