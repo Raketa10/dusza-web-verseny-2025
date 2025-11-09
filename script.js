@@ -1144,6 +1144,7 @@ async function uploadLastGame(game) {
             
             statusMessage.dataset.type = "success";
             statusMessage.textContent = "Játék mentve";
+            renderGames();
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
         }
