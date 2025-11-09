@@ -1134,6 +1134,7 @@ function fetchLastGame() {
             return res.json();
         })
         .then(data => {
+            statusMessage.textContent = "";
             lastGame = data;
             renderGames();
         })
