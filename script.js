@@ -854,7 +854,7 @@ document.getElementById("account-btn-delete-account").addEventListener("click", 
 });
 
 document.getElementById("account-btn-logout").addEventListener("click", function() {
-    fetch('logout.php')
+    fetch('logout_process.php')
     .then(response => {
         if (response.ok) {
             console.log("Request sent successfully, but no data returned.");
