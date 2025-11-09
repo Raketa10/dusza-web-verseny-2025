@@ -13,6 +13,18 @@
         <div class="screen screen--home">
             <nav>
                 <h1 class="game-logo">Damareen</h1>
+                <?php
+                    echo $_SESSION["account_delete_error"];
+                    echo $_SESSION["login_error"];
+                    echo $_SESSION["password_modify_error"];
+                    echo $_SESSION["sign_in_error"];
+                    echo $_SESSION["username_modify_error"];
+                    unset($_SESSION["account_delete_error"]);
+                    unset($_SESSION["login_error"]);
+                    unset($_SESSION["password_modify_error"]);
+                    unset($_SESSION["sign_in_error"]);
+                    unset($_SESSION["username_modify_error"]);
+                    ?>
                 <div class="account-section" data-logged-in=<?php if (isset($_SESSION["user_id"])){echo "true";}else{echo "false";}?>>
                     <div class="account-section-content account-logged-out">
                         <button class="button login-button--login">Bejelentkezés</button>

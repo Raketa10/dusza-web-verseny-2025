@@ -69,6 +69,19 @@
                     $statement = $connection->prepare("DELETE FROM users WHERE user_id = ? AND username = ?");
                     $statement->bind_param("is", $_SESSION["user_id"], $username);
                     $statement->execute();
+                    session_start();
+                    session_unset();
+                    session_destroy();
+                    // Remove the session cookie if it exists
+                    if (ini_get("session.use_cookies")) {
+                        $params = session_get_cookie_params();
+                        setcookie(session_name(), '', time() - 42000, 
+                            $params["path"], 
+                            $params["domain"], 
+                            $params["secure"], 
+                            $params["httponly"]
+                        );
+                    }
                 } else {
                     $_SESSION['account_delete_error'] = "Nem jó jelszó.";
                     header("Location:index.php");
