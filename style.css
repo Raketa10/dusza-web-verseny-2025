@@ -904,7 +904,7 @@ body[data-logged-in="false"] .section--games {
     display: none;
 }
 
-.section--casemate-cards:not(:has(.casemate-cards-container.casemate-ordinary-container > .worldcard))::after {
+.section--casemate-cards:not(:has(:is(.casemate-cards-container.casemate-ordinary-container, .casemate-cards-container.casemate-ordinary-placeholder) > :is(.worldcard, .worldcard-placeholder)))::after {
     content: "Húzd ide a kártyákat!";
     font-size: 1.2rem;
 }
