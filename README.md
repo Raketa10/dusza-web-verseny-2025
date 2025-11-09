@@ -41,22 +41,24 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
         - sebzés és életerő ikonok közötti gombra kattintással váltogathat
   - Világok módosítása:
     • Világon középen-alul található toll gombbal
-    • Név meghatározása: 
+    • Név megadása/módosítása: 
         - A kártya tetején található névdobozba kattintással
  
 
 
 #### Játékos
 
-1. **Pakli összeállítása:** Rakd össze a paklidat a gyűjteményből
-    - Kártya létrehozása
+ - Pakli összeállítása:
+    • Rakd össze a paklidat a gyűjteményből
 
-2. **Játék indítása:** Válassz meglévő világok közül, vagy hozz létre újat
+ - Játék indítása: Válassz a meglévő világok közül, vagy hozz létre újat
     • "Világok" menüpont alatti '+' gombra kattintva
 
-3. **Harc:** Válassz kazamatát (pakli kártyaszáma == kazamata kártyaszáma)
+ - Harc:
+    • Válassz kazamatát (pakli kártyaszáma == kazamata kártyaszáma)
 
-4. **Győzelem esetén:** Jutalom: tetszőleges kártya fejlesztése
+ - Győzelem esetén:
+    • Jutalom: tetszőleges kártya fejlesztése
 
 ### Csata
 
