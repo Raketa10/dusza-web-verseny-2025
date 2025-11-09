@@ -2,7 +2,7 @@
 const casemateTypes = [
     {name: "Gyűjtemény", ordinary: Infinity, boss: 0},
     {name: "Egyszerű találkozás", ordinary: 1, boss: 0, upgradeValue: 1, upgradeType: "attack"},
-    {name: "Kis kazamata", ordinary: 3, boss: 1, upgradeValue: 2, upgradeType: "damage"}, 
+    {name: "Kis kazamata", ordinary: 3, boss: 1, upgradeValue: 2, upgradeType: "health"}, 
     {name: "Nagy kazamata", ordinary: 5, boss: 1, upgradeValue: 3, upgradeType: "attack"}
 ];
 const cardTypes = ["fire", "earth", "water", "air"];
@@ -163,7 +163,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 <textarea ${!editable ? "readonly" : ""} placeholder="A kártya neve" name="worldcard-name" minlength="1" maxlength="16" class="worldcard-property worldcard-name" rows="2">${name}</textarea>
                 <div class="worldcard-property-container worldcard-attack-container">
                     ${editable ? `
-                        <svg class="worldcard-promote" data-disabled="${attackPromoteDisabled}" data-boss-type="attack" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
+                        <img class="worldcard-promote" data-boss-type="attack" data-disabled="${attackPromoteDisabled}" src="./assets/images/promotion.png" title="Sebzés növelése vezérkártyává alakítással">
                         <svg data-disabled="${attack >= maxAttack}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                     ` : ""}
                     <div class="worldcard-property-icon-container">
@@ -191,7 +191,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 }
                 <div class="worldcard-property-container worldcard-health-container">
                     ${editable ? `
-                        <svg class="worldcard-promote" data-disabled="${healthPromoteDisabled}" data-boss-type="health" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
+                        <img class="worldcard-promote" data-boss-type="health" data-disabled="${healthPromoteDisabled}" src="./assets/images/promotion.png" title="Sebzés növelése vezérkártyává alakítással">
                         <svg data-disabled="${health >= maxHealth}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                     ` : ""}
                     <div class="worldcard-property-icon-container">
@@ -204,7 +204,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 </div>
                 ${editable || deleteButton ? `
                     <div class="worldcard-delete svgbutton">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+                        <img src="./assets/images/btn-delete.webp"></img>
                     </div>
                 ` : ""}
             </div>
@@ -327,6 +327,7 @@ function renderWorlds() {
         worldElement.querySelector(".world-delete").addEventListener("click", function() {
             worlds.splice(worldIndex, 1);
             renderWorlds();
+            deleteWorld(world);
         });
     }
 
@@ -597,31 +598,11 @@ function renderCasemates() {
         const incomplete = casemate.cards.length < casemateTypes[casemate.type].ordinary + casemateTypes[casemate.type].boss;
 
         html += casemateElementAsText(casemate.id, true, {selected, incomplete, ...casemate});
-        
-        /* html += `
-            <form class="casemate ${selected ? "selected" : ""} ${incomplete ? "incomplete" : ""}" data-casemate-id="${casemate.id}">
-                <input class="input casemate-name"type="text" name="name" placeholder="Kazamata neve" maxlength="32" value="${casemate.name}">
-                <svg class="casemate-delete svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-                <div class="casemate-type-container">
-                    ${
-                        !selected ? casemateTypes[casemate.type].name : 
-                        `
-                            <select class="input casemate-type" name="type">
-                                ${casemateTypes.slice(1).map(({name}, index) => (
-                                    `<option ${casemate.type === index + 1 ? "selected" : ""} value="${index + 1}">${name}</option>`
-                                )).join("")}
-                            </select>
-                        `
-                    }
-                </div>
-                <svg title="Befejezetlen kazamata" class="casemate-incomplete" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg"><path d="M176 432c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80zM25.26 25.199l13.6 272C39.499 309.972 50.041 320 62.83 320h66.34c12.789 0 23.331-10.028 23.97-22.801l13.6-272C167.425 11.49 156.496 0 142.77 0H49.23C35.504 0 24.575 11.49 25.26 25.199z"/></svg>
-            </form>
-        `; */
     }
 
     html += `
         <div class="casemate casemate--add">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+            <img src="./assets/images/btn-add.webp"></img>
         </div>
     `;
 
@@ -711,7 +692,7 @@ function createCard({name = "", health = 1, attack = 2, type = "earth", isBoss =
     renderCards(world.cards);
 }
 
-function createCasemate({name = "", type = 0, cards = []} = {}) {
+function createCasemate({name = "", type = 1, cards = []} = {}) {
     const world = getWorldById(currentWorld);
     const id = world.casemates.reduce((a, casemate) => Math.max(a, casemate?.id || 0), 1) + 1;
     world.casemates.push({id, name, type, cards});
@@ -953,7 +934,10 @@ function startGame(cards, collection, casemates, deck = []) {
 }
 
 function startBattle() {
-    if (!(game && game.deck.length == casemateTypes[getCasemateById(currentCasemate).type].ordinary + casemateTypes[getCasemateById(currentCasemate).type].boss))
+    if (!(
+        game &&
+        game.deck.length == casemateTypes[getCasemateById(currentCasemate, game.casemates).type].ordinary + casemateTypes[getCasemateById(currentCasemate, game.casemates).type].boss
+    ))
         return false;
 
     renderBattleCasemateCards();
@@ -1018,7 +1002,8 @@ async function animateBattle() {
 
         let playerWon = false;
         const elementDiff = cardTypes.indexOf(casemateCard.type) - cardTypes.indexOf(playerCard.type);
-        if (playerCard.attack > casemateCard.health) {
+        console.log(elementDiff, playerCard.attack, casemateCard.health);
+        if (playerCard.attack > casemateCard.health && casemateCard.attack <= playerCard.health) {
             playerWon = true;
         } else if (elementDiff == 1 || elementDiff == 3) {
             playerWon = true;
@@ -1134,6 +1119,7 @@ function fetchLastGame() {
             return res.json();
         })
         .then(data => {
+            statusMessage.textContent = "";
             lastGame = data;
             renderGames();
         })
@@ -1159,6 +1145,7 @@ async function uploadLastGame(game) {
             
             statusMessage.dataset.type = "success";
             statusMessage.textContent = "Játék mentve";
+            renderGames();
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
         }
@@ -1166,6 +1153,30 @@ async function uploadLastGame(game) {
     .catch(error => {
         statusMessage.dataset.type = "error";
         statusMessage.textContent = "Nem sikerült menteni a világot";
+        console.error('Error:', error);
+    });
+}
+
+async function deleteWorld(world) {
+    const statusMessage = document.querySelector(".status-message--worlds");
+    return fetch('delete_world.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(world)
+    })
+    .then(response => {
+        if (response.ok) {
+            statusMessage.dataset.type = "success";
+            statusMessage.textContent = "Világ törölve";
+        } else {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+    })
+    .catch(error => {
+        statusMessage.dataset.type = "error";
+        statusMessage.textContent = "Nem sikerült törölni a világot";
         console.error('Error:', error);
     });
 }

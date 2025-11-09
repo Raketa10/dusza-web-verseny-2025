@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <title>Damareen</title>
     <script src="sortable.min.js"></script>
@@ -258,7 +259,7 @@
                 <input type="password" name="password" minlength="6" class="input" autocomplete="current-password" required>
             </label>
             <button class="button" type="submit">Bejelentkezés</button>
-            <div class="form-error"><?php echo $_SESSION["login_error"]; unset($_SESSION["login_error"]);?></div>
+            <div class="form-error"><?php echo $_SESSION["login_error"];?></div>
         </form>
     </dialog>
     
@@ -279,7 +280,7 @@
                 <input type="password" name="password-repeat" class="input" minlength="6" autocomplete="new-password" required>
             </label>
             <button class="button" type="submit">Regisztráció</button>
-            <div class="form-error"><?php echo $_SESSION["sign_in_error"]; unset($_SESSION["sign_in_error"]);?></div>
+            <div class="form-error"><?php echo $_SESSION["sign_in_error"];?></div>
         </form>
     </dialog>
     
@@ -296,7 +297,7 @@
                 <input type="password" name="password" class="input" minlength="6" autocomplete="current-password" required>
             </label>
             <button class="button" type="submit">Módosítás</button>
-            <div class="form-error"> <?php echo $_SESSION["username_modify_error"]; unset($_SESSION["username_modify_error"]);?></div>
+            <div class="form-error"> <?php echo $_SESSION["username_modify_error"];?></div>
         </form>
     </dialog>
     
@@ -317,7 +318,7 @@
                 <input type="password" name="new-password-repeat" class="input" minlength="6" autocomplete="new-password" required>
             </label>
             <button class="button" type="submit">Módosítás</button>
-            <div class="form-error"><?php echo $_SESSION["password_modify_error"]; unset($_SESSION["password_modify_error"]);?></div>
+            <div class="form-error"><?php echo $_SESSION["password_modify_error"];?></div>
         </form>
     </dialog>
 
@@ -334,7 +335,7 @@
                 <input class="input" type="text" name="username" minlength="4" maxlength="32" autocomplete="off" required>
             </label>
             <button class="button" type="submit">Fiók törlése</button>
-            <div class="form-error"><?php echo $_SESSION["account_delete_error"]; unset($_SESSION["account_delete_error"]);?></div>
+            <div class="form-error"><?php echo $_SESSION["account_delete_error"];?></div>
         </form>
     </dialog>
 
@@ -354,6 +355,14 @@
         } else if (<?php echo isset($_SESSION["account_delete_error"]) ? "true" : "false"; ?>) {
             openDialog("delete-account");
         }
+
+        <?php
+            unset($_SESSION["login_error"]);
+            unset($_SESSION["sign_in_error"]);
+            unset($_SESSION["username_modify_error"]);
+            unset($_SESSION["password_modify_error"]);
+            unset($_SESSION["account_delete_error"]);
+        ?>
     </script>
 </body>
 </html>

@@ -445,6 +445,7 @@ body[data-logged-in="false"] .section--games {
     cursor: pointer;
     transition: 0.2s;
     user-select: none;
+    min-height: 200px;
 
     img {
         position: absolute;
@@ -569,6 +570,10 @@ body[data-logged-in="false"] .section--games {
         right: 10px;
         cursor: pointer;
         user-select: none;
+
+        img {
+            width: 12cqw;
+        }
     }
 
     .worldcard-boss-icon {
@@ -631,7 +636,8 @@ body[data-logged-in="false"] .section--games {
 
         .worldcard-property-icon {
             position: absolute;
-            width: min(100px, 48cqw);
+            /* width: min(100px, 48cqw); */
+            width: 48cqw;
             top: 50%;
             left: 50%;
             translate: -50% -50%;
@@ -640,13 +646,14 @@ body[data-logged-in="false"] .section--games {
         }
 
         .worldcard-promote {
-            height: 20cqmin;
+            height: 21cqmin;
             filter: var(--card-button-shadow);
             transition: 0.2s;
             cursor: pointer;
             user-select: none;
             fill: white;
             margin-bottom: 1cqh;
+            filter: brightness(1.1) drop-shadow(0 0 4px black);
             
             &:hover {
                 /* filter: drop-shadow(0 0 4px black) brightness(1.2); */
@@ -793,12 +800,15 @@ body[data-logged-in="false"] .section--games {
     &.boss--health .worldcard-promote[data-boss-type="health"],
     &.boss--attack .worldcard-promote[data-boss-type="attack"]
     {
-        fill: var(--clr-boss-highlight);
+        filter: brightness(0.8) !important;
+        opacity: 0.8;
+        /* fill: var(--clr-boss-highlight); */
         pointer-events: none;
         filter: none;
     }
     
     .worldcard-promote[data-disabled="true"] {
+        filter: brightness(0.8) !important;
         pointer-events: none;
         filter: none;
     }
@@ -811,7 +821,7 @@ body[data-logged-in="false"] .section--games {
 }
 
 .worldcard--add {
-    background-image: url("./assets/images/card-add.png");
+    background-image: url("./assets/images/card-bg-placeholder-gray.webp");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
@@ -903,6 +913,11 @@ body[data-logged-in="false"] .section--games {
     display: none;
 }
 
+.section--casemate-cards:not(:has(:is(.casemate-cards-container.casemate-ordinary-container, .casemate-cards-container.casemate-ordinary-placeholder) > :is(.worldcard, .worldcard-placeholder)))::after {
+    content: "Húzd ide a kártyákat!";
+    font-size: 1.2rem;
+}
+
 
 .casemates-container, .collections-container, .game-casemates-container {
     display: flex;
@@ -953,11 +968,6 @@ body[data-logged-in="false"] .section--games {
     .casemate-type-container:not(:has(select)) {
         pointer-events: none;
     }
-    
-    .input {
-        background-color: var(--clr-ui-bg-dark) !important;
-        color: var(--clr-text-dark) !important;
-    }
 
     .casemate-incomplete {
         /* fill: hsl(from var(--clr-ui-bg-dark) 0 70% l); */
@@ -979,9 +989,11 @@ body[data-logged-in="false"] .section--games {
     padding: 5px;
     cursor: pointer;
     transition: 0.2s;
+    padding: 15px;
+    text-align: center;
 
-    svg {
-        height: 80px;
+    img {
+        height: 50px;
         fill: var(--clr-ui-bg-dark);
     }
 
@@ -1219,7 +1231,7 @@ dialog.dialog-upgrade-cards {
         gap: 10px;
         padding: 5px;
         overflow-y: auto;
-        height: calc(100% - 12rem);
+        height: calc(100% - 11rem);
     }
 
     .upgrades-to-spend {
