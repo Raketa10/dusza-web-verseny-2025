@@ -163,7 +163,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 <textarea ${!editable ? "readonly" : ""} placeholder="A kártya neve" name="worldcard-name" minlength="1" maxlength="16" class="worldcard-property worldcard-name" rows="2">${name}</textarea>
                 <div class="worldcard-property-container worldcard-attack-container">
                     ${editable ? `
-                        <svg class="worldcard-promote" data-disabled="${attackPromoteDisabled}" data-boss-type="attack" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
+                        <img class="worldcard-promote" data-boss-type="attack" data-disabled="${attackPromoteDisabled}" src="./assets/images/promotion.png" title="Sebzés növelése vezérkártyává alakítással">
                         <svg data-disabled="${attack >= maxAttack}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                     ` : ""}
                     <div class="worldcard-property-icon-container">
@@ -191,7 +191,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 }
                 <div class="worldcard-property-container worldcard-health-container">
                     ${editable ? `
-                        <svg class="worldcard-promote" data-disabled="${healthPromoteDisabled}" data-boss-type="health" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" xmlns:v="https://vecta.io/nano"><g stroke="#000"><path d="M81.18 327.439L500 19.098l418.82 308.341z" paint-order="normal" /><path d="M81.18 391.46L500 83.119 918.82 391.46z" fill="#000" paint-order="normal" /><path d="M81.18 545.166L500 236.825l418.82 308.341z" paint-order="normal" /><path d="M81.18 619.942L500 311.601l418.82 308.341z" fill="#000" paint-order="normal" /><path d="M81.18 773.649L500 465.308l418.82 308.341z" paint-order="normal" /><path d="M81.18 835.962L500 527.621l418.82 308.341z" fill="#000" paint-order="normal" /></g><path d="M81.18 989.668L500 681.327l418.82 308.341z" stroke="#fff" paint-order="normal" /></svg>
+                        <img class="worldcard-promote" data-boss-type="health" data-disabled="${healthPromoteDisabled}" src="./assets/images/promotion.png" title="Sebzés növelése vezérkártyává alakítással">
                         <svg data-disabled="${health >= maxHealth}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                     ` : ""}
                     <div class="worldcard-property-icon-container">
@@ -1002,7 +1002,8 @@ async function animateBattle() {
 
         let playerWon = false;
         const elementDiff = cardTypes.indexOf(casemateCard.type) - cardTypes.indexOf(playerCard.type);
-        if (playerCard.attack > casemateCard.health) {
+        console.log(elementDiff, playerCard.attack, casemateCard.health);
+        if (playerCard.attack > casemateCard.health && casemateCard.attack <= playerCard.health) {
             playerWon = true;
         } else if (elementDiff == 1 || elementDiff == 3) {
             playerWon = true;
@@ -1144,6 +1145,7 @@ async function uploadLastGame(game) {
             
             statusMessage.dataset.type = "success";
             statusMessage.textContent = "Játék mentve";
+            renderGames();
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
         }
