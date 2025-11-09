@@ -10,7 +10,7 @@
 
     if(isset($_SESSION["user_id"])){
         $statement = $connection->prepare("SELECT * FROM worlds WHERE world_id = ? AND user_id = ?");
-        $statement->bind_param("ii", $_SESSION["user_id"], $world['id']);
+        $statement->bind_param("ii", $world['id'], $_SESSION["user_id"]);
         $statement->execute();
 
         $result = $statement->get_result();
