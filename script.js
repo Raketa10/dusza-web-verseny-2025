@@ -1002,7 +1002,8 @@ async function animateBattle() {
 
         let playerWon = false;
         const elementDiff = cardTypes.indexOf(casemateCard.type) - cardTypes.indexOf(playerCard.type);
-        if (playerCard.attack > casemateCard.health) {
+        console.log(elementDiff, playerCard.attack, casemateCard.health);
+        if (playerCard.attack > casemateCard.health && casemateCard.attack <= playerCard.health) {
             playerWon = true;
         } else if (elementDiff == 1 || elementDiff == 3) {
             playerWon = true;
