@@ -854,7 +854,21 @@ document.getElementById("account-btn-delete-account").addEventListener("click", 
 });
 
 document.getElementById("account-btn-logout").addEventListener("click", function() {
-    // Logout
+    fetch('logout.php')
+    .then(response => {
+        if (response.ok) {
+            console.log("Request sent successfully, but no data returned.");
+            
+            // More error checking code goes here
+
+        } else {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
+    })
+    .catch(error => {
+        // More error checking code goes here
+        console.error('Error:', error);
+    });
 });
 
 document.querySelectorAll("dialog").forEach(dialog => {
