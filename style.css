@@ -78,6 +78,10 @@ input.input:is([type="text"], [type="number"], [type="password"], [type="email"]
     }
 }
 
+input:read-only {
+    pointer-events: none;
+}
+
 button.button {
     transition: 0.2s;
     cursor: pointer;
@@ -217,6 +221,7 @@ dialog.dialog {
     display: flex;
     height: 100%;
     padding: min(2rem, 4vh) min(3rem, 6vw);
+    padding-bottom: 0;
 }
 
 .screen-container[data-screen="home"] > .screen:not(.screen--home),
@@ -984,6 +989,7 @@ body[data-logged-in="false"] .section--games {
 
     .game-collection-container {
         --breakpoint: 120px;
+        padding-bottom: 40px;
     }
 
     .game-collection, .game-casemate {
@@ -999,10 +1005,11 @@ body[data-logged-in="false"] .section--games {
         display: grid;
         grid-template-columns: repeat(6, 1fr) !important;
         gap: 5px;
-        max-height: 20vh;
+        max-height: 23dvh;
 
         .worldcard, .worldcard-placeholder {
-            max-height: 20vh !important;
+            /* max-height: 20vh !important; */
+            height: min(22dvh, calc(60vw / 6));
         }
     }
 
@@ -1051,17 +1058,48 @@ body[data-logged-in="false"] .section--games {
 
         .worldcard, .worldcard-placeholder {
             height: min(35dvh, calc(120vw / 4));
-            aspect-ratio: 241 / 344 !important;
         }
     }
 
     .worldcard.fighting {
         --direction: 1;
-        animation: fighting 1s alternate infinite ease-in-out;
+        animation: fighting 0.5s alternate infinite ease-in-out;
     }
 
-    .battle-player-cards-container .worldcard.fighting {
+    .battle-player-cards-container .worldcard {
         --direction: -1;
+    }
+
+    .worldcard {
+        transition: 0.2s;
+    }
+
+    .worldcard.lost {
+        opacity: 0.8;
+        filter: brightness(0.2);
+        scale: 0.85;
+    }
+
+    .battle-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .battle-cards {
+        flex-grow: 1;
+    }
+
+    .battle-score {
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+        gap: 10px;
+
+        img {
+            height: 3rem;
+        }
     }
 }
 
@@ -1071,5 +1109,14 @@ body[data-logged-in="false"] .section--games {
     }
     to {
         translate: 0 calc(10% * var(--direction));
+    }
+}
+
+@keyframes damage {
+    from {
+        scale: 1;
+    }
+    to {
+        scale: 1.2;
     }
 }
