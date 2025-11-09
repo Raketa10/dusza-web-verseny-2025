@@ -176,7 +176,13 @@
                 </section>
             </div>
         </div>
-        <div class="screen screen--game">
+        <div class="screen screen--game-deck">
+            <div class="game-titlebar">
+                <button class="svgbutton game-back-button">
+                    <img src="./assets/images/btn-back.webp" alt="Vissza">
+                </button>
+                <h2>Játék</h2>
+            </div>
             <div class="game-collection">
                 <h3>Gyűjtemény</h3>
                 <div class="game-collection-container">
@@ -189,6 +195,9 @@
 
                 </div>
             </div>
+            <div class="game-start">
+                <button disabled class="button game-start-button">Csata indítása</button>
+            </div>
             <div class="game-cards game-player-cards">
                 <h3>Játékos kártyái</h3>
                 <div class="game-player-cards-wrapper">
@@ -200,6 +209,26 @@
                 <h3>Kazamaták</h3>
                 <div class="game-casemates-container">
 
+                </div>
+            </div>
+        </div>
+        <div class="screen screen--game-battle">
+            <div class="game-titlebar">
+                <button class="svgbutton game-back-button">
+                    <img src="./assets/images/btn-back.webp" alt="Vissza">
+                </button>
+                <h2>Játék</h2>
+            </div>
+            <div class="battle-cards">
+                <div class="battle-casemate-cards">
+                    <div class="battle-casemate-cards-container">
+                        
+                    </div>
+                </div>
+                <div class="battle-player-cards">
+                    <div class="battle-player-cards-container">
+    
+                    </div>
                 </div>
             </div>
         </div>
@@ -300,5 +329,11 @@
 
 
     <script src="script.js"></script>
+    <script>
+        loggedIn = <?php echo isset($_SESSION["user_id"]) ? "true" : "false";?>;
+        if (false) {
+            openDialog("<?php echo $dialog_id ?>")
+        }
+    </script>
 </body>
 </html>
