@@ -445,6 +445,7 @@ body[data-logged-in="false"] .section--games {
     cursor: pointer;
     transition: 0.2s;
     user-select: none;
+    min-height: 200px;
 
     img {
         position: absolute;
@@ -952,11 +953,6 @@ body[data-logged-in="false"] .section--games {
 
     .casemate-type-container:not(:has(select)) {
         pointer-events: none;
-    }
-    
-    .input {
-        background-color: var(--clr-ui-bg-dark) !important;
-        color: var(--clr-text-dark) !important;
     }
 
     .casemate-incomplete {
