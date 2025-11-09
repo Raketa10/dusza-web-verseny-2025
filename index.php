@@ -1,12 +1,4 @@
-<?php
-    session_start();
-    if (isset($_GET["logout"])) {
-        session_unset();
-        session_destroy();
-        header("Location: index.php"); // Redirect after logout
-        exit();
-    }
-?>
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +20,7 @@
                     </div>
                     <div class="account-section-content account-logged-in">
                         <div class="account-menu-open">
-                            <div class="account-username"><?php echo $_SESSION["user_id"]; ?></div>
+                            <div class="account-username"><?php echo $_SESSION["username"]; ?></div>
                             <svg class="svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#000000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z"/></svg>
                             <input type="checkbox" id="account-menu-opened">
                         </div>
@@ -41,10 +33,23 @@
                     </div>
                 </div>
             </nav>
-            <section class="section-worlds">
+            <section class="section--games">
+                <h3>Játékok</h3>
+                <div class="status-message status-message--games"></div>
+                <div class="games-container">
+                    <!-- <div class="game">
+                        <div class="game-title">Utolsó játék folytatása</div>
+                        <div class="game-buttons">
+                            <img class="world-play svgbutton" src="./assets/images/btn-play.png"></img>
+                        </div>
+                    </div> -->
+                </div>
+            </section>
+            <section class="section--worlds">
                 <h3>Világok</h3>
+                <div class="status-message status-message--worlds"></div>
                 <div class="worlds-container">
-                    <div class="world">
+                    <!-- <div class="world">
                         <div class="world-title">Első világ</div>
                         <div>Kártyák: 9</div>
                         <div>Vezérkártyák: 3</div>
@@ -56,7 +61,7 @@
                     </div>
                     <div class="world world--add">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
-                    </div>
+                    </div> -->
                 </div>
             </section>
         </div>
@@ -67,6 +72,8 @@
                 </button>
                 <h2>Világ létrehozása</h2>
                 <input type="text" name="world-name" maxlength="32" class="input world-name" placeholder="A világ neve">
+                <button class="button world-save-button">Mentés</button>
+                <div class="status-message status-message--world-save"></div>
             </div>
             <div class="world-grid">
                 <section class="section--worldcards">
@@ -156,6 +163,9 @@
                     </div>
                 </section>
             </div>
+        </div>
+        <div class="screen screen--game">
+
         </div>
     </div>
 
