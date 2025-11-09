@@ -1,9 +1,9 @@
 // Constants
 const casemateTypes = [
     {name: "Gyűjtemény", ordinary: Infinity, boss: 0},
-    {name: "Egyszerű találkozás", ordinary: 1, boss: 0},
-    {name: "Kis kazamata", ordinary: 3, boss: 1}, 
-    {name: "Nagy kazamata", ordinary: 5, boss: 1}
+    {name: "Egyszerű találkozás", ordinary: 1, boss: 0, upgradeValue: 1, upgradeType: "attack"},
+    {name: "Kis kazamata", ordinary: 3, boss: 1, upgradeValue: 2, upgradeType: "damage"}, 
+    {name: "Nagy kazamata", ordinary: 5, boss: 1, upgradeValue: 3, upgradeType: "attack"}
 ];
 const cardTypes = ["fire", "earth", "water", "air"];
 
@@ -45,8 +45,8 @@ let worlds = [
             {
                 id: 3,
                 name: "C",
-                health: 5,
-                attack: 3,
+                health: 10,
+                attack: 10,
                 type: "water",
                 isBoss: false,
                 bossSource: null,
@@ -156,9 +156,9 @@ function getCasemateById(id, casemates = null) {
     }
 }
 
-function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, type = "earth", isBoss = false, bossSource = null, bossType = null, attackPromoteDisabled = false, healthPromoteDisabled = false, deleteButton = false, draggable = true} = {}) {
+function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, type = "earth", isBoss = false, bossSource = null, bossType = null, attackPromoteDisabled = false, healthPromoteDisabled = false, deleteButton = false, draggable = true, clickable = false} = {}) {
     return `
-        <form class="worldcard ${isBoss ? "boss" : ""} ${isBoss ? `boss--${bossType}` : ""} ${!editable ? "readonly" : ""} ${!draggable ? "no-drag" : ""}" data-card-id="${id}">
+        <form class="worldcard ${isBoss ? "boss" : ""} ${isBoss ? `boss--${bossType}` : ""} ${!editable ? "readonly" : ""} ${!draggable ? "no-drag" : ""} ${clickable ? "clickable" : ""}" data-card-id="${id}">
             <div class="worldcard-grid">
                 <textarea ${!editable ? "readonly" : ""} placeholder="A kártya neve" name="worldcard-name" minlength="1" maxlength="16" class="worldcard-property worldcard-name" rows="2">${name}</textarea>
                 <div class="worldcard-property-container worldcard-attack-container">
@@ -741,12 +741,11 @@ function renderGameCollection() {
         return false;
 
     const collection = game.collection;
-    const cards = game.cards;
 
     // Generating HTML
     let html = "";
-    for (const cardId of collection) {
-        const card = getCardById(cardId, cards);
+    for (const card of collection) {
+        const cardId = card.id;
         html += cardElementAsText(cardId, false, card);
     }
 
@@ -760,7 +759,6 @@ function renderGameCasemates() {
         return false;
 
     const casemates = game.casemates;
-    const cards = game.cards;
 
     // Generating HTML
     let html = "";
@@ -802,8 +800,9 @@ function renderGameCasemateCards() {
 
     // Generating HTML
     let html = "";
-    for (const cardId of casemate.cards) {
-        html += cardElementAsText(cardId, false, {draggable: false, ...getCardById(cardId, cards)});
+    for (const card of casemate.cards) {
+        const cardId = card.id;
+        html += cardElementAsText(cardId, false, {draggable: false, ...card});
     }
 
     const container = document.querySelector(".game-casemate-cards-container")
@@ -823,7 +822,8 @@ function renderGamePlayerCards() {
     let html = "";
     let htmlPlaceholder = "";
     for (const cardId of deck) {
-        html += cardElementAsText(cardId, false, {deleteButton: true, ...getCardById(cardId, game.cards)});
+        const card = getCardById(cardId, game.collection);
+        html += cardElementAsText(cardId, false, {deleteButton: true, ...card});
     }
 
     for (let i = 0; i < casemateCardsCount - deck.length; i++) {
@@ -846,10 +846,11 @@ function renderGamePlayerCards() {
 
     // Event handlers
     for (const cardElement of document.querySelectorAll(".game-player-cards-container > .worldcard")) {
-        const cardId = parseInt(cardElement.dataset.cardId)
+        const cardId = parseInt(cardElement.dataset.cardId);
+        const cardIndex = game.deck.findIndex(card => card.id === cardId);
 
         cardElement.querySelector(".worldcard-delete").addEventListener("click", function() {
-            game.deck.splice(game.deck.indexOf(cardId), 1);
+            game.deck.splice(cardIndex, 1);
             renderGamePlayerCards();
         });
     }
@@ -866,8 +867,9 @@ function renderBattleCasemateCards() {
 
     // Generating HTML
     let html = "";
-    for (const cardId of casemate.cards) {
-        html += cardElementAsText(cardId, false, {draggable: false, ...getCardById(cardId, cards)});
+    for (const card of casemate.cards) {
+        const cardId = card.id;
+        html += cardElementAsText(cardId, false, {draggable: false, ...card});
     }
 
     const container = document.querySelector(".battle-casemate-cards-container")
@@ -891,9 +893,57 @@ function renderBattlePlayerCards() {
     containerCards.innerHTML = html;
 }
 
+function renderCardUpgrade(upgradeType, upgradeValue) {
+    let html = "";
+    for (const card of game.collection) {
+        html += cardElementAsText(card.id, false, {draggable: false, clickable: true, ...card});
+    }
+
+    document.querySelector(".dialog-upgrade-cards .cards-upgrade-container").innerHTML = html;
+    document.querySelector(".upgrades-to-spend").innerHTML = `
+        <img src="./assets/images/${upgradeType}.webp"></img>
+        ${upgradeValue}
+    `;
+
+    const dialog = document.querySelector(".dialog-upgrade-cards");
+    dialog.showModal();
+
+    const cardElements = document.querySelectorAll(".dialog-upgrade-cards .cards-upgrade-container > .worldcard");
+    for (const cardElement of cardElements) {
+        const cardId = parseInt(cardElement.dataset.cardId);
+        const card = getCardById(cardId, game.collection);
+
+        cardElement.addEventListener("click", function() {
+            if (upgradeType === "health") {
+                card.health += upgradeValue;
+            } else if (upgradeType === "attack") {
+                card.attack += upgradeValue;
+            }
+            dialog.close();
+            setScreen("game-deck");
+            renderGameCollection();
+            renderGameCasemateCards();
+            renderGamePlayerCards();
+        });
+    }
+}
+
 
 function startGame(cards, collection, casemates, deck = []) {
-    game = structuredClone({cards: cards.slice(), collection: collection.slice(), casemates: casemates.slice(), deck: deck.slice()});
+    game = structuredClone({
+        collection: collection.map(cardId => structuredClone(getCardById(cardId, cards))),
+        deck: deck.map(cardId => structuredClone(getCardById(cardId, cards))),
+        playerCards: deck.map(cardId => structuredClone(getCardById(cardId, cards))),
+        casemates: casemates.map(casemate => (
+            {
+                id: casemate.id,
+                type: casemate.type,
+                name: casemate.name,
+                cards: casemate.cards.map(cardId => structuredClone(getCardById(cardId, cards)))
+            }
+        ))
+    });
+    console.log(game.casemates);
     currentCasemate = casemates[0].id;
     setScreen("game-deck");
     renderGameCollection();
@@ -920,19 +970,19 @@ function delay(ms) {
 async function animateBattle() {
     const casemate = getCasemateById(currentCasemate, game.casemates);
 
-    console.log(casemate);
-
-    const casemateCards = casemate.cards.map(cardId => getCardById(cardId, game.cards));
-    const playerCards = game.deck.map(cardId => getCardById(cardId, game.cards));
-
+    const casemateCards = casemate.cards;
+    const playerCards = game.deck.map(cardId => getCardById(cardId, game.collection));
+    console.log(casemateCards, playerCards);
 
     let casemateScore = 0;
     let playerScore = 0;
     const casemateScoreElement = document.querySelector(".battle-casemate-score");
     const playerScoreElement = document.querySelector(".battle-player-score");
+    const battleResultElement = document.querySelector(".battle-result");
 
     playerScoreElement.textContent = "0";
     casemateScoreElement.textContent = "0";
+    battleResultElement.classList.remove("show");
 
     for (let i = 0; i < casemate.cards.length; i++) {
         const casemateCard = casemateCards[i];
@@ -948,12 +998,17 @@ async function animateBattle() {
         const iterations = Math.min(Math.max(_casemateCard.health, _playerCard.attack), Math.max(_casemateCard.attack, _playerCard.health));
         const delayTime = battleAnimationDuration / iterations;
 
-        while (_casemateCard.health > 0 && _playerCard.health > 0 && _casemateCard.attack > 0 && _playerCard.attack > 0) {
+        while (_casemateCard.health > 0 && _playerCard.health > 0 && (_casemateCard.attack > 0 || _playerCard.attack > 0)) {
             await delay(delayTime);
-            _casemateCard.health--;
-            _casemateCard.attack--;
-            _playerCard.health--;
-            _playerCard.attack--;
+            if (_playerCard.attack > 0)
+                _casemateCard.health--;
+            if (_casemateCard.attack > 0)
+                _playerCard.health--;
+
+            if (_casemateCard.attack > 0)
+                _casemateCard.attack--;
+            if (_playerCard.attack > 0)
+                _playerCard.attack--;
             
             casemateCardElement.querySelector(".worldcard-health").value = _casemateCard.health;
             casemateCardElement.querySelector(".worldcard-attack").value = _casemateCard.attack;
@@ -979,20 +1034,35 @@ async function animateBattle() {
         casemateScoreElement.textContent = casemateScore;
 
         const casemateWon = !playerWon;
-        const tie = playerWon === casemateWon;
 
-        if (!tie) {
-            if (playerWon) {
-                casemateCardElement.classList.add("lost");
-                playerCardElement.classList.add("won");
-            } else if (casemateWon) {
-                casemateCardElement.classList.add("won");
-                playerCardElement.classList.add("lost");
-            }
+        if (playerWon) {
+            casemateCardElement.classList.add("lost");
+            playerCardElement.classList.add("won");
+        } else if (casemateWon) {
+            casemateCardElement.classList.add("won");
+            playerCardElement.classList.add("lost");
         }
 
+        
         casemateCardElement.classList.remove("fighting");
         playerCardElement.classList.remove("fighting");
+    }
+    
+    const battleWon = playerScore >= casemateScore;
+
+    battleResultElement.classList.add("show");
+    battleResultElement.textContent = playerScore >= casemateScore ? "Győzelem" : "Csata elvesztve";
+
+    if (battleWon) {
+        await delay(2000);
+        const {upgradeType, upgradeValue} = casemateTypes[casemate.type];
+        renderCardUpgrade(upgradeType, upgradeValue);
+    } else {
+        await delay(2000);
+        setScreen("game-deck");
+        renderGameCollection();
+        renderGameCasemateCards();
+        renderGamePlayerCards();
     }
 }
 
@@ -1335,3 +1405,5 @@ if (loggedIn) {
 } else {
     renderWorlds();
 }
+
+// document.querySelector(".dialog-upgrade-cards").showModal();
