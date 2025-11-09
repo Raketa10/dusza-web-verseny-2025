@@ -206,20 +206,38 @@
                 </button>
                 <h2>Játék</h2>
             </div>
-            <div class="battle-cards">
-                <div class="battle-casemate-cards">
-                    <div class="battle-casemate-cards-container">
-                        
+            <div>
+                <div class="battle-cards">
+                    <div class="battle-wrapper battle-casemate-wrapper">
+                        <div class="battle-cards battle-casemate-cards">
+                            <div class="battle-casemate-cards-container">
+                                
+                            </div>
+                        </div>
+                        <div class="battle-score">
+                            <img src="./assets/images/icon-victory.png">
+                            <div class="battle-casemate-score">0</div>
+                        </div>
                     </div>
-                </div>
-                <div class="battle-player-cards">
-                    <div class="battle-player-cards-container">
-    
+                    <div class="battle-wrapper battle-player-wrapper">
+                        <div class="battle-cards battle-player-cards">
+                            <div class="battle-player-cards-container">
+                                
+                            </div>
+                        </div>
+                        <div class="battle-score">
+                            <img src="./assets/images/icon-victory.png">
+                            <div class="battle-player-score">0</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <dialog class="dialog" id="battle-won">
+        <h1>Győzelem!</h1>
+    </dialog>
 
     <dialog class="dialog" id="dialog--login">
         <h1>Bejelentkezés</h1>

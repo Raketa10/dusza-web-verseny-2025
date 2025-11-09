@@ -5,12 +5,14 @@ const casemateTypes = [
     {name: "Kis kazamata", ordinary: 3, boss: 1}, 
     {name: "Nagy kazamata", ordinary: 5, boss: 1}
 ];
+const cardTypes = ["fire", "earth", "water", "air"];
 
 const minHealth = 1;
 const maxHealth = 100;
 const minAttack = 2;
 const maxAttack = 100;
 const battleAnimationDuration = 4000;
+const fightAnimationDuration = 500;
 
 // let loggedIn = false;
 
@@ -23,7 +25,7 @@ let worlds = [
             {
                 id: 1,
                 name: "A",
-                health: 10,
+                health: 5,
                 attack: 4,
                 type: "earth",
                 isBoss: false,
@@ -34,7 +36,7 @@ let worlds = [
                 id: 2,
                 name: "B",
                 health: 5,
-                attack: 6,
+                attack: 4,
                 type: "fire",
                 isBoss: false,
                 bossSource: null,
@@ -315,7 +317,7 @@ function renderWorlds() {
         const world = worlds[worldIndex];
 
         worldElement.querySelector(".world-play").addEventListener("click", function() {
-            startGame(world.cards, world.collections[0], world.casemates);
+            startGame(world.cards, world.collections[0].cards, world.casemates);
         });
 
         worldElement.querySelector(".world-edit").addEventListener("click", function() {
@@ -743,7 +745,7 @@ function renderGameCollection() {
 
     // Generating HTML
     let html = "";
-    for (const cardId of collection.cards) {
+    for (const cardId of collection) {
         const card = getCardById(cardId, cards);
         html += cardElementAsText(cardId, false, card);
     }
@@ -891,7 +893,7 @@ function renderBattlePlayerCards() {
 
 
 function startGame(cards, collection, casemates, deck = []) {
-    game = {cards, collection, casemates, deck};
+    game = structuredClone({cards: cards.slice(), collection: collection.slice(), casemates: casemates.slice(), deck: deck.slice()});
     currentCasemate = casemates[0].id;
     setScreen("game-deck");
     renderGameCollection();
@@ -917,35 +919,76 @@ function delay(ms) {
 
 async function animateBattle() {
     const casemate = getCasemateById(currentCasemate, game.casemates);
-    const casemateType = casemateTypes[casemate.type];
 
     console.log(casemate);
 
+    const casemateCards = casemate.cards.map(cardId => getCardById(cardId, game.cards));
+    const playerCards = game.deck.map(cardId => getCardById(cardId, game.cards));
+
+
+    let casemateScore = 0;
+    let playerScore = 0;
+    const casemateScoreElement = document.querySelector(".battle-casemate-score");
+    const playerScoreElement = document.querySelector(".battle-player-score");
+
+    playerScoreElement.textContent = "0";
+    casemateScoreElement.textContent = "0";
+
     for (let i = 0; i < casemate.cards.length; i++) {
-        const casemateCard = getCardById(casemate.cards[i], game.cards);
-        const casemateCardElement = document.querySelector(`.battle-casemate-cards-container > .worldcard[data-card-id="${casemateCard.id}"]`);
-        const playerCard = getCardById(game.deck[i], game.cards);
-        const playerCardElement = document.querySelector(`.battle-player-cards-container > .worldcard[data-card-id="${playerCard.id}"]`);
-        console.log(i, casemateCard, playerCard)
+        const casemateCard = casemateCards[i];
+        const _casemateCard = structuredClone(casemateCard);
+        const casemateCardElement = document.querySelector(`.battle-casemate-cards-container > .worldcard[data-card-id="${_casemateCard.id}"]`);
+        const playerCard = playerCards[i];
+        const _playerCard = structuredClone(playerCard);
+        const playerCardElement = document.querySelector(`.battle-player-cards-container > .worldcard[data-card-id="${_playerCard.id}"]`);
 
         casemateCardElement.classList.add("fighting");
         playerCardElement.classList.add("fighting");
 
-        const iterations = Math.min(Math.abs(casemateCard.health - playerCard.attack), Math.abs(casemateCard.health - playerCard.attack));
+        const iterations = Math.min(Math.max(_casemateCard.health, _playerCard.attack), Math.max(_casemateCard.attack, _playerCard.health));
         const delayTime = battleAnimationDuration / iterations;
-        console.log(iterations, delayTime);
 
-        while (casemateCard.health > 0 && playerCard.health > 0 && casemateCard.attack > 0 && playerCard.attack > 0) {
-            console.log(i, casemateCard.health, playerCard.health, casemateCard.attack, playerCard.attack);
-            casemateCard.health--;
-            playerCard.health--;
-            casemateCard.attack--;
-            playerCard.attack--;
-            casemateCardElement.querySelector(".worldcard-health").value = casemateCard.health;
-            playerCardElement.querySelector(".worldcard-health").value = playerCard.health;
-            casemateCardElement.querySelector(".worldcard-attack").value = casemateCard.attack;
-            playerCardElement.querySelector(".worldcard-attack").value = playerCard.attack;
+        while (_casemateCard.health > 0 && _playerCard.health > 0 && _casemateCard.attack > 0 && _playerCard.attack > 0) {
             await delay(delayTime);
+            _casemateCard.health--;
+            _casemateCard.attack--;
+            _playerCard.health--;
+            _playerCard.attack--;
+            
+            casemateCardElement.querySelector(".worldcard-health").value = _casemateCard.health;
+            casemateCardElement.querySelector(".worldcard-attack").value = _casemateCard.attack;
+            playerCardElement.querySelector(".worldcard-health").value = _playerCard.health;
+            playerCardElement.querySelector(".worldcard-attack").value = _playerCard.attack;
+        }
+
+        let playerWon = false;
+        const elementDiff = cardTypes.indexOf(casemateCard.type) - cardTypes.indexOf(playerCard.type);
+        if (playerCard.attack > casemateCard.health) {
+            playerWon = true;
+        } else if (elementDiff == 1 || elementDiff == 3) {
+            playerWon = true;
+        }
+
+        if (playerWon) {
+            playerScore++;
+        } else {
+            casemateScore++;
+        }
+
+        playerScoreElement.textContent = playerScore;
+        casemateScoreElement.textContent = casemateScore;
+
+        const casemateWon = !playerWon;
+        const tie = playerWon === casemateWon;
+
+        if (!tie) {
+            if (playerWon) {
+                casemateCardElement.classList.add("lost");
+                playerCardElement.classList.add("won");
+            } else if (casemateWon) {
+                casemateCardElement.classList.add("won");
+                playerCardElement.classList.add("lost");
+            }
         }
 
         casemateCardElement.classList.remove("fighting");
