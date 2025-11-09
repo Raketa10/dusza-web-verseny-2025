@@ -10,6 +10,7 @@ const minHealth = 1;
 const maxHealth = 100;
 const minAttack = 2;
 const maxAttack = 100;
+const battleAnimationDuration = 4000;
 
 let loggedIn = false;
 
@@ -22,8 +23,8 @@ let worlds = [
             {
                 id: 1,
                 name: "A",
-                health: 1,
-                attack: 2,
+                health: 10,
+                attack: 4,
                 type: "earth",
                 isBoss: false,
                 bossSource: null,
@@ -32,8 +33,8 @@ let worlds = [
             {
                 id: 2,
                 name: "B",
-                health: 1,
-                attack: 2,
+                health: 5,
+                attack: 6,
                 type: "fire",
                 isBoss: false,
                 bossSource: null,
@@ -42,8 +43,8 @@ let worlds = [
             {
                 id: 3,
                 name: "C",
-                health: 1,
-                attack: 2,
+                health: 5,
+                attack: 3,
                 type: "water",
                 isBoss: false,
                 bossSource: null,
@@ -52,8 +53,8 @@ let worlds = [
             {
                 id: 4,
                 name: "D",
-                health: 1,
-                attack: 2,
+                health: 4,
+                attack: 6,
                 type: "air",
                 isBoss: false,
                 bossSource: null,
@@ -62,8 +63,8 @@ let worlds = [
             {
                 id: 5,
                 name: "D Boss",
-                health: 1,
-                attack: 2,
+                health: 3,
+                attack: 6,
                 type: "air",
                 isBoss: true,
                 bossSource: 4,
@@ -72,8 +73,8 @@ let worlds = [
             {
                 id: 6,
                 name: "E",
-                health: 1,
-                attack: 2,
+                health: 4,
+                attack: 7,
                 type: "air",
                 isBoss: false,
                 bossSource: null,
@@ -816,7 +817,6 @@ function renderGamePlayerCards() {
     const casemate = getCasemateById(currentCasemate, game.casemates);
     const casemateType = casemateTypes[casemate.type];
     const casemateCardsCount = casemateType.ordinary + casemateType.boss;
-    console.log(casemate.name, casemateCardsCount, deck);
 
     let html = "";
     let htmlPlaceholder = "";
@@ -851,16 +851,106 @@ function renderGamePlayerCards() {
             renderGamePlayerCards();
         });
     }
+
+    document.querySelector(".game-start-button").disabled = game.deck.length < casemateCardsCount;
 }
+
+function renderBattleCasemateCards() {
+    if (!game)
+        return false;
+
+    const casemate = getCasemateById(currentCasemate, game.casemates);
+    const cards = game.cards;
+
+    // Generating HTML
+    let html = "";
+    for (const cardId of casemate.cards) {
+        html += cardElementAsText(cardId, false, {draggable: false, ...getCardById(cardId, cards)});
+    }
+
+    const container = document.querySelector(".battle-casemate-cards-container")
+    container.style.setProperty("--cards", casemate.cards.length);
+    container.innerHTML = html;
+}
+
+function renderBattlePlayerCards() {
+    if (!game)
+        return false;
+
+    const deck = game.deck;
+
+    let html = "";
+    for (const cardId of deck) {
+        html += cardElementAsText(cardId, false, {draggable: false, ...getCardById(cardId, game.cards)});
+    }
+
+    const containerCards = document.querySelector(".battle-player-cards-container");
+    containerCards.style.setProperty("--cards", game.deck.length);
+    containerCards.innerHTML = html;
+}
+
 
 function startGame(cards, collection, casemates, deck = []) {
     game = {cards, collection, casemates, deck};
     currentCasemate = casemates[0].id;
-    setScreen("game");
+    setScreen("game-deck");
     renderGameCollection();
     renderGameCasemates();
     renderGameCasemateCards();
     renderGamePlayerCards();
+}
+
+function startBattle() {
+    if (!(game && game.deck.length == casemateTypes[getCasemateById(currentCasemate).type].ordinary + casemateTypes[getCasemateById(currentCasemate).type].boss))
+        return false;
+
+    renderBattleCasemateCards();
+    renderBattlePlayerCards();
+    setScreen("game-battle");
+    animateBattle();
+}
+
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function animateBattle() {
+    const casemate = getCasemateById(currentCasemate, game.casemates);
+    const casemateType = casemateTypes[casemate.type];
+
+    console.log(casemate);
+
+    for (let i = 0; i < casemate.cards.length; i++) {
+        const casemateCard = getCardById(casemate.cards[i], game.cards);
+        const casemateCardElement = document.querySelector(`.battle-casemate-cards-container > .worldcard[data-card-id="${casemateCard.id}"]`);
+        const playerCard = getCardById(game.deck[i], game.cards);
+        const playerCardElement = document.querySelector(`.battle-player-cards-container > .worldcard[data-card-id="${playerCard.id}"]`);
+        console.log(i, casemateCard, playerCard)
+
+        casemateCardElement.classList.add("fighting");
+        playerCardElement.classList.add("fighting");
+
+        const iterations = Math.min(Math.abs(casemateCard.health - playerCard.attack), Math.abs(casemateCard.health - playerCard.attack));
+        const delayTime = battleAnimationDuration / iterations;
+        console.log(iterations, delayTime);
+
+        while (casemateCard.health > 0 && playerCard.health > 0 && casemateCard.attack > 0 && playerCard.attack > 0) {
+            console.log(i, casemateCard.health, playerCard.health, casemateCard.attack, playerCard.attack);
+            casemateCard.health--;
+            playerCard.health--;
+            casemateCard.attack--;
+            playerCard.attack--;
+            casemateCardElement.querySelector(".worldcard-health").value = casemateCard.health;
+            playerCardElement.querySelector(".worldcard-health").value = playerCard.health;
+            casemateCardElement.querySelector(".worldcard-attack").value = casemateCard.attack;
+            playerCardElement.querySelector(".worldcard-attack").value = playerCard.attack;
+            await delay(delayTime);
+        }
+
+        casemateCardElement.classList.remove("fighting");
+        playerCardElement.classList.remove("fighting");
+    }
 }
 
 
@@ -1171,10 +1261,12 @@ document.querySelector(".world-back-button").addEventListener("click", function(
         uploadWorld(world);
     setScreen("home");
 });
-document.querySelector(".game-back-button").addEventListener("click", function() {
-    if (loggedIn)
-        uploadLastGame(game);
-    setScreen("home");
+document.querySelectorAll(".game-back-button").forEach(button => {
+    button.addEventListener("click", function() {
+        if (loggedIn)
+            uploadLastGame(game);
+        setScreen("home");
+    });
 });
 
 document.querySelector(".section--casemates .collection").addEventListener("click", function() {
@@ -1187,7 +1279,11 @@ document.querySelectorAll(".account-menu-item").forEach(button => {
     button.addEventListener("click", function() {
         document.getElementById("account-menu-opened").checked = false;
     });
-})
+});
+
+document.querySelector(".game-start-button").addEventListener("click", function() {
+    startBattle();
+});
 
 
 if (loggedIn) {

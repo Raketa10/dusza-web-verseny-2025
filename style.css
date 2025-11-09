@@ -92,6 +92,7 @@ button.button {
     background-color: transparent;
     padding: 1em 1.2em !important;
     border-radius: 0;
+    user-select: none;
 
     &:hover {
         filter: brightness(1.1);
@@ -220,7 +221,8 @@ dialog.dialog {
 
 .screen-container[data-screen="home"] > .screen:not(.screen--home),
 .screen-container[data-screen="world"] > .screen:not(.screen--world),
-.screen-container[data-screen="game"] > .screen:not(.screen--game)
+.screen-container[data-screen="game-deck"] > .screen:not(.screen--game-deck),
+.screen-container[data-screen="game-battle"] > .screen:not(.screen--game-battle)
 {
     display: none;
 }
@@ -930,7 +932,17 @@ body[data-logged-in="false"] .section--games {
 
 
 
-.screen--game {
+.game-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .game-back-button img {
+        width: 1.5rem;
+    }
+}
+
+.screen--game-deck {
     width: 100%;
     height: 100%;
     display: grid;
@@ -970,23 +982,12 @@ body[data-logged-in="false"] .section--games {
         grid-area: player-cards;
     }
 
-
-    .game-title {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-
-        .game-back-button img {
-            width: 1.5rem;
-        }
-    }
-
     .game-collection-container {
         --breakpoint: 120px;
     }
 
     .game-collection, .game-casemate {
-        height: calc(100dvh - 60px - 90px);
+        height: calc(100dvh - 60px - 100px);
         overflow-y: auto;
     }
 
@@ -1029,5 +1030,46 @@ body[data-logged-in="false"] .section--games {
 
     .casemate {
         user-select: none;
+    }
+}
+
+
+.screen--game-battle {
+
+    .battle-cards {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: min(30px, 5dvh);
+    }
+
+    .battle-casemate-cards-container, .battle-player-cards-container {
+        --cards: 1;
+        display: grid;
+        grid-template-columns: repeat(var(--cards), 1fr) !important;
+        gap: 5px;
+
+        .worldcard, .worldcard-placeholder {
+            height: min(35dvh, calc(120vw / 4));
+            aspect-ratio: 241 / 344 !important;
+        }
+    }
+
+    .worldcard.fighting {
+        --direction: 1;
+        animation: fighting 1s alternate infinite ease-in-out;
+    }
+
+    .battle-player-cards-container .worldcard.fighting {
+        --direction: -1;
+    }
+}
+
+@keyframes fighting {
+    from {
+        translate: 0 0;
+    }
+    to {
+        translate: 0 calc(10% * var(--direction));
     }
 }
