@@ -473,6 +473,10 @@ body[data-logged-in="false"] .section--games {
     container-type: inline-size;
     cursor: grab;
 
+    &.no-drag {
+        cursor: default;
+    }
+
     .worldcard-grid {
         width: 100%;
         height: 100%;
@@ -769,9 +773,10 @@ body[data-logged-in="false"] .section--games {
     }
 }
 
-.casemate-cards-container, .casemate-cards-placeholder {
+.casemate-cards-container, .casemate-cards-placeholder, .game-collection-container {
+    --breakpoint: 150px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+    grid-template-columns: repeat(auto-fill, minmax(var(--breakpoint), auto));
     gap: 20px 5px;
     padding: 5px;
 }
@@ -782,9 +787,6 @@ body[data-logged-in="false"] .section--games {
     height: 100%;
     height: min-content;
     padding-bottom: 300px;
-}
-
-.casemate-cards-container {
     z-index: 1;
 }
 
@@ -835,7 +837,7 @@ body[data-logged-in="false"] .section--games {
 }
 
 
-.casemates-container, .collections-container {
+.casemates-container, .collections-container, .game-casemates-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -897,6 +899,11 @@ body[data-logged-in="false"] .section--games {
     &:not(.incomplete) .casemate-incomplete {
         display: none;
     }
+
+    div.casemate-name {
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
 }
 
 .casemate--add {
@@ -911,5 +918,81 @@ body[data-logged-in="false"] .section--games {
 
     &:hover {
         scale: 1.05;
+    }
+}
+
+
+
+.screen--game {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-areas:
+        "collection     casemate-cards  casemates"
+        "collection     .               casemates"
+        "collection     player-cards    casemates";
+    grid-template-columns: min(330px, 25%) auto 25ch;
+    gap: 20px;
+
+
+    .game-collection {
+        grid-area: collection;
+    }
+
+    .game-casemate-cards {
+        grid-area: casemate-cards;
+    }
+
+    .game-casemates {
+        grid-area: casemates;
+    }
+
+    .game-player-cards {
+        grid-area: player-cards;
+    }
+
+    .game-collection-container {
+        --breakpoint: 120px;
+    }
+
+    .game-collection, .game-casemate {
+        height: calc(100dvh - 60px);
+        overflow-y: auto;
+    }
+
+    .game-collection {
+        overflow-x: hidden;
+    }
+
+    .game-card-container, .game-player-cards-container, .game-player-cards-placeholder {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr) !important;
+        gap: 5px;
+    }
+
+    .game-player-cards-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .game-player-cards-container, .game-player-cards-placeholder {
+        --breakpoint: 130px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--breakpoint), auto));
+        gap: 20px 5px;
+        padding: 5px;
+    }
+
+    .game-player-cards-container {
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        height: min-content;
+        /* padding-bottom: 300px; */
+        z-index: 1;
+    }
+
+    .casemate {
+        user-select: none;
     }
 }
