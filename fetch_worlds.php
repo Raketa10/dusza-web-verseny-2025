@@ -20,7 +20,7 @@
                 'id' => $row['world_id'],
                 'name' => $row['name'],
                 'cards' => json_decode($row['cards_json'], true), // Decode JSON if needed
-                'casemates' => json_decode($row['casemates_json'], true) // Decode JSON if needed
+                'casemates' => json_decode($row['casemates_json'], true), // Decode JSON if needed
                 'collection' => json_decode($row['collection_json'], true) // Decode JSON if needed
             ];
 
