@@ -2,7 +2,7 @@
 const casemateTypes = [
     {name: "Gyűjtemény", ordinary: Infinity, boss: 0},
     {name: "Egyszerű találkozás", ordinary: 1, boss: 0, upgradeValue: 1, upgradeType: "attack"},
-    {name: "Kis kazamata", ordinary: 3, boss: 1, upgradeValue: 2, upgradeType: "damage"}, 
+    {name: "Kis kazamata", ordinary: 3, boss: 1, upgradeValue: 2, upgradeType: "health"}, 
     {name: "Nagy kazamata", ordinary: 5, boss: 1, upgradeValue: 3, upgradeType: "attack"}
 ];
 const cardTypes = ["fire", "earth", "water", "air"];
