@@ -8,12 +8,12 @@
     <title>Damareen</title>
     <script src="sortable.min.js"></script>
 </head>
-<body>
+<body data-logged-in="<?php if (isset($_SESSION["user_id"])){echo "true";}else{echo "false";}?>">
     <div class="screen-container" data-screen="home">
         <div class="screen screen--home">
             <nav>
                 <h1 class="game-logo">Damareen</h1>
-                <div class="account-section" data-logged-in=<?php if (isset($_SESSION["user_id"])){echo "true";}else{echo "false";}?>>
+                <div class="account-section" data-logged-in=<?php if (isset($_SESSION["user_id"])){echo "true";}else{echo "false";} ?>>
                     <div class="account-section-content account-logged-out">
                         <button class="button login-button--login">Bejelentkezés</button>
                         <button class="button login-button--register">Regisztráció</button>
