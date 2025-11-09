@@ -13,18 +13,6 @@
         <div class="screen screen--home">
             <nav>
                 <h1 class="game-logo">Damareen</h1>
-                <?php
-                    echo $_SESSION["account_delete_error"];
-                    echo $_SESSION["login_error"];
-                    echo $_SESSION["password_modify_error"];
-                    echo $_SESSION["sign_in_error"];
-                    echo $_SESSION["username_modify_error"];
-                    unset($_SESSION["account_delete_error"]);
-                    unset($_SESSION["login_error"]);
-                    unset($_SESSION["password_modify_error"]);
-                    unset($_SESSION["sign_in_error"]);
-                    unset($_SESSION["username_modify_error"]);
-                    ?>
                 <div class="account-section" data-logged-in=<?php if (isset($_SESSION["user_id"])){echo "true";}else{echo "false";}?>>
                     <div class="account-section-content account-logged-out">
                         <button class="button login-button--login">Bejelentkezés</button>
@@ -182,6 +170,7 @@
                     <img src="./assets/images/btn-back.webp" alt="Vissza">
                 </button>
                 <h2>Játék</h2>
+                <button disabled class="button game-start-button">Csata indítása</button>
             </div>
             <div class="game-collection">
                 <h3>Gyűjtemény</h3>
@@ -194,9 +183,6 @@
                 <div class="game-card-container game-casemate-cards-container">
 
                 </div>
-            </div>
-            <div class="game-start">
-                <button disabled class="button game-start-button">Csata indítása</button>
             </div>
             <div class="game-cards game-player-cards">
                 <h3>Játékos kártyái</h3>
@@ -219,40 +205,47 @@
                 </button>
                 <h2>Játék</h2>
             </div>
-            <div>
+            <div class="battle-container">
                 <div class="battle-cards">
-                    <div class="battle-wrapper battle-casemate-wrapper">
-                        <div class="battle-cards battle-casemate-cards">
-                            <div class="battle-casemate-cards-container">
-                                
-                            </div>
-                        </div>
-                        <div class="battle-score">
-                            <img src="./assets/images/icon-victory.png">
-                            <div class="battle-casemate-score">0</div>
+                    <div class="battle-cards battle-casemate-cards">
+                        <div class="battle-casemate-cards-container">
+                            
                         </div>
                     </div>
-                    <div class="battle-wrapper battle-player-wrapper">
-                        <div class="battle-cards battle-player-cards">
-                            <div class="battle-player-cards-container">
-                                
-                            </div>
+                    <div class="battle-cards battle-player-cards">
+                        <div class="battle-player-cards-container">
+                            
                         </div>
-                        <div class="battle-score">
-                            <img src="./assets/images/icon-victory.png">
-                            <div class="battle-player-score">0</div>
-                        </div>
+                    </div>
+                    <div class="battle-result show">
+                        Győzelem
+                    </div>
+                </div>
+                <div class="battle-scores">
+                    <div class="battle-score">
+                        <img src="./assets/images/icon-victory.png">
+                        <div class="battle-casemate-score">0</div>
+                    </div>
+                    <div class="battle-score">
+                        <img src="./assets/images/icon-victory.png">
+                        <div class="battle-player-score">0</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <dialog class="dialog" id="battle-won">
-        <h1>Győzelem!</h1>
+    <dialog class="dialog dialog-upgrade-cards" id="dialog--battle-won" closedby="none">
+        <h1>Kártyák fejlesztése</h1>
+        <div class="upgrades-to-spend">
+            20
+        </div>
+        <div class="cards-upgrade-container">
+
+        </div>
     </dialog>
 
-    <dialog class="dialog" id="dialog--login">
+    <dialog class="dialog dialog-account" id="dialog--login">
         <h1>Bejelentkezés</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
         <form action="login_process.php" method="post">
@@ -265,11 +258,11 @@
                 <input type="password" name="password" minlength="6" class="input" autocomplete="current-password" required>
             </label>
             <button class="button" type="submit">Bejelentkezés</button>
-            <div class="form-error"></div>
+            <div class="form-error"><?php echo $_SESSION["login_error"]; unset($_SESSION["login_error"]);?></div>
         </form>
     </dialog>
     
-    <dialog class="dialog" id="dialog--register">
+    <dialog class="dialog dialog-account" id="dialog--register">
         <h1>Regisztráció</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
         <form action="sign_in_process.php" method="post">
@@ -286,11 +279,11 @@
                 <input type="password" name="password-repeat" class="input" minlength="6" autocomplete="new-password" required>
             </label>
             <button class="button" type="submit">Regisztráció</button>
-            <div class="form-error"></div>
+            <div class="form-error"><?php echo $_SESSION["sign_in_error"]; unset($_SESSION["sign_in_error"]);?></div>
         </form>
     </dialog>
     
-    <dialog class="dialog" id="dialog--change-username">
+    <dialog class="dialog dialog-account" id="dialog--change-username">
         <h1>Névmódosítás</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
         <form action="username_modify_process.php" method="post">
@@ -303,11 +296,11 @@
                 <input type="password" name="password" class="input" minlength="6" autocomplete="current-password" required>
             </label>
             <button class="button" type="submit">Módosítás</button>
-            <div class="form-error"></div>
+            <div class="form-error"> <?php echo $_SESSION["username_modify_error"]; unset($_SESSION["username_modify_error"]);?></div>
         </form>
     </dialog>
     
-    <dialog class="dialog" id="dialog--change-password">
+    <dialog class="dialog dialog-account" id="dialog--change-password">
         <h1>Jelszómódosítás</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
         <form action="password_modify_process.php" method="post">
@@ -324,11 +317,11 @@
                 <input type="password" name="new-password-repeat" class="input" minlength="6" autocomplete="new-password" required>
             </label>
             <button class="button" type="submit">Módosítás</button>
-            <div class="form-error"></div>
+            <div class="form-error"><?php echo $_SESSION["password_modify_error"]; unset($_SESSION["password_modify_error"]);?></div>
         </form>
     </dialog>
 
-    <dialog class="dialog" id="dialog--delete-account">
+    <dialog class="dialog dialog-account" id="dialog--delete-account">
         <h1>Fiók törlése</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
         <form action="account_delete_process.php" method="post">
@@ -341,14 +334,22 @@
                 <input class="input" type="text" name="username" minlength="4" maxlength="32" autocomplete="off" required>
             </label>
             <button class="button" type="submit">Fiók törlése</button>
-            <div class="form-error"></div>
+            <div class="form-error"><?php echo $_SESSION["account_delete_error"]; unset($_SESSION["account_delete_error"]);?></div>
         </form>
     </dialog>
 
     <script>
-        let loggedIn = <?php echo isset($_SESSION["user_id"]) ? "true" : "false";?>;
-        if (false) {
-            openDialog("<?php echo $dialog_id ?>")
+        let loggedIn = <?php echo isset($_SESSION["user_id"]) ? "true" : "false"; ?>;
+        if (<?php echo isset($_SESSION["login_error"]) ? "true" : "false"; ?>) {
+            openDialog("login");
+        }elseif (<?php echo isset($_SESSION["sign_in_error"]) ? "true" : "false"; ?>) {
+            openDialog("register");
+        }elseif ()(<?php echo isset($_SESSION["username_modify_error"]) ? "true" : "false"; ?>) {
+            openDialog("change-username");
+        }elseif ()(<?php echo isset($_SESSION["password_modify_error"]) ? "true" : "false"; ?>) {
+            openDialog("change-password");
+        }elseif ()(<?php echo isset($_SESSION["account_delete_error"]) ? "true" : "false"; ?>) {
+            openDialog("delete-account");
         }
     </script>
     <script src="script.js"></script>
