@@ -214,7 +214,8 @@ dialog.dialog {
 }
 
 .screen-container[data-screen="home"] > .screen:not(.screen--home),
-.screen-container[data-screen="world"] > .screen:not(.screen--world)
+.screen-container[data-screen="world"] > .screen:not(.screen--world),
+.screen-container[data-screen="game"] > .screen:not(.screen--game)
 {
     display: none;
 }
@@ -333,23 +334,30 @@ dialog.dialog {
 
 
 
+.status-message {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-block: 0.4em;
+
+    &[data-type="error"] {
+        color: hsl(from var(--clr-error) h s 60%);
+    }
+    &[data-type="success"] {
+        color: hsl(from var(--clr-error) 110 s 60%);
+    }
+}
+
 .worlds-container {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-
-    &[data-loading="true"]::before {
-        content: "A világok betöltés alatt...";
-        font-size: 1.2rem;
-    }
-
-    .error-message {
-        font-size: 1.2rem;
-        color: hsl(from var(--clr-error) h s 60%);
-    }
 }
 
-.world {
+body[data-logged-in="false"] .section--games {
+    display: none;
+}
+
+.world, .game {
     position: relative;
     background-color: var(--clr-ui-bg);
     color: var(--clr-text-dark);
@@ -359,21 +367,21 @@ dialog.dialog {
     /* cursor: pointer; */
     /* transition: 0.2s; */
 
-    .world-title {
+    .world-title, .game-title {
         font-size: 1.3rem;
         font-weight: bold;
         margin-bottom: 0.4em;
     }
 
-    .world-buttons {
+    .world-buttons, .game-buttons {
         margin-top: 1.5em;
         user-select: none;
-    }
 
-    .world-buttons .svgbutton {
-        fill: var(--clr-text-dark);
-        width: 3rem;
-        height: 3rem;
+        .svgbutton {
+            fill: var(--clr-text-dark);
+            width: 3rem;
+            height: 3rem;
+        }
     }
 
    /*  &:hover {
