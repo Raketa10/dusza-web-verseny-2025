@@ -17,7 +17,7 @@
         
         if ($result->num_rows > 0) {
             $statement = $connection->prepare("UPDATE worlds SET name = ?, cards_json = ?, casemates_json = ?, collection_json = ? WHERE world_id = ? AND user_id = ?");
-            $statement->bind_param("ssssii", $world['name'], json_encode($world['cards']), json_encode($world['casemates']), json_encode($world['collection']), $_SESSION["user_id"], $world['id']);
+            $statement->bind_param("ssssii", $world['name'], json_encode($world['cards']), json_encode($world['casemates']), json_encode($world['collection']), $world['id'],  $_SESSION["user_id"]);
             $statement->execute();
         } else{
             $statement = $connection->prepare("INSERT INTO worlds (world_id, name, cards_json, casemates_json, collection_json, user_id) VALUES(?, ?, ?, ?, ?, ?)");
