@@ -967,6 +967,10 @@ async function uploadLastGame(game) {
     });
 }
 
+function openDialog(dialog) {
+    document.getElementById(`dialog--${dialog}`).showModal();
+}
+
 
 
 document.querySelectorAll(".worldcard-property-container").forEach(container => {
