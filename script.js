@@ -934,7 +934,10 @@ function startGame(cards, collection, casemates, deck = []) {
 }
 
 function startBattle() {
-    if (!(game && game.deck.length == casemateTypes[getCasemateById(currentCasemate).type].ordinary + casemateTypes[getCasemateById(currentCasemate).type].boss))
+    if (!(
+        game &&
+        game.deck.length == casemateTypes[getCasemateById(currentCasemate, game.casemates).type].ordinary + casemateTypes[getCasemateById(currentCasemate, game.casemates).type].boss
+    ))
         return false;
 
     renderBattleCasemateCards();
