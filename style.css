@@ -570,6 +570,10 @@ body[data-logged-in="false"] .section--games {
         right: 10px;
         cursor: pointer;
         user-select: none;
+
+        img {
+            width: 12cqw;
+        }
     }
 
     .worldcard-boss-icon {
@@ -632,7 +636,8 @@ body[data-logged-in="false"] .section--games {
 
         .worldcard-property-icon {
             position: absolute;
-            width: min(100px, 48cqw);
+            /* width: min(100px, 48cqw); */
+            width: 48cqw;
             top: 50%;
             left: 50%;
             translate: -50% -50%;

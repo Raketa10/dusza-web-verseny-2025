@@ -204,7 +204,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 </div>
                 ${editable || deleteButton ? `
                     <div class="worldcard-delete svgbutton">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+                        <img src="./assets/images/btn-delete.webp"></img>
                     </div>
                 ` : ""}
             </div>
@@ -598,26 +598,6 @@ function renderCasemates() {
         const incomplete = casemate.cards.length < casemateTypes[casemate.type].ordinary + casemateTypes[casemate.type].boss;
 
         html += casemateElementAsText(casemate.id, true, {selected, incomplete, ...casemate});
-        
-        /* html += `
-            <form class="casemate ${selected ? "selected" : ""} ${incomplete ? "incomplete" : ""}" data-casemate-id="${casemate.id}">
-                <input class="input casemate-name"type="text" name="name" placeholder="Kazamata neve" maxlength="32" value="${casemate.name}">
-                <svg class="casemate-delete svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-                <div class="casemate-type-container">
-                    ${
-                        !selected ? casemateTypes[casemate.type].name : 
-                        `
-                            <select class="input casemate-type" name="type">
-                                ${casemateTypes.slice(1).map(({name}, index) => (
-                                    `<option ${casemate.type === index + 1 ? "selected" : ""} value="${index + 1}">${name}</option>`
-                                )).join("")}
-                            </select>
-                        `
-                    }
-                </div>
-                <svg title="Befejezetlen kazamata" class="casemate-incomplete" viewBox="0 0 192 512" xmlns="http://www.w3.org/2000/svg"><path d="M176 432c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80zM25.26 25.199l13.6 272C39.499 309.972 50.041 320 62.83 320h66.34c12.789 0 23.331-10.028 23.97-22.801l13.6-272C167.425 11.49 156.496 0 142.77 0H49.23C35.504 0 24.575 11.49 25.26 25.199z"/></svg>
-            </form>
-        `; */
     }
 
     html += `
