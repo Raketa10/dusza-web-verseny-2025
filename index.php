@@ -165,14 +165,38 @@
             </div>
         </div>
         <div class="screen screen--game">
+            <div class="game-collection">
+                <h3>Gyűjtemény</h3>
+                <div class="game-collection-container">
 
+                </div>
+            </div>
+            <div class="game-cards game-casemate-cards">
+                <h3>Kazamata kártyái</h3>
+                <div class="game-card-container game-casemate-cards-container">
+
+                </div>
+            </div>
+            <div class="game-cards game-player-cards">
+                <h3>Játékos kártyái</h3>
+                <div class="game-player-cards-wrapper">
+                    <div class="game-player-cards-placeholder"></div>
+                    <div class="game-player-cards-container"></div>
+                </div>
+            </div>
+            <div class="game-casemates">
+                <h3>Kazamaták</h3>
+                <div class="game-casemates-container">
+
+                </div>
+            </div>
         </div>
     </div>
 
     <dialog class="dialog" id="dialog--login">
         <h1>Bejelentkezés</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-        <form action="login_process.php" method="post" id="form-login">
+        <form action="login_process.php" method="post">
             <label>
                 Felhasználónév:
                 <input class="input" type="text" minlength="4" maxlength="32" name="username" autocomplete="username" required>
@@ -189,7 +213,7 @@
     <dialog class="dialog" id="dialog--register">
         <h1>Regisztráció</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-        <form action="sign_in_process.php" method="post" id="form-register">
+        <form action="sign_in_process.php" method="post">
             <label>
                 Felhasználónév:
                 <input class="input" type="text" name="username" minlength="4" maxlength="32" autocomplete="username" required>
@@ -210,7 +234,7 @@
     <dialog class="dialog" id="dialog--change-username">
         <h1>Névmódosítás</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-        <form action="username_modify_process.php" method="post" id="form-register">
+        <form action="username_modify_process.php" method="post">
             <label>
                 Új Felhasználónév:
                 <input class="input" type="text" name="new-username" minlength="4" maxlength="32" autocomplete="username" required>
@@ -227,7 +251,7 @@
     <dialog class="dialog" id="dialog--change-password">
         <h1>Jelszómódosítás</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-        <form action="password_modify_process.php" method="post" id="form-register">
+        <form action="password_modify_process.php" method="post">
             <label>
                 Jelenlegi jelszó:
                 <input type="password" name="password" class="input" minlength="6" autocomplete="current-password" required>
@@ -248,7 +272,7 @@
     <dialog class="dialog" id="dialog--delete-account">
         <h1>Fiók törlése</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
-        <form action="account_delete_process.php" method="post" id="form-register">
+        <form action="account_delete_process.php" method="post">
             <label>
                 Jelszó:
                 <input type="password" name="password" class="input" minlength="6" autocomplete="current-password" required>
