@@ -685,7 +685,11 @@ body[data-logged-in="false"] .section--games {
             cursor: pointer;
             user-select: none;
             margin: 0;
-            z-index: 1;
+            z-index: 4;
+
+            &, &:read-only {
+                pointer-events: all;
+            }
         }
 
         &:has(input[type="radio"][value="earth"]:checked) {
