@@ -264,8 +264,7 @@ function renderGames() {
         if (!lastGame)
             return;
         game = lastGame;
-        console.log(lastGame);
-        startGame(lastGame.cards, lastGame.collection, lastGame.casemates);
+        startGame(lastGame);
     });
 }
 
@@ -316,7 +315,7 @@ function renderWorlds() {
         const world = worlds[worldIndex];
 
         worldElement.querySelector(".world-play").addEventListener("click", function() {
-            startGame(world.cards, world.collections[0].cards, world.casemates);
+            startWorld(world.cards, world.collections[0].cards, world.casemates);
         });
 
         worldElement.querySelector(".world-edit").addEventListener("click", function() {
@@ -721,12 +720,10 @@ function renderGameCollection() {
         return false;
 
     const collection = game.collection;
-    console.log(collection);
 
     // Generating HTML
     let html = "";
     for (const card of collection) {
-        console.log(card);
         const cardId = card.id;
         html += cardElementAsText(cardId, false, card);
     }
@@ -761,7 +758,6 @@ function renderGameCasemates() {
         casemateElement.addEventListener("click", function() {
             currentCasemate = casemateId;
 
-            console.log(game.deck.length, casemateCardsCount);
             if (game.deck.length > casemateCardsCount) {
                 game.deck = game.deck.slice(0, casemateCardsCount);
             }
@@ -778,7 +774,6 @@ function renderGameCasemateCards() {
         return false;
 
     const casemate = getCasemateById(currentCasemate, game.casemates);
-    const cards = game.cards;
 
     // Generating HTML
     let html = "";
@@ -845,7 +840,6 @@ function renderBattleCasemateCards() {
         return false;
 
     const casemate = getCasemateById(currentCasemate, game.casemates);
-    const cards = game.cards;
 
     // Generating HTML
     let html = "";
@@ -867,7 +861,7 @@ function renderBattlePlayerCards() {
 
     let html = "";
     for (const cardId of deck) {
-        html += cardElementAsText(cardId, false, {draggable: false, ...getCardById(cardId, game.cards)});
+        html += cardElementAsText(cardId, false, {draggable: false, ...getCardById(cardId, game.collection)});
     }
 
     const containerCards = document.querySelector(".battle-player-cards-container");
@@ -911,12 +905,18 @@ function renderCardUpgrade(upgradeType, upgradeValue) {
 }
 
 
-function startGame(cards, collection, casemates, deck = []) {
-    game = structuredClone({
-        cards: cards.map(card => structuredClone(card)),
+function startWorld(cards, collection, casemates, deck = []) {
+    /**
+    * game = {
+    *    casemates:  The casemates in the world (with their cards)
+    *    collection: The player's collection of cards, that the player can upgrade
+    *    deck:       The player's current deck
+    * }
+    */
+
+    startGame({
         collection: collection.map(cardId => structuredClone(getCardById(cardId, cards))),
         deck: deck.map(cardId => structuredClone(getCardById(cardId, cards))),
-        playerCards: deck.map(cardId => structuredClone(getCardById(cardId, cards))),
         casemates: casemates.map(casemate => (
             {
                 id: casemate.id,
@@ -926,8 +926,11 @@ function startGame(cards, collection, casemates, deck = []) {
             }
         ))
     });
-    console.log(game);
-    currentCasemate = casemates[0].id;
+}
+
+function startGame(gameData) {
+    game = gameData
+    currentCasemate = game.casemates[0].id;
     setScreen("game-deck");
     renderGameCollection();
     renderGameCasemates();
@@ -958,7 +961,6 @@ async function animateBattle() {
 
     const casemateCards = casemate.cards;
     const playerCards = game.deck.map(cardId => getCardById(cardId, game.collection));
-    console.log(casemateCards, playerCards);
 
     let casemateScore = 0;
     let playerScore = 0;
@@ -1067,8 +1069,6 @@ async function uploadWorld(world) {
     })
     .then(response => {
         if (response.ok) {
-            console.log("Request sent successfully, but no data returned.");
-            
             statusMessageHome.textContent = "";
             statusMessageEditor.dataset.type = "success";
             statusMessageEditor.textContent = "Világ mentve";
@@ -1122,7 +1122,6 @@ function fetchLastGame() {
         })
         .then(data => {
             statusMessage.textContent = "";
-            console.log(data);
             lastGame = JSON.parse(data);
             renderGames();
         })
@@ -1144,8 +1143,6 @@ async function uploadLastGame(game) {
     })
     .then(response => {
         if (response.ok) {
-            console.log("Request sent successfully, but no data returned.");
-            
             statusMessage.dataset.type = "success";
             statusMessage.textContent = "Játék mentve";
             renderGames();
@@ -1328,10 +1325,7 @@ new Sortable(playerCardTargetElement, {
     filter: '.worldcard-placeholder',
     preventOnFilter: true,
 
-    onAdd: function(event) {
-        const cardId = parseInt(event.item.dataset.cardId);
-        const card = getCardById(cardId, game.cards);
-
+    onAdd: function() {
         updateGameDeck();
         renderGamePlayerCards();
     },
