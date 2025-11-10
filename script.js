@@ -1004,12 +1004,51 @@ async function animateBattle() {
             playerCardElement.querySelector(".worldcard-attack").value = _playerCard.attack;
         }
 
+        
+        /*
+            BATTLE LOGIC
+            
+                0   vs    1   -> 0/1/?
+            (a, h) vs (a, h) -> winner
+            
+            (2, 2) vs (1, 1) -> 0
+            (2, 2) vs (1, 2) -> ?
+            (2, 2) vs (2, 1) -> 0
+            (2, 2) vs (2, 2) -> ?
+            (2, 1) vs (1, 1) -> 0
+            (2, 1) vs (1, 2) -> ?
+            (2, 1) vs (2, 1) -> ?
+        */
+
+        function getWinnerByAH(a1, h1, a2, h2) {
+            if (a1 > h2 && !(a2 > h1)) {
+                return 1;
+            } else if (a2 > h1 && !(a1 > h2)) {
+                return 2;
+            } else {
+                return 0;
+            }
+        }
+
+        function getWinnerByType(type1, type2) {
+            const typeDiff = cardTypes.indexOf(type2) - cardTypes.indexOf(type1);
+            if (typeDiff == 1 || typeDiff == 3) {
+                return 1;
+            } else if (typeDiff == -1 || typeDiff == -3) {
+                return 2;
+            } else {
+                return 0;
+            }
+        }
+        
+        const winnerByAH = getWinnerByAH(playerCard.attack, playerCard.health, casemateCard.attack, casemateCard.health);
+        const winnerByType = getWinnerByType(playerCard.type, casemateCard.type);
+        console.log(winnerByAH, winnerByType);
+        
         let playerWon = false;
-        const elementDiff = cardTypes.indexOf(casemateCard.type) - cardTypes.indexOf(playerCard.type);
-        console.log(elementDiff, playerCard.attack, casemateCard.health);
-        if (playerCard.attack > casemateCard.health && casemateCard.attack <= playerCard.health) {
+        if (winnerByAH === 1) {
             playerWon = true;
-        } else if (elementDiff == 1 || elementDiff == 3) {
+        } else if (winnerByAH === 0 && winnerByType === 1) {
             playerWon = true;
         }
 
