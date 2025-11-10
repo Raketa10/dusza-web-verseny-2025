@@ -1,6 +1,7 @@
 # Dusza Árpád webprogramozó verseny 2025
 Ez a repo a Dusza Árpád webprogramozó verseny-re készült 2025-ben.
 A verseny weboldala: https://isze.hu/dusza-arpad-orszagos-programozoi-emlekverseny/
+A játék elérése: http://20.52.16.243/
 
 ## Tartalom
 - Leírás
@@ -26,31 +27,39 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
 ### Szerepkörök
 
 #### Játékmester
-  - Játékvilágok létrehozása/módosítása a 
-  - Világkártyák létrehozása:
-    • Név meghatározása: 
-        - A kártya tetején található névdobozba kattintással
-    • Sebzés és életerő meghatározása: 
-        - sebzés és életerő ikonok fölötti és alatti nyilak segítségével
-    • Kártyatípus meghatározása: 
-        - sebzés és életerő ikonok közötti gombra kattintással váltogathat
+  - Világok létrehozása a "Világok" alatt lévő '+' gombbal
+    • Világnév megadása/módosítása 
+        - bal felső sarok
   - Vezérkártyák létrehozása (sebzés vagy életerő duplázása): 
     • Sima kártyán a sebzés és életerő ikonok fölötti gombokkal, annak megfelelően, hogy melyik tulajdonság fölött van (életerő fölött ⇒ életerő duplázás)
-    • Minden más tulajdonság a származtatott **sima kártya** tulajdonságától függ
-  - Kazamaták összeállítása (kártyák sorrendje)
-  - Kezdő gyűjtemény beállítása
+    • Minden tulajdonság a származtató sima kártya tulajdonságaitól függ
+  - Világkártyák létrehozása:
+    • Név megadása/módosítása: 
+        - A kártya tetején található névdobozba kattintással
+    • Sebzés és életerő megadása/módosítása: 
+        - sebzés és életerő ikonok fölötti és alatti nyilak segítségével
+    • Kártyatípus megadása/módosítása: 
+        - sebzés és életerő ikonok közötti gombra kattintással váltogathat
+  - Világok módosítása:
+    • Világon középen-alul található toll gombbal
+    • Név megadása/módosítása: 
+        - A kártya tetején található névdobozba kattintással
+ 
+
 
 #### Játékos
 
-1. **Pakli összeállítása:** Rakd össze a paklidat a gyűjteményből
-    - Kártya létrehozása
+ - Pakli összeállítása:
+    • Rakd össze a paklidat a gyűjteményből
 
-2. **Játék indítása:** Válassz meglévő világok közül, vagy hozz létre újat
+ - Játék indítása: Válassz a meglévő világok közül, vagy hozz létre újat
     • "Világok" menüpont alatti '+' gombra kattintva
 
-3. **Harc:** Válassz kazamatát (pakli kártyaszáma == kazamata kártyaszáma)
+ - Harc:
+    • Válassz kazamatát (pakli kártyaszáma == kazamata kártyaszáma)
 
-4. **Győzelem esetén:** Jutalom: tetszőleges kártya fejlesztése
+ - Győzelem esetén:
+    • Jutalom: tetszőleges kártya fejlesztése
 
 ### Csata
 
