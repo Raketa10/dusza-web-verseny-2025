@@ -6,7 +6,7 @@
         echo json_encode([]);
     }
     else{
-        $statement = $connection->prepare("SELECT last_game_json FROM users WHERE user_id = ?");
+        $statement = $connection->prepare("SELECT last_game_json FROM " . $_ENV["TABLE_USERS"] . " WHERE user_id = ?");
         $statement->bind_param("i", $_SESSION["user_id"]);
         $statement->execute();
 

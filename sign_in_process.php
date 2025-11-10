@@ -40,7 +40,7 @@
             }
 
             // Seraching for same username in DB
-            $statement = $connection->prepare("SELECT user_id FROM users WHERE username = ?");
+            $statement = $connection->prepare("SELECT user_id FROM " . $_ENV["TABLE_USERS"] . " WHERE username = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['sign_in_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;
@@ -64,7 +64,7 @@
             }
 
             // Insert the new user into the database
-            $statement = $connection->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
+            $statement = $connection->prepare("INSERT INTO " . $_ENV["TABLE_USERS"] . " (username, password_hash) VALUES (?, ?)");
             $statement->bind_param("ss", $username, password_hash($password, PASSWORD_DEFAULT));
             $statement->execute();
 

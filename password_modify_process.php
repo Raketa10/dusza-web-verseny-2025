@@ -45,7 +45,7 @@
                 exit();
             }
 
-            $statement = $connection->prepare("SELECT password_hash FROM users WHERE username = ? AND user_id = ?");
+            $statement = $connection->prepare("SELECT password_hash FROM " . $_ENV["TABLE_USERS"] . " WHERE username = ? AND user_id = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['password_modify_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;
@@ -66,7 +66,7 @@
             if ($result->num_rows == 1){
                 $user = $result->fetch_assoc();
                 if (password_verify($password, $user["password_hash"])){
-                    $statement = $connection->prepare("UPDATE users SET password_hash = ? WHERE user_id = ?");
+                    $statement = $connection->prepare("UPDATE " . $_ENV["TABLE_USERS"] . " SET password_hash = ? WHERE user_id = ?");
                     $statement->bind_param("si",password_hash($new_password, PASSWORD_DEFAULT), $_SESSION["user_id"]);
                     $statement->execute();
                 } else {

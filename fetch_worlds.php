@@ -6,7 +6,7 @@
         echo json_encode([]);
     }
     else{
-        $statement = $connection->prepare("SELECT world_id, name, cards_json, casemates_json, collection_json FROM worlds WHERE user_id = ?");
+        $statement = $connection->prepare("SELECT world_id, name, cards_json, casemates_json, collection_json FROM " . $_ENV["TABLE_WORLDS"] . " WHERE user_id = ?");
         $statement->bind_param("i", $_SESSION["user_id"]);
         $statement->execute();
 
