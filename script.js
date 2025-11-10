@@ -554,7 +554,12 @@ function renderCasemateCards() {
         }
         for (let i = 0; i < casemateType.ordinary; i++) {
             htmlOrdinaryPlaceholder += `
-                <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
+            <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
+            `;
+        }
+        for (let i = 0; i < casemateType.boss - bossCards; i++) {
+            htmlBoss += `
+                <div class="worldcard-placeholder hidden"></div>
             `;
         }
         for (let i = 0; i < casemateType.boss; i++) {
