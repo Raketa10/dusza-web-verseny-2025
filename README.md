@@ -4,11 +4,22 @@ A verseny weboldala: https://isze.hu/dusza-arpad-orszagos-programozoi-emlekverse
 A játék elérése: http://20.52.16.243/
 
 ## Tartalom
-- Leírás
-- Használat
-- Fejlesztés betekintés
-- Hibajelentés és hozzájárulás
-- Kapcsolat
+- [Dusza Árpád webprogramozó verseny 2025](#dusza-árpád-webprogramozó-verseny-2025)
+  - [Tartalom](#tartalom)
+  - [Leírás](#leírás)
+  - [Használat](#használat)
+      - [Fiókok kezelése](#fiókok-kezelése)
+    - [Szerepkörök](#szerepkörök)
+      - [Játékmester](#játékmester)
+      - [Játékos](#játékos)
+    - [Csata](#csata)
+      - [Párbaj eredményének meghatározása:](#párbaj-eredményének-meghatározása)
+      - [Harc eredménye:](#harc-eredménye)
+    - [Kazamata típusok és jutalmak:](#kazamata-típusok-és-jutalmak)
+  - [Fejlesztés betekintés](#fejlesztés-betekintés)
+  - [Hibajelentés és hozzájárulás](#hibajelentés-és-hozzájárulás)
+  - [Kapcsolat](#kapcsolat)
+
 
 ## Leírás
 A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szerencse és képzelet fonódik össze. A selyemutak játszóasztalaitól a modern digitális arénákig ez a műfaj mindig is a hősök és történetek kovácsa volt. Most rajtad a sor, hogy saját paklid lapjaira írd a történelmet: hősöket teremts, kazamatákon küzdj végig, és szörnyek vezéreivel mérkőzz meg. Vajon a gondosan kidolgozott stratégiád diadalt arat, vagy a kazamaták mélye örökre elnyel? Készítsd elő a paklidat, mert a kártyák sorsot hordoznak!
@@ -17,32 +28,32 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
 
 #### Fiókok kezelése
   - A "Bejelentkezés" és "Regisztráció" gombok a Jobb-felső sarokban találhatóak  
-    • Regisztráció: 
+    - Regisztráció: 
         - Felhasználónév és jelszó kétszeres megadásával
-    • Bejelentkezés:
+    - Bejelentkezés:
         - Felhasználónév és jelszó megadásával
-    • Fiók törlése: 
+    - Fiók törlése: 
         - Felhasználónév és jelszó megadásával
 
 ### Szerepkörök
 
 #### Játékmester
   - Világok létrehozása a "Világok" alatt lévő '+' gombbal
-    • Világnév megadása/módosítása 
+    - Világnév megadása/módosítása 
         - bal felső sarok
   - Vezérkártyák létrehozása (sebzés vagy életerő duplázása): 
-    • Sima kártyán a sebzés és életerő ikonok fölötti gombokkal, annak megfelelően, hogy melyik tulajdonság fölött van (életerő fölött ⇒ életerő duplázás)
-    • Minden tulajdonság a származtató sima kártya tulajdonságaitól függ
+    - Sima kártyán a sebzés és életerő ikonok fölötti gombokkal, annak megfelelően, hogy melyik tulajdonság fölött van (életerő fölött ⇒ életerő duplázás)
+    - Minden tulajdonság a származtató sima kártya tulajdonságaitól függ
   - Világkártyák létrehozása:
-    • Név megadása/módosítása: 
+    - Név megadása/módosítása: 
         - A kártya tetején található névdobozba kattintással
-    • Sebzés és életerő megadása/módosítása: 
+    - Sebzés és életerő megadása/módosítása: 
         - sebzés és életerő ikonok fölötti és alatti nyilak segítségével
-    • Kártyatípus megadása/módosítása: 
+    - Kártyatípus megadása/módosítása: 
         - sebzés és életerő ikonok közötti gombra kattintással váltogathat
   - Világok módosítása:
-    • Világon középen-alul található toll gombbal
-    • Név megadása/módosítása: 
+    - Világon középen-alul található toll gombbal
+    - Név megadása/módosítása: 
         - A kártya tetején található névdobozba kattintással
  
 
@@ -50,16 +61,16 @@ A Damareen egy  gyűjtögetős fantasy kártyajáték, amelyben stratégia, szer
 #### Játékos
 
  - Pakli összeállítása:
-    • Rakd össze a paklidat a gyűjteményből
+    - Rakd össze a paklidat a gyűjteményből
 
  - Játék indítása: Válassz a meglévő világok közül, vagy hozz létre újat
-    • "Világok" menüpont alatti '+' gombra kattintva
+    - "Világok" menüpont alatti '+' gombra kattintva
 
  - Harc:
-    • Válassz kazamatát (pakli kártyaszáma == kazamata kártyaszáma)
+    - Válassz kazamatát (pakli kártyaszáma == kazamata kártyaszáma)
 
  - Győzelem esetén:
-    • Jutalom: tetszőleges kártya fejlesztése
+    - Jutalom: tetszőleges kártya fejlesztése
 
 ### Csata
 
