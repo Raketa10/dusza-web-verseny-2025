@@ -1052,6 +1052,14 @@ async function animateBattle() {
             playerWon = true;
         }
 
+        /* if (playerCard.attack <= casemateCard.health && casemateCard.attack <= playerCard.health) {
+            if (typeDiff == 1 || typeDiff == 3) {
+                playerWon = true;
+            }
+        } else if (playerCard.attack > casemateCard.health) {
+            playerWon = true
+        } */
+
         if (playerWon) {
             playerScore++;
         } else {
