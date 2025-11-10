@@ -4,3 +4,4 @@ Ez a lista tartalmazza a változtatásokat, amiket a verseny vége (2025.11.09. 
 - A MySQL-es autentikációs adatok és a táblák nevei egy .env fájlban vannak tárolva
 - Az utolsó játék betöltésénél fellépő hiba kijavítva
 - Kijavított csata logika
+- A pakli-összeállítás hibái kijavítva; a kártyák a gyűjteményből klónozódás nélkül kihúzhatóak, és vissza is tehetőek

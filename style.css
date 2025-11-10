@@ -1058,6 +1058,7 @@ body[data-logged-in="false"] .section--games {
     .game-collection-container {
         --breakpoint: 120px;
         padding-bottom: 40px;
+        min-height: calc(100% - 40px - 4rem);
     }
 
     .game-collection, .game-casemate {

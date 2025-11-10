@@ -6,7 +6,7 @@ Frontend:
     ✔ Casemate editor card placeholder @done(25-11-08 19:44)
     ☐ Unfinished worlds
     ✔ Dialog transition @done(25-11-09 18:31)
-    ☐ Boss card
+    ✔ Boss card @done(25-11-10 14:55)
     ☐ World fetch error handling
 
 Backend:

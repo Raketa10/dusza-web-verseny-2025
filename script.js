@@ -725,6 +725,10 @@ function renderGameCollection() {
     let html = "";
     for (const card of collection) {
         const cardId = card.id;
+
+        if (game.deck.includes(cardId))
+            continue;
+
         html += cardElementAsText(cardId, false, card);
     }
 
@@ -762,9 +766,10 @@ function renderGameCasemates() {
                 game.deck = game.deck.slice(0, casemateCardsCount);
             }
 
+            renderGameCollection();
             renderGameCasemates();
             renderGameCasemateCards();
-            renderGamePlayerCards();
+            renderGameDeck();
         });
     }
 }
@@ -787,7 +792,7 @@ function renderGameCasemateCards() {
     container.innerHTML = html;
 }
 
-function renderGamePlayerCards() {
+function renderGameDeck() {
     if (!game)
         return false;
 
@@ -824,11 +829,12 @@ function renderGamePlayerCards() {
     // Event handlers
     for (const cardElement of document.querySelectorAll(".game-player-cards-container > .worldcard")) {
         const cardId = parseInt(cardElement.dataset.cardId);
-        const cardIndex = game.deck.findIndex(card => card.id === cardId);
+        const cardIndex = game.deck.indexOf(cardId);
 
         cardElement.querySelector(".worldcard-delete").addEventListener("click", function() {
             game.deck.splice(cardIndex, 1);
-            renderGamePlayerCards();
+            renderGameDeck();
+            renderGameCollection();
         });
     }
 
@@ -899,7 +905,7 @@ function renderCardUpgrade(upgradeType, upgradeValue) {
             setScreen("game-deck");
             renderGameCollection();
             renderGameCasemateCards();
-            renderGamePlayerCards();
+            renderGameDeck();
         });
     }
 }
@@ -935,7 +941,7 @@ function startGame(gameData) {
     renderGameCollection();
     renderGameCasemates();
     renderGameCasemateCards();
-    renderGamePlayerCards();
+    renderGameDeck();
 }
 
 function startBattle() {
@@ -1098,7 +1104,7 @@ async function animateBattle() {
         setScreen("game-deck");
         renderGameCollection();
         renderGameCasemateCards();
-        renderGamePlayerCards();
+        renderGameDeck();
     }
 }
 
@@ -1343,12 +1349,24 @@ new Sortable(casemateBossTargetElement, {
 new Sortable(playerCardSourceElement, {
     group: {
         name: playerCardSourceGroup,
-        pull: "clone",
-        put: false
+        // pull: "clone",
+        put: function(to, from, item) {
+            return (
+                from.options.group.name === playerCardSourceGroup ||
+                playerCardSourceElement.querySelectorAll(`.worldcard[data-card-id="${item.dataset.cardId}"]`).length < 1
+            );
+        }
     },
+
     sort: false,
     animation: 150,
     ghostClass: 'sortable-ghost',
+
+    onAdd: function() {
+        updateGameDeck();
+        renderGameCollection();
+        renderGameDeck();
+    }
 });
 
 new Sortable(playerCardTargetElement, {
@@ -1358,7 +1376,7 @@ new Sortable(playerCardTargetElement, {
         put: function(to, from, item) {
             if (from.options.group.name === playerCardSourceGroup) {
                 const cardId = parseInt(item.dataset.cardId);
-                return !game.deck.includes(cardId);
+                return !game.deck.includes(cardId) && game.deck.length < getCasemateById(currentCasemate, game.casemates).cards.length;
             }
 
             // Allow reordering
@@ -1366,6 +1384,7 @@ new Sortable(playerCardTargetElement, {
         },
         pull: true
     },
+
     sort: true,
     animation: 150,
     ghostClass: 'sortable-ghost',
@@ -1374,7 +1393,7 @@ new Sortable(playerCardTargetElement, {
 
     onAdd: function() {
         updateGameDeck();
-        renderGamePlayerCards();
+        renderGameDeck();
     },
 
     onUpdate: updateCasemateCards
@@ -1460,5 +1479,3 @@ if (loggedIn) {
 } else {
     renderWorlds();
 }
-
-// document.querySelector(".dialog-upgrade-cards").showModal();
