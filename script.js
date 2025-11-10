@@ -751,7 +751,7 @@ function renderGameCasemates() {
     // Generating HTML
     let html = "";
     for (const casemate of casemates) {
-        const selected = currentCasemate === casemate.id;
+        const selected = game.currentCasemate === casemate.id;
         html += casemateElementAsText(casemate.id, false, {selected, ...casemate});
     }
 
@@ -765,7 +765,7 @@ function renderGameCasemates() {
         const casemateCardsCount = casemateType.ordinary + casemateType.boss;
 
         casemateElement.addEventListener("click", function() {
-            currentCasemate = casemateId;
+            game.currentCasemate = casemateId;
 
             if (game.deck.length > casemateCardsCount) {
                 game.deck = game.deck.slice(0, casemateCardsCount);
@@ -783,7 +783,7 @@ function renderGameCasemateCards() {
     if (!game)
         return false;
 
-    const casemate = getCasemateById(currentCasemate, game.casemates);
+    const casemate = getCasemateById(game.currentCasemate, game.casemates);
 
     // Generating HTML
     let html = "";
@@ -801,26 +801,29 @@ function renderGameDeck() {
     if (!game)
         return false;
 
-    const deck = game.deck;
-    const casemate = getCasemateById(currentCasemate, game.casemates);
+    const casemate = getCasemateById(game.currentCasemate, game.casemates);
     const casemateType = casemateTypes[casemate.type];
     const casemateCardsCount = casemateType.ordinary + casemateType.boss;
 
+    if (game.deck.length > casemateCardsCount) {
+        game.deck = game.deck.slice(0, casemateCardsCount);
+    }
+
     let html = "";
     let htmlPlaceholder = "";
-    for (const cardId of deck) {
+    for (const cardId of game.deck) {
         const card = getCardById(cardId, game.collection);
         html += cardElementAsText(cardId, false, {deleteButton: true, ...card});
     }
 
-    for (let i = 0; i < casemateCardsCount - deck.length; i++) {
+    for (let i = 0; i < casemateCardsCount - game.deck.length; i++) {
         html += `
             <div class="worldcard-placeholder hidden"></div>
         `;
     }
     for (let i = 0; i < casemateCardsCount; i++) {
         htmlPlaceholder += `
-            <div class="worldcard-placeholder ${i < deck.length ? "hidden" : ""}"></div>
+            <div class="worldcard-placeholder ${i < game.deck.length ? "hidden" : ""}"></div>
         `;
     }
 
@@ -850,7 +853,7 @@ function renderBattleCasemateCards() {
     if (!game)
         return false;
 
-    const casemate = getCasemateById(currentCasemate, game.casemates);
+    const casemate = getCasemateById(game.currentCasemate, game.casemates);
 
     // Generating HTML
     let html = "";
@@ -919,9 +922,10 @@ function renderCardUpgrade(upgradeType, upgradeValue) {
 function startWorld(cards, collection, casemates, deck = []) {
     /**
     * game = {
-    *    casemates:  The casemates in the world (with their cards)
-    *    collection: The player's collection of cards, that the player can upgrade
-    *    deck:       The player's current deck
+    *    collection:        The player's collection of cards, that the player can upgrade
+    *    deck:              The player's current deck
+    *    casemates:         The casemates in the world (with their cards)
+    *    currentCasemate:   The currently selected casemate
     * }
     */
 
@@ -935,13 +939,18 @@ function startWorld(cards, collection, casemates, deck = []) {
                 name: casemate.name,
                 cards: casemate.cards.map(cardId => structuredClone(getCardById(cardId, cards)))
             }
-        ))
+        )),
+        currentCasemate: casemates[0].id
     });
 }
 
 function startGame(gameData) {
-    game = gameData
-    currentCasemate = game.casemates[0].id;
+    game = gameData;
+
+    if (game.currentCasemate == null) {
+        game.currentCasemate = game.casemates[0].id;
+    }
+
     setScreen("game-deck");
     renderGameCollection();
     renderGameCasemates();
@@ -952,7 +961,7 @@ function startGame(gameData) {
 function startBattle() {
     if (!(
         game &&
-        game.deck.length == casemateTypes[getCasemateById(currentCasemate, game.casemates).type].ordinary + casemateTypes[getCasemateById(currentCasemate, game.casemates).type].boss
+        game.deck.length == casemateTypes[getCasemateById(game.currentCasemate, game.casemates).type].ordinary + casemateTypes[getCasemateById(game.currentCasemate, game.casemates).type].boss
     ))
         return false;
 
@@ -968,7 +977,7 @@ function delay(ms) {
 }
 
 async function animateBattle() {
-    const casemate = getCasemateById(currentCasemate, game.casemates);
+    const casemate = getCasemateById(game.currentCasemate, game.casemates);
 
     const casemateCards = casemate.cards;
     const playerCards = game.deck.map(cardId => getCardById(cardId, game.collection));
@@ -1381,7 +1390,7 @@ new Sortable(playerCardTargetElement, {
         put: function(to, from, item) {
             if (from.options.group.name === playerCardSourceGroup) {
                 const cardId = parseInt(item.dataset.cardId);
-                return !game.deck.includes(cardId) && game.deck.length < getCasemateById(currentCasemate, game.casemates).cards.length;
+                return !game.deck.includes(cardId) && game.deck.length < getCasemateById(game.currentCasemate, game.casemates).cards.length;
             }
 
             // Allow reordering
