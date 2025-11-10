@@ -1,7 +1,7 @@
 # Dusza Árpád webprogramozó verseny 2025
 Ez a repo a Dusza Árpád webprogramozó verseny-re készült 2025-ben.
-A verseny weboldala: https://isze.hu/dusza-arpad-orszagos-programozoi-emlekverseny/
-A játék elérése: http://20.52.16.243/
+- A verseny weboldala: https://isze.hu/dusza-arpad-orszagos-programozoi-emlekverseny/
+- A játék elérése: https://ma-elk.hu/damareen/
 
 ## Tartalom
 - [Dusza Árpád webprogramozó verseny 2025](#dusza-árpád-webprogramozó-verseny-2025)
