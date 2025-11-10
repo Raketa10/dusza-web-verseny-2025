@@ -14,15 +14,15 @@
         <div class="screen screen--home">
             <nav>
                 <h1 class="game-logo">Damareen</h1>
-                <div class="account-section" data-logged-in=<?php if (isset($_SESSION["user_id"])){echo "true";}else{echo "false";} ?>>
+                <div class="account-section">
                     <div class="account-section-content account-logged-out">
-                        <button class="button login-button--login">Bejelentkezés</button>
                         <button class="button login-button--register">Regisztráció</button>
+                        <button class="button login-button--login">Bejelentkezés</button>
                     </div>
                     <div class="account-section-content account-logged-in">
                         <div class="account-menu-open">
                             <div class="account-username"><?php echo $_SESSION["username"]; ?></div>
-                            <svg class="svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#000000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#000000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z"/></svg>
                             <input type="checkbox" id="account-menu-opened">
                         </div>
                         <div class="account-menu">

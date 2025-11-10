@@ -288,17 +288,17 @@ dialog.dialog {
 
 }
 
+body[data-logged-in="false"] .account-section .account-logged-in,
+body[data-logged-in="true"] .account-section .account-logged-out
+{
+    display: none;
+}
+
 .account-section {
-    &[data-logged-in="false"] .account-logged-in,
-    &[data-logged-in="true"] .account-logged-out
-    {
-        display: none;
-    }
-    
     .account-section-content {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         position: relative;
     }
 
@@ -324,6 +324,7 @@ dialog.dialog {
             fill: var(--clr-text);
             width: 2.5rem;
             height: 2.5rem;
+            pointer-events: none;
         }
 
         input[type="checkbox"] {
