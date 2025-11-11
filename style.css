@@ -22,6 +22,8 @@
 * {
     box-sizing: border-box;
     font-family: var(--font);
+    scrollbar-color: var(--clr-ui-bg-dark) var(--clr-ui-bg);
+    scrollbar-width:thin;
 }
 
 body {
