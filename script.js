@@ -354,7 +354,8 @@ function renderWorldEditor() {
 }
 
 function renderCards() {
-    const cards = getWorldById(currentWorld).cards;
+    const cards = getWorldById(currentWorld).cards
+        .sort((a, b) => (a.bossSource || a.id) - (b.bossSource || b.id));
 
     // Generating HTML
     let html = "";
