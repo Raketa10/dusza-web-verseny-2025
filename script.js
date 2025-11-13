@@ -547,21 +547,12 @@ function renderCasemateCards() {
     const ordinaryCards = casemate.cards.filter(cardId => !getCardById(cardId).isBoss).length;
     const bossCards = casemate.cards.filter(cardId => getCardById(cardId).isBoss).length;
     if (casemate.type !== 0) {
-        for (let i = 0; i < casemateType.ordinary - ordinaryCards; i++) {
-            htmlOrdinary += `
-                <div class="worldcard-placeholder hidden"></div>
-            `;
-        }
         for (let i = 0; i < casemateType.ordinary; i++) {
             htmlOrdinaryPlaceholder += `
             <div class="worldcard-placeholder ${i < ordinaryCards ? "hidden" : ""}"></div>
             `;
         }
-        for (let i = 0; i < casemateType.boss - bossCards; i++) {
-            htmlBoss += `
-                <div class="worldcard-placeholder hidden"></div>
-            `;
-        }
+        
         for (let i = 0; i < casemateType.boss; i++) {
             htmlBossPlaceholder += `
                 <div class="worldcard-placeholder ${i < bossCards ? "hidden" : ""} boss"></div>
@@ -816,11 +807,6 @@ function renderGameDeck() {
         html += cardElementAsText(cardId, false, {deleteButton: true, ...card});
     }
 
-    for (let i = 0; i < casemateCardsCount - game.deck.length; i++) {
-        html += `
-            <div class="worldcard-placeholder hidden"></div>
-        `;
-    }
     for (let i = 0; i < casemateCardsCount; i++) {
         htmlPlaceholder += `
             <div class="worldcard-placeholder ${i < game.deck.length ? "hidden" : ""}"></div>

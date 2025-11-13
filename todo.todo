@@ -8,6 +8,7 @@ Frontend:
     ✔ Dialog transition @done(25-11-09 18:31)
     ✔ Boss card @done(25-11-10 14:55)
     ☐ World fetch error handling
+    ☐ Save to localStorage if not logged in
 
 Backend:
     ☐ Finish it
@@ -19,3 +20,4 @@ UI:
     ✔ Boss buttons disabled state @done(25-11-08 17:23)
     ☐ Card rendering order
     ☐ Style select
+    ☐ Hide error/success messages

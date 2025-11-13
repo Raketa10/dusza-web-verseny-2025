@@ -516,7 +516,7 @@ body[data-logged-in="false"] .section--games {
 
 .worldcards-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     padding: 5px;
 }
 
@@ -856,7 +856,7 @@ body[data-logged-in="false"] .section--games {
 .casemate-cards-container, .casemate-cards-placeholder, .game-collection-container {
     --breakpoint: 150px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--breakpoint), auto));
+    grid-template-columns: repeat(auto-fill, minmax(var(--breakpoint), 1fr));
     gap: 20px 5px;
     padding: 5px;
 }
@@ -865,8 +865,6 @@ body[data-logged-in="false"] .section--games {
     position: absolute;
     inset: 0;
     height: 100%;
-    height: min-content;
-    padding-bottom: 300px;
     z-index: 1;
 }
 
@@ -916,7 +914,7 @@ body[data-logged-in="false"] .section--games {
     display: none;
 }
 
-.section--casemate-cards:not(:has(:is(.casemate-cards-container.casemate-ordinary-container, .casemate-cards-container.casemate-ordinary-placeholder) > :is(.worldcard, .worldcard-placeholder)))::after {
+.screen--world:has(.collection.selected) .section--casemate-cards:not(:has(.casemate-cards-container > :is(.worldcard, .worldcard-placeholder)))::after {
     content: "Húzd ide a kártyákat!";
     font-size: 1.2rem;
 }
@@ -1100,7 +1098,7 @@ body[data-logged-in="false"] .section--games {
     .game-player-cards-container, .game-player-cards-placeholder {
         --breakpoint: 130px;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(var(--breakpoint), auto));
+        grid-template-columns: repeat(auto-fill, minmax(var(--breakpoint), 1fr));
         gap: 20px 5px;
         padding: 5px;
     }
@@ -1231,7 +1229,7 @@ dialog.dialog-upgrade-cards {
 
     .cards-upgrade-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, auto));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 10px;
         padding: 5px;
         overflow-y: auto;
