@@ -8,7 +8,7 @@
     --clr-boss-highlight: hsl(120, 68%, 45%);
     --clr-error: hsl(0 70 30);
 
-    --bg-card-ui: var(--clr-ui-bg);
+    --bg-card-ui: 200px / 200px url("./assets/images/paper-bg.webp");
 
     --card-button-shadow: drop-shadow(0 0 6px black);
     --card-property-shadow: drop-shadow(0 0 6px black);
@@ -22,7 +22,7 @@
 * {
     box-sizing: border-box;
     font-family: var(--font);
-    scrollbar-color: var(--clr-ui-bg-dark) var(--clr-ui-bg);
+    scrollbar-color: hsl(27, 23%, 50%) hsl(27, 23%, 25%);
     scrollbar-width:thin;
 }
 
@@ -413,7 +413,7 @@ body[data-logged-in="false"] .section--games {
 
 .world, .game {
     position: relative;
-    background-color: var(--clr-ui-bg);
+    background: var(--bg-card-ui);
     color: var(--clr-text-dark);
     padding: 1em 1.4em;
     width: 200px;
@@ -475,6 +475,14 @@ body[data-logged-in="false"] .section--games {
     display: grid;
     grid-template-columns: 5fr 4fr 35ch;
     gap: 40px;
+
+}
+
+.world-grid > section, .screen--game-deck > div {
+    background-image: url("./assets/images/section-bg.jpg");
+    background-size: 300px;
+    border-radius: 20px;
+    padding: 5px 15px;
 }
 
 .world-nav {
