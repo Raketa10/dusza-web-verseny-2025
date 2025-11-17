@@ -164,8 +164,8 @@ dialog.dialog {
     border-radius: 10px;
     background: var(--bg-card-ui);
     background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    /* background-repeat: no-repeat; */
+    /* background-size: contain; */
     border: none;
     padding: 4vw 7vh;
     position: relative;
@@ -1083,7 +1083,6 @@ body[data-logged-in="false"] .section--games {
         display: grid;
         grid-template-columns: repeat(6, 1fr) !important;
         gap: 5px;
-        max-height: 23dvh;
 
         .worldcard, .worldcard-placeholder {
             /* max-height: 20vh !important; */
@@ -1115,7 +1114,6 @@ body[data-logged-in="false"] .section--games {
         position: absolute;
         inset: 0;
         height: 100%;
-        height: min-content;
         /* padding-bottom: 300px; */
         z-index: 1;
     }
