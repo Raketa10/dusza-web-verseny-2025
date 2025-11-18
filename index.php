@@ -258,7 +258,7 @@
                 Jelszó:
                 <input type="password" name="password" minlength="6" class="input" autocomplete="current-password" required>
             </label>
-            <button class="button" type="submit">Bejelentkezés</button>
+            <button class="button" type="submit" name="submit">Bejelentkezés</button>
             <div class="form-error"><?php echo $_SESSION["login_error"];?></div>
         </form>
     </dialog>
@@ -279,7 +279,7 @@
                 Jelszó még egyszer:
                 <input type="password" name="password-repeat" class="input" minlength="6" autocomplete="new-password" required>
             </label>
-            <button class="button" type="submit">Regisztráció</button>
+            <button class="button" type="submit" name="submit">Regisztráció</button>
             <div class="form-error"><?php echo $_SESSION["sign_in_error"];?></div>
         </form>
     </dialog>
@@ -296,7 +296,7 @@
                 Jelszó:
                 <input type="password" name="password" class="input" minlength="6" autocomplete="current-password" required>
             </label>
-            <button class="button" type="submit">Módosítás</button>
+            <button class="button" type="submit" name="submit">Módosítás</button>
             <div class="form-error"> <?php echo $_SESSION["username_modify_error"];?></div>
         </form>
     </dialog>
@@ -317,7 +317,7 @@
                 Új jelszó még egyszer:
                 <input type="password" name="new-password-repeat" class="input" minlength="6" autocomplete="new-password" required>
             </label>
-            <button class="button" type="submit">Módosítás</button>
+            <button class="button" type="submit" name="submit">Módosítás</button>
             <div class="form-error"><?php echo $_SESSION["password_modify_error"];?></div>
         </form>
     </dialog>
@@ -334,7 +334,7 @@
                 A fiók törléséhez írd be a felhasználónevedet
                 <input class="input" type="text" name="username" minlength="4" maxlength="32" autocomplete="off" required>
             </label>
-            <button class="button" type="submit">Fiók törlése</button>
+            <button class="button" type="submit" name="submit">Fiók törlése</button>
             <div class="form-error"><?php echo $_SESSION["account_delete_error"];?></div>
         </form>
     </dialog>

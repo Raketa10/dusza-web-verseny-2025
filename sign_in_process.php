@@ -3,7 +3,7 @@
     require_once "connection.php";
 
     try{
-        if ($_SERVER["REQUEST_METHOD"] == "POST"){
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
             $username = $_POST["username"] ?? "";
             $password = $_POST["password"] ?? "";
             $password_repeat = $_POST["password-repeat"] ?? "";
