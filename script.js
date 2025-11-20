@@ -1129,6 +1129,17 @@ async function animateBattle() {
 }
 
 
+function resetStatusElements(elements = [], delay = 0) {
+    if (!Array.isArray(elements)) {
+        elements = [elements];
+    }
+
+    setTimeout(function() {
+        elements.forEach(element => {
+            element.textContent = "";
+        });
+    }, delay);
+}
 
 async function uploadWorld(world) {
     const statusMessageEditor = document.querySelector(".status-message--world-save");
@@ -1145,6 +1156,7 @@ async function uploadWorld(world) {
             statusMessageHome.textContent = "";
             statusMessageEditor.dataset.type = "success";
             statusMessageEditor.textContent = "Világ mentve";
+            resetStatusElements([statusMessageEditor, statusMessageHome], 5000);
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
         }
@@ -1154,6 +1166,7 @@ async function uploadWorld(world) {
             element.dataset.type = "error";
             element.textContent = "Nem sikerült menteni a világot";
         });
+        resetStatusElements([statusMessageEditor, statusMessageHome], 5000);
         console.error('Error:', error);
     });
 }
@@ -1179,6 +1192,7 @@ function fetchWorlds() {
             statusMessage.dataset.type = "error";
             statusMessage.textContent = "Nem sikerült betölteni a mentett világokat";
             console.error("Fetch error:", error);
+            resetStatusElements(statusMessage, 5000);
         });
 }
 
@@ -1202,6 +1216,7 @@ function fetchLastGame() {
             statusMessage.dataset.type = "error";
             statusMessage.textContent = "Nem sikerült betölteni az utolsó játékot";
             console.error("Fetch error:", error);
+            resetStatusElements(statusMessage, 5000);
         });
 }
 
@@ -1219,6 +1234,7 @@ async function uploadLastGame(game) {
             statusMessage.dataset.type = "success";
             statusMessage.textContent = "Játék mentve";
             renderGames();
+            resetStatusElements(statusMessage, 5000);
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
         }
@@ -1227,6 +1243,7 @@ async function uploadLastGame(game) {
         statusMessage.dataset.type = "error";
         statusMessage.textContent = "Nem sikerült menteni a világot";
         console.error('Error:', error);
+        resetStatusElements(statusMessage, 5000);
     });
 }
 
@@ -1243,6 +1260,7 @@ async function deleteWorld(world) {
         if (response.ok) {
             statusMessage.dataset.type = "success";
             statusMessage.textContent = "Világ törölve";
+            resetStatusElements(statusMessage, 5000);
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
         }
@@ -1251,6 +1269,7 @@ async function deleteWorld(world) {
         statusMessage.dataset.type = "error";
         statusMessage.textContent = "Nem sikerült törölni a világot";
         console.error('Error:', error);
+        resetStatusElements(statusMessage, 5000);
     });
 }
 

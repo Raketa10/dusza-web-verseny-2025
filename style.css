@@ -291,7 +291,8 @@ dialog.dialog {
 }
 
 body[data-logged-in="false"] .account-section .account-logged-in,
-body[data-logged-in="true"] .account-section .account-logged-out
+body[data-logged-in="true"] .account-section .account-logged-out,
+body[data-logged-in="false"] .world-save-button
 {
     display: none;
 }
@@ -489,6 +490,7 @@ body[data-logged-in="false"] .section--games {
     display: flex;
     align-items: center;
     gap: 20px;
+    padding-block: 12px;
 
     h2 {
         margin-block: 0;
