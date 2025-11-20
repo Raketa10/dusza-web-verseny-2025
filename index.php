@@ -35,7 +35,10 @@
                 </div>
             </nav>
             <section class="section--games">
-                <h3>Játékok</h3>
+                <div class="section-title">
+                    <h3>Játékok</h3>
+                    <div class="status-message status-message--games"></div>
+                </div>
                 <div class="status-message status-message--games"></div>
                 <div class="games-container">
                     <!-- <div class="game">
@@ -47,7 +50,10 @@
                 </div>
             </section>
             <section class="section--worlds">
-                <h3>Világok</h3>
+                <div class="section-title">
+                    <h3>Világok</h3>
+                    <div class="status-message status-message--worlds"></div>
+                </div>
                 <div class="status-message status-message--worlds"></div>
                 <div class="worlds-container">
                     <!-- <div class="world">

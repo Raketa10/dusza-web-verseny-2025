@@ -132,6 +132,10 @@ const playerCardTargetGroup = "playerCardTarget";
 
 function setScreen(screen) {
     screenContainer.dataset.screen = screen;
+
+    if (screen === "world") {
+        document.querySelector(".status-message--world-save").textContent = ""; 
+    }
 }
 
 
@@ -283,10 +287,12 @@ function renderWorlds() {
 
         html += `
             <div class="world ${!isFinished ? "unfinished" : ""}" data-world-id="${world.id}">
-                <div class="world-title">${world.name}</div>
-                <div>Kártyák: ${world.cards.length}</div>
-                <div>Vezérkártyák: ${world.cards.filter(card => card.isBoss).length}</div>
-                <div>Kazamaták: ${world.casemates.length}</div>
+                <div>
+                    <div class="world-title">${world.name}</div>
+                    <div>Kártyák: ${world.cards.length}</div>
+                    <div>Vezérkártyák: ${world.cards.filter(card => card.isBoss).length}</div>
+                    <div>Kazamaták: ${world.casemates.length}</div>
+                </div>
                 <div class="world-buttons">
                     <img class="world-play svgbutton" data-disabled=${!isFinished} src="./assets/images/btn-play.png"></img>
                     <img class="world-edit svgbutton" src="./assets/images/btn-edit.webp"></img>
@@ -1153,9 +1159,10 @@ async function uploadWorld(world) {
     })
     .then(response => {
         if (response.ok) {
-            statusMessageHome.textContent = "";
-            statusMessageEditor.dataset.type = "success";
-            statusMessageEditor.textContent = "Világ mentve";
+            [statusMessageEditor, statusMessageHome].forEach(element => {
+                element.dataset.type = "success";
+                element.textContent = "Világ mentve";
+            });
             resetStatusElements([statusMessageEditor, statusMessageHome], 5000);
         } else {
             throw new Error(`Request failed with status: ${response.status}`);

@@ -287,7 +287,18 @@ dialog.dialog {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
 
+.screen--home section .section-title {
+    display: flex;
+    gap: min(5ch, 5vw);
+    align-items: center;
+
+    h3 {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 0.4em;
+    }
 }
 
 body[data-logged-in="false"] .account-section .account-logged-in,
@@ -391,8 +402,8 @@ body[data-logged-in="false"] .world-save-button
 
 .status-message {
     font-size: 1.2rem;
-    font-weight: bold;
     margin-block: 0.4em;
+    font-style: italic;
 
     &[data-type="error"] {
         color: hsl(from var(--clr-error) h s 60%);
@@ -419,6 +430,9 @@ body[data-logged-in="false"] .section--games {
     padding: 1em 1.4em;
     width: 200px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     /* cursor: pointer; */
     /* transition: 0.2s; */
 
@@ -456,7 +470,6 @@ body[data-logged-in="false"] .section--games {
         top: 50%;
         left: 50%;
         translate: -50% -50%;
-        width: 40%;
         height: 40%;
         fill: var(--clr-text-dark);
     }
