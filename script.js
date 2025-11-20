@@ -260,6 +260,10 @@ function renderGames() {
     document.querySelector(".games-container").innerHTML = html;
 
     const container = document.querySelector(".games-container > .game");
+
+    if (!container)
+        return;
+
     container.querySelector(".world-play").addEventListener("click", function() {
         if (!lastGame)
             return;
