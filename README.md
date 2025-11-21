@@ -1,5 +1,5 @@
 # Dusza Árpád webprogramozó verseny 2025
-Ez a repo a Dusza Árpád webprogramozó verseny-re készült 2025-ben.
+Ez a repó a Dusza Árpád webprogramozó verseny-re készült 2025-ben.
 - A verseny weboldala: https://isze.hu/dusza-arpad-orszagos-programozoi-emlekverseny/
 - A játék elérése: https://ma-elk.hu/damareen/
 
@@ -17,8 +17,8 @@ Ez a repo a Dusza Árpád webprogramozó verseny-re készült 2025-ben.
       - [Harc eredménye:](#harc-eredménye)
     - [Kazamata típusok és jutalmak:](#kazamata-típusok-és-jutalmak)
   - [Fejlesztés betekintés](#fejlesztés-betekintés)
-  - [Hibajelentés és hozzájárulás](#hibajelentés-és-hozzájárulás)
-  - [Kapcsolat](#kapcsolat)
+  - [Kapcsolat és hibabejelentés](#kapcsolat-és-hibabejelentés)
+  - [Készítők](#készítők)
 
 
 ## Leírás
@@ -99,10 +99,23 @@ A játékos akkor nyer, ha összességében legalább annyi kártyája nyert min
 
 
 ## Fejlesztés betekintés
-A Damareen kártyajáték teljességében egy weboldalként funkcionál, ahol a backend (pl.: fiókkezelés, komunikálás az adatbázissal) PHP nyelvben van implementálva. Minden backend funkció külön fájlban van az olvashatóság érdekében. Az adatbázis egy MySQL relációs adatbázis, ahol a különböző objektumok külön táblában vannak tárolva. A frontend és a játék működése HTML, CSS és JavaScript-ben van implementálva.
+A Damareen kártyajáték teljességében egy weboldalként funkcionál, ahol a backend (pl.: fiókkezelés, komunikálás az adatbázissal) PHP nyelvben van implementálva. Minden backend funkció külön fájlban van az olvashatóság érdekében. Az adatbázis egy MySQL relációs adatbázis, ahol a különböző objektumok külön táblában vannak tárolva.
 
-## Hibajelentés és hozzájárulás
-- Hibát találsz? Nyiss issue-t a repoban részletes leírással és előidézési utasításokkal, hogy minnél érthetőbb és átláthatóbb legyen a probléma az egyszerű és gyors javítás érdekében.
+A MySQL-es adatok, mint a felhasználónév, a jelszó és a táblanevek egy `.env` fájlban vannak tárolva a nagyobb flexibilitás és biztonság érdekében. Maga az `.env` fájl itt nem elérhető (nyilván), de a felépítése megtalálható az `.env.example` fájlban.
 
-## Kapcsolat
-Kérdés vagy visszajelzés: maelkmark@gmail.com vagy nyiss issue-t a repoban.
+A frontend és a játék működése HTML, CSS és JavaScript-ben lett megírva, semmilyen framework-öt nem használtunk. A kártyák drag-and-drop funkciója SortableJS-sel lett elkészítve.
+
+A verseny vége óta (2025.11.09. 20:00) több változtatást is végeztünk, ezek megtalálhatóak a `changes.md` fájlban.
+
+
+## Kapcsolat és hibabejelentés
+Ha kérdésed van vagy hibát szeretnél bejelenteni, akkor írhatsz email-címeinkre, vagy [nyithatsz egy issue-t](https://github.com/Raketa10/dusza-web-verseny-2025/issues/new) a GitHub repóban. Ha hibát jelentesz be, ha tudod, írd le minél részletes leírással és előidézési utasításokkal, hogy minél érthetőbb és átláthatóbb legyen a probléma az egyszerű és gyors javítás érdekében.
+
+- Kérdés vagy visszajelzés: [info@ma-elk.hu](https://ma-elk.hu/email/?to=other)
+- Hibabejelentés: [hiba@ma-elk.hu](https://ma-elk.hu/email/?to=bug&url=https://ma-elk.hu/damareen)
+
+
+## Készítők
+- **Lemle-Kövesi Bálint**, [@Raketa10](https://github.com/Raketa10) - Backend fejlesztő
+- **Magyar Márk**, [@MaelkMark](https://github.com/MaelkMark) - Frontend fejlesztő
+- **Szőcs Nimród**, [@Zwixern](https://github.com/Zwixern) - UI/UX Designer, assetek
