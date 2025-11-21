@@ -301,6 +301,17 @@ dialog.dialog {
     }
 }
 
+.github-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    
+    svg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
 body[data-logged-in="false"] .account-section .account-logged-in,
 body[data-logged-in="true"] .account-section .account-logged-out,
 body[data-logged-in="false"] .world-save-button
