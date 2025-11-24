@@ -13,7 +13,7 @@
     <div class="screen-container" data-screen="home">
         <div class="screen screen--home">
             <nav>
-                <h1 class="game-logo">Damareen</h1>
+                <img class="game-logo" src="./assets/images/damareen-logo.png" alt="Damareen" />
                 <div class="account-section">
                     <div class="account-section-content account-logged-out">
                         <button class="button login-button--register">Regisztráció</button>
@@ -207,7 +207,7 @@
         </div>
         <div class="screen screen--game-battle">
             <div class="game-titlebar">
-                <button class="svgbutton game-back-button">
+                <button class="svgbutton battle-back-button">
                     <img src="./assets/images/btn-back.webp" alt="Vissza">
                 </button>
                 <h2>Játék</h2>

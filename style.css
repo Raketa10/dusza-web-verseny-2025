@@ -278,15 +278,17 @@ dialog.dialog {
     width: 100%;
 }
 
-.screen--home > .game-logo {
+.screen--home nav > .game-logo {
     font-size: 3rem;
     margin-top: 0;
+    height: 1.2lh;
 }
 
 .screen--home nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .screen--home section .section-title {
@@ -1110,10 +1112,9 @@ body[data-logged-in="false"] .section--games {
         grid-template-columns: repeat(6, 1fr) !important;
         gap: 5px;
 
-        .worldcard, .worldcard-placeholder {
-            /* max-height: 20vh !important; */
+        /* .worldcard, .worldcard-placeholder {
             height: min(25dvh, calc(67vw / 6));
-        }
+        } */
     }
 
     .game-cards {
