@@ -263,6 +263,10 @@ dialog.dialog {
     height: 100%;
     padding: min(2rem, 4vh) min(3rem, 6vw);
     padding-bottom: 0;
+
+    &[data-screen="world"] {
+        padding-top: min(0.5rem, 1vh);
+    }
 }
 
 .screen-container[data-screen="home"] > .screen:not(.screen--home),
@@ -295,6 +299,9 @@ dialog.dialog {
     display: flex;
     gap: min(5ch, 5vw);
     align-items: center;
+    font-size: 1.4rem;
+    margin-top: 1em;
+    padding-block: 0.2em;
 
     h3 {
         font-size: 1.4rem;
