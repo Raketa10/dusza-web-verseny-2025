@@ -219,27 +219,31 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
 function casemateElementAsText(id, editable, {name = "", type = 1, selected = false, incomplete = false}) {
     return `
         <form class="casemate ${selected ? "selected" : ""} ${incomplete ? "incomplete" : ""}" data-casemate-id="${id}">
-            ${editable ? `
-                <input class="input casemate-name" type="text" name="name" placeholder="Kazamata neve" maxlength="32" value="${name}">
-            ` : `
-                <div class="casemate-name">${name}</div>
-            `}
-            ${editable ? `
-                <img class="casemate-delete svgbutton" src="./assets/images/btn-delete.webp"></img>
-            ` : "<div></div>"}
-            <div class="casemate-type-container">
-                ${
-                    !selected || !editable ? casemateTypes[type].name : 
-                    `
-                        <select class="input casemate-type" name="type">
-                            ${casemateTypes.slice(1).map(({name}, index) => (
-                                `<option ${type === index + 1 ? "selected" : ""} value="${index + 1}">${name}</option>`
-                            )).join("")}
-                        </select>
-                    `
-                }
+            <div class="casemate-content">
+                ${editable ? `
+                    <input class="input casemate-name" type="text" name="name" placeholder="Kazamata neve" maxlength="32" value="${name}">
+                ` : `
+                    <div class="casemate-name">${name}</div>
+                `}
+                ${editable ? `
+                    <img class="casemate-delete svgbutton" src="./assets/images/btn-delete.webp"></img>
+                ` : "<div></div>"}
+                <div class="casemate-type-container">
+                    ${
+                        !selected || !editable ? casemateTypes[type].name : 
+                        `
+                            <select class="input casemate-type" name="type">
+                                ${casemateTypes.slice(1).map(({name}, index) => (
+                                    `<option ${type === index + 1 ? "selected" : ""} value="${index + 1}">${name}</option>`
+                                )).join("")}
+                            </select>
+                        `
+                    }
+                </div>
+                ${editable ? `
+                    <img title="Befejezetlen kazamata" class="casemate-incomplete" src="./assets/images/icon-error.webp"></img>
+                ` : ""}
             </div>
-            <img title="Befejezetlen kazamata" class="casemate-incomplete" src="./assets/images/icon-error.webp"></img>
         </form>
     `;
 }
@@ -638,7 +642,7 @@ function renderCasemates() {
         }
 
         casemateElement.addEventListener("click", function(event) {
-            if (event.target === this) {
+            if (event.target === this || event.target === this.querySelector(".casemate-content")) {
                 currentCasemate = casemate.id;
                 renderCasemates();
                 renderCasemateCards();

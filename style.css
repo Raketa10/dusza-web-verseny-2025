@@ -29,8 +29,9 @@
 body {
     margin: 0;
     /* background-color: var(--clr-background); */
-    background: url("./assets/images/body_bg.png");
-    background-size: contain;
+    background: url("./assets/images/body_bg2.jpg");
+    background-size: cover;
+    background-position: center center;
     color: var(--clr-text);
     min-height: 100dvh;
 }
@@ -263,9 +264,10 @@ dialog.dialog {
     height: 100%;
     padding: min(2rem, 4vh) min(3rem, 6vw);
     padding-bottom: 0;
-
-    &[data-screen="world"] {
+    
+    &[data-screen="world"], &[data-screen="game-deck"] {
         padding-top: min(0.5rem, 1vh);
+        padding-inline: min(1rem, 1vw);
     }
 }
 
@@ -507,7 +509,7 @@ body[data-logged-in="false"] .section--games {
 
 .world-grid {
     display: grid;
-    grid-template-columns: 5fr 4fr 35ch;
+    grid-template-columns: 5fr 4fr 40ch;
     gap: 40px;
 
 }
@@ -540,7 +542,7 @@ body[data-logged-in="false"] .section--games {
 .screen--world section {
     overflow-x: hidden;
     overflow-y: auto;
-    height: calc(100dvh - 50px - 2 * min(2.5rem, 6vh));
+    height: calc(100dvh - 50px - 2 * min(1.3rem, 4vh));
 }
 
 .section--worldcards {
@@ -967,41 +969,59 @@ body[data-logged-in="false"] .section--games {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding-left: 10px;
 }
 
 .collection {
-    background: var(--bg-card-ui);
+    background: url("./assets/images/stone-button-wide-unpressed.png");
     background-position: center;
+    background-size: 100% 100%;
     padding: 12px;
+    padding-inline: 20px;
     color: var(--clr-text-dark);
     border-radius: 10px;
     transition: 0.2s;
     cursor: pointer;
     font-size: 1.2rem;
     user-select: none;
+
+    &.selected {
+        background-image: url("./assets/images/stone-button-wide-pressed.png") !important;
+    }
 }
 
 :is(.casemate, .collection).selected {
-    border: 4px solid var(--clr-ui-bg-dark);
-    box-shadow: 1px 2px 10px var(--clr-ui-bg-dark);
-    scale: 1.06;
+    /* border: 4px solid var(--clr-ui-bg-dark);
+    box-shadow: 1px 2px 10px var(--clr-ui-bg-dark); */
+    /* scale: 1.06; */
+    background-image: url("./assets/images/stone-button-pressed2.png");
     transform-origin: right;
+
+    .casemate-content {
+        scale: 0.9;
+    }
 }
 
 .casemate {
-    display: grid;
-    grid-template-columns: 90% 10%;
-    align-items: center;
-    gap: 10px 5px;
-    background: var(--bg-card-ui);
+    background-image: url("./assets/images/stone-button-unpressed2.png");
+    /* background: var(--bg-card-ui); */
     /* background: url("./assets/images/casemate-bg.png"); */
     background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     padding: 12px;
+    padding: 35px 30px;
     color: var(--clr-text-dark);
     border-radius: 10px;
     transition: 0.2s;
     cursor: pointer;
+
+    .casemate-content {
+        display: grid;
+        grid-template-columns: 90% 10%;
+        align-items: center;
+        gap: 10px 5px;
+        transition: 0.2s;
+    }
 
     .casemate-delete {
         fill: var(--clr-text-dark);
@@ -1026,6 +1046,11 @@ body[data-logged-in="false"] .section--games {
     div.casemate-name {
         font-weight: bold;
         font-size: 1.3rem;
+    }
+
+    .casemate-type-container {
+        min-height: 2.5rem;
+        font-size: 1.2rem;
     }
 }
 
@@ -1067,9 +1092,9 @@ body[data-logged-in="false"] .section--games {
         "title          title           title"
         "collection     casemate-cards  casemates"
         "collection     player-cards    casemates";
-    grid-template-columns: min(300px, 25%) auto 25ch;
+    grid-template-columns: min(250px, 20%) auto 33ch;
     grid-template-rows: 4rem 1fr 1fr;
-    gap: 20px;
+    gap: min(20px, 1.2vw);
 
 
     .game-titlebar {
@@ -1102,11 +1127,11 @@ body[data-logged-in="false"] .section--games {
     .game-collection-container {
         --breakpoint: 120px;
         padding-bottom: 40px;
-        min-height: calc(100% - 40px - 4rem);
+        min-height: calc(100% - 0px - 4rem);
     }
 
-    .game-collection, .game-casemate {
-        height: calc(100dvh - 60px - 60px);
+    .game-collection, .game-casemates {
+        height: calc(100dvh - 100px);
         overflow-y: auto;
     }
 
@@ -1119,15 +1144,19 @@ body[data-logged-in="false"] .section--games {
         grid-template-columns: repeat(6, 1fr) !important;
         gap: 5px;
 
-        /* .worldcard, .worldcard-placeholder {
+        .worldcard, .worldcard-placeholder {
             height: min(25dvh, calc(67vw / 6));
-        } */
+        }
     }
 
     .game-cards {
         display: flex;
         flex-direction: column;
         gap: 5px;
+    }
+
+    .game-cards > h3 {
+        margin-block: min(0.6em, 1vh);
     }
 
     .game-player-cards-wrapper {
