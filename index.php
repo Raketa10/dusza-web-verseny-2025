@@ -269,13 +269,32 @@
         </form>
     </dialog>
     
+    <dialog class="dialog dialog-account" id="dialog--register-email">
+        <h1>Regisztráció</h1>
+        <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+        <form action="send_email.php" method="post">
+            <p>Az alábbi gombra kattintva egy jóváhagyó kódot fogunk küldeni az e-mail címedre, hogy hitelesítsük, valóban a tiéd. Az e-mail-ben található kódot ide beírva tudod majd befejezni a regisztrációt. A kód egy nap után érvényét veszti, és újra kell regisztrálnod.</p>
+            <label>
+                E-mail cím:
+                <input class="input" type="email" name="email" minlength="5" maxlength="255" autocomplete="email" required>
+            </label>
+            <button class="button" type="submit" name="submit">E-mail cím hitelesítése</button>
+            <div class="form-error"><?php echo $_SESSION["send_email_error"];?></div>
+        </form>
+    </dialog>
+
     <dialog class="dialog dialog-account" id="dialog--register">
         <h1>Regisztráció</h1>
         <svg class="dialog-close svgbutton" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
         <form action="sign_in_process.php" method="post">
+            <input style="display: none" value="<?php echo $_SESSION["form_email"]; ?>" type="email" name="email" minlength="5" maxlength="255" autocomplete="email" aria-hidden="true" required>
+            <label>
+                Hitelesítő kód:
+                <input value="<?php echo $_SESSION["form_email_verification_code"] ?>" class="input" type="number" name="email-verification-code" min="1" maxlength="999999" autocomplete="off" required>
+            </label>
             <label>
                 Felhasználónév:
-                <input class="input" type="text" name="username" minlength="4" maxlength="32" autocomplete="username" required>
+                <input value="<?php echo $_SESSION["form_username"] ?>" class="input" type="text" name="username" minlength="4" maxlength="32" autocomplete="username" required>
             </label>
             <label>
                 Jelszó:
@@ -360,7 +379,14 @@
             openDialog("change-password");
         } else if (<?php echo isset($_SESSION["account_delete_error"]) ? "true" : "false"; ?>) {
             openDialog("delete-account");
+        } else if (<?php echo isset($_SESSION["send_email_error"]) ? "true" : "false"; ?>) {
+            openDialog("register-email");
         }
+
+        if (<?php echo isset($_SESSION["form"]) ? "true" : "false"; ?>) {
+            openDialog("<?php echo $_SESSION["form"]; ?>");
+        }
+        console.log("<?php echo $_SESSION["form"]; ?>", "<?php echo $_SESSION["email"]; ?>")
 
         <?php
             unset($_SESSION["login_error"]);
@@ -368,6 +394,13 @@
             unset($_SESSION["username_modify_error"]);
             unset($_SESSION["password_modify_error"]);
             unset($_SESSION["account_delete_error"]);
+            unset($_SESSION["send_email_error"]);
+
+            unset($_SESSION["form"]);
+
+            unset($_SESSION["form_username"]);
+            unset($_SESSION["form_email"]);
+            unset($_SESSION["form_email_verification_code"]);
         ?>
     </script>
 </body>

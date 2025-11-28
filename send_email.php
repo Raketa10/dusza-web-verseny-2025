@@ -2,7 +2,7 @@
     session_start();
     require_once "connection.php";
 
-    try{
+    try {
         // Handling form submission
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])){
             $email = $_POST["email"] ?? "";
@@ -21,7 +21,7 @@
 
 
             // Seraching for same email in verified users DB
-            $statement = $connection->prepare("SELECT user_id FROM " . $_ENV["TABLE_USERS"] . " WHERE email_adress = ?");
+            $statement = $connection->prepare("SELECT user_id FROM " . $_ENV["TABLE_USERS"] . " WHERE email_address = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['send_email_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;
@@ -46,7 +46,7 @@
 
 
             // Deleting record with same email from unverified users DB if it exists
-            $statement = $connection->prepare("DELETE FROM " . $_ENV["TABLE_UNVERIFIED"] . " WHERE email_adress = ?");
+            $statement = $connection->prepare("DELETE FROM " . $_ENV["TABLE_UNVERIFIED"] . " WHERE email_address = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['send_email_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;
@@ -67,20 +67,34 @@
             $code = sprintf("%06d", random_int(0, 999999));
 
             // Insert the new unverified user into the database
-            $statement = $connection->prepare("INSERT INTO " . $_ENV["TABLE_UNVERIFIED"] . " (email_adress, email_verification_code) VALUES (?, ?)");
+            $statement = $connection->prepare("INSERT INTO " . $_ENV["TABLE_UNVERIFIED"] . " (email_address, email_verification_code) VALUES (?, ?)");
             $statement->bind_param("ss", $email, $code);
             $statement->execute();
 
-            // Send verification email
-            $subject = "Damareen email hitelesítés";
-            $body = "Kedves " . $username . "!\nAz emailje hitelesítéséhez a kódja: " . $code;
-            $headers = "From:noreply@ma-elk.hu";
-            mail($email,$subject,$body,$headers);
+            $connection->close();
 
-            echo $email;
+            // Send verification email
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= "From: <noreply@ma-elk.hu>" . "\r\n";
+            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+            $subject = "Damareen e-mail hitelesítés";
+
+            $body = <<<HTML
+                <h1>Kedves leendő játékosunk!</h1>
+                <p>Íme a hitelesítő kód az e-mail címedhez. Nincs más dolgod, mint kimásolni és beilleszteni a hitelesítő kód mezőbe a regisztrációs űrlapon.</p>
+                <div style="font-size: 2.5rem; font-weight: bold">$code</div>
+                <p>Ha nem te regisztráltál, hagyd figyelmen kívül és a fiók törölve lesz egy napon belül.</p>
+            HTML;
+
+            
+            mail($email,$subject,$body,$headers);
+            
+            $_SESSION["form_email"] = $email;
+            $_SESSION["form"] = "register";
         }
-    }
-    catch (Error | Exception $e) {
+    } catch (Error | Exception $e) {
         $_SESSION['send_email_error'] = 'Váratlan hiba: ' .$e->getMessage();
         header("Location:index.php");
         exit();

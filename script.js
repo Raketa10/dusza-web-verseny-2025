@@ -1454,7 +1454,7 @@ document.querySelector(".login-button--login").addEventListener("click", functio
     document.getElementById("dialog--login").showModal();
 });
 document.querySelector(".login-button--register").addEventListener("click", function() {
-    document.getElementById("dialog--register").showModal();
+    document.getElementById("dialog--register-email").showModal();
 });
 document.getElementById("account-btn-change-username").addEventListener("click", function() {
     document.getElementById("dialog--change-username").showModal();

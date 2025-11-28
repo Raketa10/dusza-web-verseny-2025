@@ -11,6 +11,10 @@
             $password = $_POST["password"] ?? "";
             $password_repeat = $_POST["password-repeat"] ?? "";
 
+            $_SESSION["form_username"] = $username;
+            $_SESSION["form_email"] = $email;
+            $_SESSION["form_email_verification_code"] = $email_verification_code;
+
             if (empty($username)|| empty($email) || empty($password) || empty($password_repeat) || empty($email_verification_code)){
                 $_SESSION['sign_in_error'] = "Minden mezőt kötelező kitölteni.";
                 header("Location:index.php");
@@ -80,7 +84,7 @@
             }
 
             // Seraching for email verification code in unverified users DB
-            $statement = $connection->prepare("SELECT email_verification_code FROM " . $_ENV["TABLE_UNVERIFIED"] . " WHERE email_adress = ?");
+            $statement = $connection->prepare("SELECT email_verification_code FROM " . $_ENV["TABLE_UNVERIFIED"] . " WHERE email_address = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['sign_in_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;
@@ -102,7 +106,7 @@
                 $sql_output = $result->fetch_assoc();
                 if ($email_verification_code === $sql_output["email_verification_code"]){
                     // Insert the new user into the database
-                    $statement = $connection->prepare("INSERT INTO " . $_ENV["TABLE_USERS"] . " (username, email, password_hash) VALUES (?, ?, ?)");
+                    $statement = $connection->prepare("INSERT INTO " . $_ENV["TABLE_USERS"] . " (username, email_address, password_hash) VALUES (?, ?, ?)");
                     $statement->bind_param("sss", $username, $email, password_hash($password, PASSWORD_DEFAULT));
                     $statement->execute();
 

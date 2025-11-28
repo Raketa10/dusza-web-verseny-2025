@@ -223,6 +223,10 @@ dialog.dialog {
         gap: 1rem;
         color: var(--clr-text-dark);
 
+        p {
+            font-size: 1.1rem;
+        }
+
         label {
             display: flex;
             flex-direction: column;
