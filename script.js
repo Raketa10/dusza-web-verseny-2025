@@ -108,6 +108,7 @@ let worlds = [
 ];
 let lastGame = null;
 let game = null;
+let _world = null;
 
 let currentWorld = 1;
 let currentCasemate = 1;
@@ -135,6 +136,14 @@ function setScreen(screen) {
 
     if (screen === "world") {
         document.querySelector(".status-message--world-save").textContent = ""; 
+    }
+
+    document.querySelectorAll(".status-message").forEach(statusMessage => {
+        statusMessage.textContent = "";
+    });
+
+    if (screen === "home" && loggedIn) {
+        fetchWorlds();
     }
 }
 
@@ -300,7 +309,7 @@ function renderWorlds() {
                 <div class="world-buttons">
                     <img class="world-play svgbutton" data-disabled=${!isFinished} src="./assets/images/btn-play.png"></img>
                     <img class="world-edit svgbutton" src="./assets/images/btn-edit.webp"></img>
-                    <img class="world-delete svgbutton" src="./assets/images/btn-delete.webp"></img>
+                    ${!world.default ? `<img class="world-delete svgbutton" src="./assets/images/btn-delete.webp"></img>` : ""}
                 </div>
             </div>
         `;
@@ -318,6 +327,7 @@ function renderWorlds() {
     function editWorld(worldId = currentWorld) {
         currentWorld = worldId;
         currentCasemate = 1;
+        _world = structuredClone(getWorldById(currentWorld));
 
         setScreen("world");
         renderWorldEditor();
@@ -336,7 +346,7 @@ function renderWorlds() {
             editWorld(worldId);
         });
 
-        worldElement.querySelector(".world-delete").addEventListener("click", function() {
+        worldElement.querySelector(".world-delete")?.addEventListener("click", function() {
             worlds.splice(worldIndex, 1);
             renderWorlds();
             deleteWorld(world);
@@ -1170,6 +1180,7 @@ async function uploadWorld(world) {
                 element.dataset.type = "success";
                 element.textContent = "Világ mentve";
             });
+            _world = structuredClone(world);
             resetStatusElements([statusMessageEditor, statusMessageHome], 5000);
         } else {
             throw new Error(`Request failed with status: ${response.status}`);
@@ -1191,12 +1202,12 @@ async function getDefaultWorld(id = 1) {
     .then(default_world => ({...default_world, id}))
 }
 
-function fetchWorlds() {
+async function fetchWorlds() {
     const statusMessage = document.querySelector(".status-message--worlds");
     statusMessage.dataset.type = "neutral";
     statusMessage.textContent = "Betöltés...";
 
-    fetch("fetch_worlds.php")
+    return fetch("fetch_worlds.php")
         .then(res => {
             if (!res.ok) {
                 throw new Error('Network response was not ok');
@@ -1207,8 +1218,10 @@ function fetchWorlds() {
             statusMessage.textContent = "";
             worlds = data;
 
-            const default_world = await getDefaultWorld(getNextUniqueId(worlds));
-            worlds.push(default_world);
+            if (!worlds.some(world => world.default)) {
+                const default_world = await getDefaultWorld(getNextUniqueId(worlds));
+                worlds.push(default_world);
+            }
 
             renderWorlds();
         })
@@ -1220,11 +1233,11 @@ function fetchWorlds() {
         });
 }
 
-function fetchLastGame() {
+async function fetchLastGame() {
     const statusMessage = document.querySelector(".status-message--games");
     statusMessage.dataset.type = "neutral";
     statusMessage.textContent = "Betöltés...";
-    fetch("fetch_last_game.php")
+    return fetch("fetch_last_game.php")
         .then(res => {
             if (!res.ok) {
                 throw new Error('Network response was not ok');
@@ -1506,11 +1519,31 @@ document.querySelector(".screen--world .world-save-button").addEventListener("cl
 });
 
 document.querySelector(".world-back-button").addEventListener("click", function() {
+    if (loggedIn && JSON.stringify(_world) !== JSON.stringify(getWorldById(currentWorld)) )
+        document.getElementById("popup-world-discard").showModal();
+    else {
+        if (loggedIn)
+            fetchWorlds();
+
+        setScreen("home");
+    }
+});
+
+document.querySelector("#popup-world-discard button[name='exit']").addEventListener("click", function() {
+    setScreen("home");
+    const worldIndex = worlds.findIndex(world => world.id === currentWorld);
+    worlds[worldIndex] = structuredClone(_world);
+    document.getElementById("popup-world-discard").close();
+});
+
+document.querySelector("#popup-world-discard button[name='save']").addEventListener("click", async function() {
     const world = getWorldById(currentWorld);
     if (loggedIn)
-        uploadWorld(world);
+        await uploadWorld(world);
     setScreen("home");
+    document.getElementById("popup-world-discard").close();
 });
+
 document.querySelectorAll(".game-back-button").forEach(button => {
     button.addEventListener("click", function() {
         if (loggedIn)
@@ -1534,7 +1567,6 @@ document.querySelectorAll(".account-menu-item").forEach(button => {
 document.querySelector(".game-start-button").addEventListener("click", function() {
     startBattle();
 });
-
 
 if (loggedIn) {
     fetchWorlds();

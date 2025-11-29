@@ -1,6 +1,7 @@
 {
   "id": 1,
   "name": "Default World",
+  "default": true,
   "cards": [
     {
       "id": 2,

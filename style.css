@@ -214,6 +214,51 @@ dialog.dialog {
     }
 }
 
+dialog.dialog-popup {
+    outline: none;
+    min-height: 0 !important;
+    top: 10px;
+    bottom: unset;
+    width: min(100%, 75ch) !important;
+
+    &:not([open]) {
+        translate: 0 -100%;
+
+        &::backdrop {
+            opacity: 0;
+        }
+    }
+
+    @starting-style {
+        translate: 0 -100%;
+    }
+
+    h1 {
+        margin-top: 0;
+    }
+
+    p {
+        font-size: 1.2rem;
+    }
+
+    .popup-buttons {
+        display: flex;
+        gap: 7px;
+    }
+
+    .button-danger {
+        filter: hue-rotate(333deg);
+
+        &:hover {
+        filter: brightness(1.05) hue-rotate(333deg);
+        }
+
+        &:active {
+            filter: brightness(1.05) hue-rotate(333deg);
+        }
+    }
+}
+
 .dialog-account {
     form {
         display: flex;
@@ -272,6 +317,10 @@ dialog.dialog {
     &[data-screen="world"], &[data-screen="game-deck"] {
         padding-top: min(0.5rem, 1vh);
         padding-inline: min(1rem, 1vw);
+    }
+
+    &[data-screen="home"] {
+        padding-bottom: min(20px, 4vh);
     }
 }
 
@@ -546,7 +595,7 @@ body[data-logged-in="false"] .section--games {
 .screen--world section {
     overflow-x: hidden;
     overflow-y: auto;
-    height: calc(100dvh - 50px - 2 * min(1.3rem, 4vh));
+    height: calc(100dvh - 70px - 2 * min(1.3rem, 4vh));
 }
 
 .section--worldcards {
