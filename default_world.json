@@ -1,0 +1,290 @@
+{
+  "id": 1,
+  "name": "Default World",
+  "cards": [
+    {
+      "id": 2,
+      "name": "Dwarf",
+      "health": 3,
+      "attack": 3,
+      "type": "earth",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 3,
+      "name": "Dwarf Lord",
+      "health": 6,
+      "attack": 3,
+      "type": "earth",
+      "isBoss": true,
+      "bossSource": 2,
+      "bossType": "health"
+    },
+    {
+      "id": 4,
+      "name": "Drake",
+      "health": 2,
+      "attack": 3,
+      "type": "fire",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 5,
+      "name": "Dragon",
+      "health": 4,
+      "attack": 3,
+      "type": "fire",
+      "isBoss": true,
+      "bossSource": 4,
+      "bossType": "health"
+    },
+    {
+      "id": 6,
+      "name": "Sea Serpent",
+      "health": 4,
+      "attack": 3,
+      "type": "water",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 7,
+      "name": "Leviathan",
+      "health": 4,
+      "attack": 6,
+      "type": "water",
+      "isBoss": true,
+      "bossSource": 6,
+      "bossType": "attack"
+    },
+    {
+      "id": 8,
+      "name": "Wisp",
+      "health": 4,
+      "attack": 3,
+      "type": "air",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 9,
+      "name": "Seraph",
+      "health": 4,
+      "attack": 6,
+      "type": "air",
+      "isBoss": true,
+      "bossSource": 8,
+      "bossType": "attack"
+    },
+    {
+      "id": 10,
+      "name": "Golemite",
+      "health": 4,
+      "attack": 2,
+      "type": "earth",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 11,
+      "name": "Golem",
+      "health": 8,
+      "attack": 2,
+      "type": "earth",
+      "isBoss": true,
+      "bossSource": 10,
+      "bossType": "health"
+    },
+    {
+      "id": 12,
+      "name": "Giant Octopus",
+      "health": 5,
+      "attack": 4,
+      "type": "water",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 13,
+      "name": "Kraken",
+      "health": 10,
+      "attack": 4,
+      "type": "water",
+      "isBoss": true,
+      "bossSource": 12,
+      "bossType": "health"
+    },
+    {
+      "id": 14,
+      "name": "Fire Elemental",
+      "health": 3,
+      "attack": 3,
+      "type": "fire",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 15,
+      "name": "Phoenix",
+      "health": 3,
+      "attack": 6,
+      "type": "fire",
+      "isBoss": true,
+      "bossSource": 14,
+      "bossType": "attack"
+    },
+    {
+      "id": 16,
+      "name": "Breeze",
+      "health": 1,
+      "attack": 2,
+      "type": "air",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 17,
+      "name": "Harpy",
+      "health": 2,
+      "attack": 2,
+      "type": "air",
+      "isBoss": true,
+      "bossSource": 16,
+      "bossType": "health"
+    },
+    {
+      "id": 18,
+      "name": "Guard",
+      "health": 3,
+      "attack": 2,
+      "type": "earth",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 19,
+      "name": "Soldier",
+      "health": 3,
+      "attack": 3,
+      "type": "earth",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 20,
+      "name": "General",
+      "health": 4,
+      "attack": 3,
+      "type": "earth",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 21,
+      "name": "Fire Mage",
+      "health": 1,
+      "attack": 3,
+      "type": "fire",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 22,
+      "name": "Fire Wizard",
+      "health": 3,
+      "attack": 5,
+      "type": "fire",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 23,
+      "name": "Wind Mage",
+      "health": 2,
+      "attack": 2,
+      "type": "air",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 24,
+      "name": "Wind Wizard",
+      "health": 3,
+      "attack": 4,
+      "type": "air",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 25,
+      "name": "Water Mage",
+      "health": 1,
+      "attack": 3,
+      "type": "water",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 26,
+      "name": "Water Wizard",
+      "health": 4,
+      "attack": 4,
+      "type": "water",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 27,
+      "name": "Eearth Mage",
+      "health": 2,
+      "attack": 3,
+      "type": "earth",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    },
+    {
+      "id": 28,
+      "name": "Earth Wizard",
+      "health": 4,
+      "attack": 5,
+      "type": "earth",
+      "isBoss": false,
+      "bossSource": null,
+      "bossType": null
+    }
+  ],
+  "casemates": [
+    { "id": 1, "name": "Encounter 1", "type": 1, "cards": [2] },
+    { "id": 2, "name": "Encounter 2", "type": 2, "cards": [2, 16, 4, 11] },
+    { "id": 3, "name": "Encounter 3 ", "type": 2, "cards": [14, 4, 21, 15] },
+    {
+      "id": 4,
+      "name": "Encounter 4",
+      "type": 3,
+      "cards": [6, 12, 10, 24, 28, 13]
+    }
+  ],
+  "collections": [
+    { "type": 0, "cards": [18, 19, 20, 27, 28, 21, 22, 24, 23, 25, 26] }
+  ]
+}

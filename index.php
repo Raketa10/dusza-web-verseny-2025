@@ -290,7 +290,7 @@
             <input style="display: none" value="<?php echo $_SESSION["form_email"]; ?>" type="email" name="email" minlength="5" maxlength="255" autocomplete="email" aria-hidden="true" required>
             <label>
                 Hitelesítő kód:
-                <input value="<?php echo $_SESSION["form_email_verification_code"] ?>" class="input" type="number" name="email-verification-code" min="1" maxlength="999999" autocomplete="off" required>
+                <input value="<?php echo $_SESSION["form_email_verification_code"] ?>" class="input" type="text" name="email-verification-code" minlength="6" maxlength="6" autocomplete="off" required>
             </label>
             <label>
                 Felhasználónév:

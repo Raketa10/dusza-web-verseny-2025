@@ -312,7 +312,7 @@ dialog.dialog {
     h3 {
         font-size: 1.4rem;
         font-weight: bold;
-        margin-bottom: 0.4em;
+        margin-block: 0.4em;
     }
 }
 
@@ -1064,10 +1064,10 @@ body[data-logged-in="false"] .section--games {
     transition: 0.2s;
     padding: 15px;
     text-align: center;
+    background-image: url("./assets/images/stone-button-wide-unpressed.png");
 
     img {
         height: 50px;
-        fill: var(--clr-ui-bg-dark);
     }
 
     &:hover {

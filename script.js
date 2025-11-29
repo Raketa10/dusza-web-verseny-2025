@@ -344,7 +344,7 @@ function renderWorlds() {
     }
 
     document.querySelector(".worlds-container > .world--add").addEventListener("click", function() {
-        const newId = worlds.reduce((maxId, world) => Math.max(maxId, world.id), 0) + 1;
+        const newId = getNextUniqueId(worlds);
         worlds.push({
             id: newId,
             name: "Új világ",
@@ -702,17 +702,20 @@ function renderCasemates() {
     renderWorlds();
 }
 
+function getNextUniqueId(array) {
+    return array.reduce((a, obj) => Math.max(a, obj?.id || 0), 1) + 1;
+}
 
 function createCard({name = "", health = 1, attack = 2, type = "earth", isBoss = false, bossSource = null, bossType = null} = {}) {
     const world = getWorldById(currentWorld);
-    const id = world.cards.reduce((a, card) => Math.max(a, card?.id || 0), 1) + 1;
+    const id = getNextUniqueId(worlds);
     world.cards.push({id, name, health, attack, type, isBoss, bossSource, bossType});
     renderCards(world.cards);
 }
 
 function createCasemate({name = "", type = 1, cards = []} = {}) {
     const world = getWorldById(currentWorld);
-    const id = world.casemates.reduce((a, casemate) => Math.max(a, casemate?.id || 0), 1) + 1;
+    const id = getNextUniqueId(casemates);
     world.casemates.push({id, name, type, cards});
     currentCasemate = id;
     renderCasemates();
@@ -1182,6 +1185,12 @@ async function uploadWorld(world) {
     });
 }
 
+async function getDefaultWorld(id = 1) {
+    return fetch("default_world.json")
+    .then(res => res.json())
+    .then(default_world => ({...default_world, id}))
+}
+
 function fetchWorlds() {
     const statusMessage = document.querySelector(".status-message--worlds");
     statusMessage.dataset.type = "neutral";
@@ -1194,9 +1203,13 @@ function fetchWorlds() {
             }
             return res.json();
         })
-        .then(data => {
+        .then(async data => {
             statusMessage.textContent = "";
             worlds = data;
+
+            const default_world = await getDefaultWorld(getNextUniqueId(worlds));
+            worlds.push(default_world);
+
             renderWorlds();
         })
         .catch(error => {
@@ -1527,5 +1540,9 @@ if (loggedIn) {
     fetchWorlds();
     fetchLastGame();
 } else {
-    renderWorlds();
+    (async () => {
+        const default_world = await getDefaultWorld(1);
+        worlds = [default_world];
+        renderWorlds();
+    })();
 }

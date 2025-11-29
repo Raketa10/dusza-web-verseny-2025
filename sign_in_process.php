@@ -107,7 +107,8 @@
                 if ($email_verification_code === $sql_output["email_verification_code"]){
                     // Insert the new user into the database
                     $statement = $connection->prepare("INSERT INTO " . $_ENV["TABLE_USERS"] . " (username, email_address, password_hash) VALUES (?, ?, ?)");
-                    $statement->bind_param("sss", $username, $email, password_hash($password, PASSWORD_DEFAULT));
+                    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                    $statement->bind_param("sss", $username, $email, $password_hash);
                     $statement->execute();
 
                     // Set up session for the logged-in user
