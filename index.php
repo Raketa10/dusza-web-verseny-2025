@@ -207,10 +207,7 @@
         </div>
         <div class="screen screen--game-battle">
             <div class="game-titlebar">
-                <button class="svgbutton battle-back-button">
-                    <img src="./assets/images/btn-back.webp" alt="Vissza">
-                </button>
-                <h2>Játék</h2>
+                <h2>Csata</h2>
             </div>
             <div class="battle-container">
                 <div class="battle-cards">
@@ -250,6 +247,17 @@
         <div class="popup-buttons">
             <button name="exit" class="button button-danger">Kilépés</button>
             <button name="save" class="button">Mentés</button>
+        </div>
+    </dialog>
+
+    <dialog class="dialog dialog-popup warning" id="popup-world-delete" closedby="none">
+        <h1>Biztosan törölni akarod ezt a világot?</h1>
+        <p>
+            Ha a "Törlés" gombra kattintasz, azzal véglegesen kitörlöd ezt a világot. A törlést nem lehet visszavonni. Kattints a "Mégse" gombra, a megtartáshoz.
+        </p>
+        <div class="popup-buttons">
+            <button name="delete" class="button button-danger">Törlés</button>
+            <button name="cancel" class="button">Mégse</button>
         </div>
     </dialog>
     

@@ -240,6 +240,7 @@ dialog.dialog-popup {
 
     p {
         font-size: 1.2rem;
+        text-align: justify;
     }
 
     .popup-buttons {
@@ -271,6 +272,7 @@ dialog.dialog-popup {
 
         p {
             font-size: 1.1rem;
+            text-align: justify;
         }
 
         label {
@@ -1133,7 +1135,7 @@ body[data-logged-in="false"] .section--games {
     gap: 20px;
     height: 4rem;
 
-    .battle-back-button img {
+    .game-back-button img {
         width: 1.5rem;
     }
 }
@@ -1346,7 +1348,7 @@ body[data-logged-in="false"] .section--games {
 dialog.dialog-upgrade-cards {
     width: min(90%, 1000px);
     height: 90%;
-    padding: 0.4rem 2rem;
+    padding: 1rem 2rem;
     outline: none;
     background-color: var(--clr-ui-bg-dark);
 
@@ -1364,8 +1366,7 @@ dialog.dialog-upgrade-cards {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 5px;
-        font-size: 1.5rem;
+        font-size: 2.5rem;
 
         img {
             height: 5rem;

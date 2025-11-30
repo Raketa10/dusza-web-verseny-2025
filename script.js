@@ -138,13 +138,15 @@ function setScreen(screen) {
         document.querySelector(".status-message--world-save").textContent = ""; 
     }
 
-    document.querySelectorAll(".status-message").forEach(statusMessage => {
+    /* document.querySelectorAll(".status-message").forEach(statusMessage => {
         statusMessage.textContent = "";
-    });
+    }); */
 
     if (screen === "home" && loggedIn) {
-        fetchWorlds();
-        fetchLastGame();
+        setTimeout(() => {
+            fetchWorlds();
+            fetchLastGame();
+        }, 200);
     }
 }
 
@@ -177,10 +179,10 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 <textarea ${!editable ? "readonly" : ""} placeholder="A kártya neve" name="worldcard-name" minlength="1" maxlength="16" class="worldcard-property worldcard-name" rows="2">${name}</textarea>
                 <div class="worldcard-property-container worldcard-attack-container">
                     ${editable ? `
-                        <img class="worldcard-promote" data-boss-type="attack" data-disabled="${attackPromoteDisabled}" src="./assets/images/promotion.png" title="Sebzés növelése vezérkártyává alakítással">
+                        <img class="worldcard-promote" data-boss-type="attack" data-disabled="${attackPromoteDisabled}" src="./assets/images/promotion.png" title="Sebzés duplázása vezérkártyává alakítással">
                         <svg data-disabled="${attack >= maxAttack}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                     ` : ""}
-                    <div class="worldcard-property-icon-container">
+                    <div class="worldcard-property-icon-container" title="Sebzés">
                         <img src="./assets/images/attack.webp" alt="Sebzés" class="worldcard-property-icon">
                         <input type="number" name="attack" min="${minAttack}" max="${maxAttack}" class="worldcard-property min-max-control integer worldcard-attack" value="${attack}" ${isBoss || !editable ? "readonly" : ""}>
                     </div>
@@ -188,7 +190,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                         <svg data-disabled="${attack <= minAttack}" data-increment="-1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 262" xmlns:v="https://vecta.io/nano"><path d="M223-698q-8 0-15-2.5-7-2.5-13-8.5L11-893Q0-904 0-921q0-17 11-28 11-11 28-11 17 0 28 11l156 156 156-156q11-11 28-11 17 0 28 11 11 11 11 28 0 17-11 28L251-709q-6 6-13 8.5-7 2.5-15 2.5z" /></svg>
                     ` : ""}
                 </div>
-                <div class="worldcard-type-picker">
+                <div class="worldcard-type-picker" title="Típus megváltoztatása">
                     <form>
                         <input type="radio" name="type" ${!editable ? "disabled" : ""} value="earth" ${type === "earth" ? "checked" : ""}>
                         <input type="radio" name="type" ${!editable ? "disabled" : ""} value="fire" ${type === "fire" ? "checked" : ""}>
@@ -205,10 +207,10 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                 }
                 <div class="worldcard-property-container worldcard-health-container">
                     ${editable ? `
-                        <img class="worldcard-promote" data-boss-type="health" data-disabled="${healthPromoteDisabled}" src="./assets/images/promotion.png" title="Sebzés növelése vezérkártyává alakítással">
+                        <img class="worldcard-promote" data-boss-type="health" data-disabled="${healthPromoteDisabled}" src="./assets/images/promotion.png" title="Élet duplázása vezérkártyává alakítással">
                         <svg data-disabled="${health >= maxHealth}" data-increment="1" class="worldcard-property-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 446 263" xmlns:v="https://vecta.io/nano"><path d="M223-864L67-708q-11 11-28 11-17 0-28-11-11-11-11-28 0-17 11-28l184-184q12-12 28-12 16 0 28 12l184 184q11 11 11 28 0 17-11 28-11 11-28 11-17 0-28-11z" /></svg>
                     ` : ""}
-                    <div class="worldcard-property-icon-container">
+                    <div class="worldcard-property-icon-container" title="Élet">
                         <img src="./assets/images/health.webp" alt="Élet" class="worldcard-property-icon">
                         <input type="number" name="health" min="${minHealth}" max="${maxHealth}" class="worldcard-property min-max-control integer worldcard-health" value="${health}" ${isBoss || !editable ? "readonly" : ""}>
                     </div>
@@ -217,7 +219,7 @@ function cardElementAsText(id, editable, {name = "", health = 1, attack = 2, typ
                     ` : ""}
                 </div>
                 ${editable || deleteButton ? `
-                    <div class="worldcard-delete svgbutton">
+                    <div class="worldcard-delete svgbutton" title="Kártya törlése">
                         <img src="./assets/images/btn-delete.webp"></img>
                     </div>
                 ` : ""}
@@ -236,7 +238,7 @@ function casemateElementAsText(id, editable, {name = "", type = 1, selected = fa
                     <div class="casemate-name">${name}</div>
                 `}
                 ${editable ? `
-                    <img class="casemate-delete svgbutton" src="./assets/images/btn-delete.webp"></img>
+                    <img class="casemate-delete svgbutton" title="Kazamata törlése" src="./assets/images/btn-delete.webp"></img>
                 ` : "<div></div>"}
                 <div class="casemate-type-container">
                     ${
@@ -266,7 +268,7 @@ function renderGames() {
         html = `
             <div class="game">
                 <div class="game-title">Utolsó játék folytatása</div>
-                <div class="game-buttons">
+                <div class="game-buttons" title="Játék">
                     <img class="world-play svgbutton" src="./assets/images/btn-play.png"></img>
                 </div>
             </div>
@@ -308,16 +310,16 @@ function renderWorlds() {
                     <div>Kazamaták: ${world.casemates.length}</div>
                 </div>
                 <div class="world-buttons">
-                    <img class="world-play svgbutton" data-disabled=${!isFinished} src="./assets/images/btn-play.png"></img>
-                    <img class="world-edit svgbutton" src="./assets/images/btn-edit.webp"></img>
-                    ${!world.default ? `<img class="world-delete svgbutton" src="./assets/images/btn-delete.webp"></img>` : ""}
+                    <img class="world-play svgbutton" title="Játék" data-disabled=${!isFinished} src="./assets/images/btn-play.png"></img>
+                    <img class="world-edit svgbutton" title="Szerkesztés" src="./assets/images/btn-edit.webp"></img>
+                    ${!world.default ? `<img class="world-delete svgbutton" title="Törlés" src="./assets/images/btn-delete.webp"></img>` : ""}
                 </div>
             </div>
         `;
     }
 
     html += `
-        <div class="world world--add">
+        <div class="world world--add" title="Új világ létrehozása">
             <img src="./assets/images/btn-add.webp"></img>
         </div>
     `;
@@ -348,9 +350,19 @@ function renderWorlds() {
         });
 
         worldElement.querySelector(".world-delete")?.addEventListener("click", function() {
-            worlds.splice(worldIndex, 1);
-            renderWorlds();
-            deleteWorld(world);
+            const popup = document.getElementById("popup-world-delete");
+            popup.showModal();
+
+            popup.querySelector("button[name='delete']").onclick = function() {
+                worlds.splice(worldIndex, 1);
+                renderWorlds();
+                deleteWorld(world);
+                popup.close();
+            }
+
+            popup.querySelector("button[name='cancel']").onclick = async function() {
+                popup.close();
+            }
         });
     }
 
@@ -399,7 +411,7 @@ function renderCards() {
     }
 
     html += `
-        <div class="worldcard worldcard--add">
+        <div class="worldcard worldcard--add" title="Új kártya létrehozása">
             <img src="./assets/images/btn-add.webp"></img>
         </div>
     `;
@@ -630,7 +642,7 @@ function renderCasemates() {
     }
 
     html += `
-        <div class="casemate casemate--add">
+        <div class="casemate casemate--add" title="Új kazamata létrehozása">
             <img src="./assets/images/btn-add.webp"></img>
         </div>
     `;
@@ -719,14 +731,14 @@ function getNextUniqueId(array) {
 
 function createCard({name = "", health = 1, attack = 2, type = "earth", isBoss = false, bossSource = null, bossType = null} = {}) {
     const world = getWorldById(currentWorld);
-    const id = getNextUniqueId(worlds);
+    const id = getNextUniqueId(world.cards);
     world.cards.push({id, name, health, attack, type, isBoss, bossSource, bossType});
     renderCards(world.cards);
 }
 
 function createCasemate({name = "", type = 1, cards = []} = {}) {
     const world = getWorldById(currentWorld);
-    const id = getNextUniqueId(casemates);
+    const id = getNextUniqueId(world.casemates);
     world.casemates.push({id, name, type, cards});
     currentCasemate = id;
     renderCasemates();
@@ -922,7 +934,7 @@ function renderCardUpgrade(upgradeType, upgradeValue) {
     document.querySelector(".dialog-upgrade-cards .cards-upgrade-container").innerHTML = html;
     document.querySelector(".upgrades-to-spend").innerHTML = `
         <img src="./assets/images/${upgradeType}.webp"></img>
-        ${upgradeValue}
+        +${upgradeValue}
     `;
 
     const dialog = document.querySelector(".dialog-upgrade-cards");
@@ -1477,7 +1489,7 @@ new Sortable(playerCardTargetElement, {
         renderGameDeck();
     },
 
-    onUpdate: updateCasemateCards
+    onUpdate: updateGameDeck
 });
 
 
@@ -1551,8 +1563,10 @@ document.querySelector("#popup-world-discard button[name='save']").addEventListe
 
 document.querySelectorAll(".game-back-button").forEach(button => {
     button.addEventListener("click", function() {
-        if (loggedIn)
+        if (loggedIn) {
             uploadLastGame(game);
+            lastGame = structuredClone(game);
+        }
         setScreen("home");
     });
 });

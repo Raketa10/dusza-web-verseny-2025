@@ -9,7 +9,8 @@ Frontend:
     ✔ Boss card @done(25-11-10 14:55)
     ☐ World fetch error handling
     ☐ Save to localStorage if not logged in
-    ☐ Default world
+    ✔ Default world @done(25-11-30 11:09)
+    ☐ Titles on buttons
 
 Backend:
     ☐ Finish it
