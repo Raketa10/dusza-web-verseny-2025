@@ -168,7 +168,7 @@ dialog.dialog {
     /* background-repeat: no-repeat; */
     /* background-size: contain; */
     border: none;
-    padding: 4vw 7vh;
+    padding: 3vw 6vh;
     position: relative;
     transition: 0.2s;
     transition-behavior: allow-discrete;
@@ -211,6 +211,7 @@ dialog.dialog {
 
     h1 {
         text-align: center;
+        margin-top: 0;
     }
 }
 
@@ -563,7 +564,7 @@ body[data-logged-in="false"] .section--games {
 .world-grid {
     display: grid;
     grid-template-columns: 5fr 4fr 40ch;
-    gap: 40px;
+    gap: min(15px, 1.2vw);
 
 }
 
@@ -1132,7 +1133,7 @@ body[data-logged-in="false"] .section--games {
     gap: 20px;
     height: 4rem;
 
-    .game-back-button img {
+    .battle-back-button img {
         width: 1.5rem;
     }
 }
@@ -1354,6 +1355,7 @@ dialog.dialog-upgrade-cards {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 10px;
         padding: 5px;
+        overflow-x: hidden;
         overflow-y: auto;
         height: calc(100% - 11rem);
     }

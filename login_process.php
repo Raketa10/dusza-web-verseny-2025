@@ -8,6 +8,8 @@
             $username = $_POST["username"] ?? "";
             $password = $_POST["password"] ?? "";
 
+            $_SESSION["form_username"] = $username;
+
             if (empty($username) || empty($password)){
                 $_SESSION['login_error'] = "Minden mezőt kötelező kitölteni.";
                 header("Location:index.php");
@@ -62,12 +64,12 @@
                     $_SESSION["user_email"] = $user["email_address"];
                     $_SESSION["user_registration_date"] = $user["registration_date"];
                 } else {
-                    $_SESSION['login_error'] = "Nem jó felhasználónév vagy jelszó.";
+                    $_SESSION['login_error'] = "Helytelen felhasználónév vagy jelszó.";
                     header("Location:index.php");
                     exit();
                 }
             } else {
-                $_SESSION['login_error'] = "Nem jó felhasználónév vagy jelszó.";
+                $_SESSION['login_error'] = "Helytelen felhasználónév vagy jelszó.";
                 header("Location:index.php");
                 exit();
             }

@@ -269,7 +269,7 @@
         <form action="login_process.php" method="post">
             <label>
                 Felhasználónév:
-                <input class="input" type="text" minlength="4" maxlength="32" name="username" autocomplete="username" required>
+                <input value="<?php echo $_SESSION['form_username'] ?>" class="input" type="text" minlength="4" maxlength="32" name="username" autocomplete="username" required>
             </label>
             <label>
                 Jelszó:

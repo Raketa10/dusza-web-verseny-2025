@@ -144,6 +144,7 @@ function setScreen(screen) {
 
     if (screen === "home" && loggedIn) {
         fetchWorlds();
+        fetchLastGame();
     }
 }
 
@@ -1311,7 +1312,11 @@ async function deleteWorld(world) {
 }
 
 function openDialog(dialog) {
-    document.getElementById(`dialog--${dialog}`).showModal();
+    const element = document.getElementById(`dialog--${dialog}`);
+    const _transition = element.style.transition;
+    element.style.transition = "0s";
+    element.showModal();
+    element.style.transition = _transition;
 }
 
 
@@ -1566,6 +1571,15 @@ document.querySelectorAll(".account-menu-item").forEach(button => {
 
 document.querySelector(".game-start-button").addEventListener("click", function() {
     startBattle();
+});
+
+document.querySelectorAll(".dialog-account").forEach(dialog => {
+    const formError = dialog.querySelector(".form-error");
+    if (formError) {
+        dialog.addEventListener("close", function() {
+            formError.textContent = "";
+        });
+    }
 });
 
 if (loggedIn) {

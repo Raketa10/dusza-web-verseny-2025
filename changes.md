@@ -9,3 +9,4 @@ Ez a lista tartalmazza a változtatásokat, amiket a verseny vége (2025.11.09. 
 - A világszerkesztőben a vezérkártyák a forráskártyájuk mellett vannak megjelenítve
 - A státuszüzenetek eltűnnek 5 másodperc után
 - Link a GitHub repóhoz a főoldalon
+- E-mail címes hitelesítés
