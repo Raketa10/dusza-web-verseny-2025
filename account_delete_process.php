@@ -45,7 +45,7 @@
                 exit();
             }
 
-            $statement = $connection->prepare("SELECT password_hash FROM users WHERE username = ? AND user_id = ?");
+            $statement = $connection->prepare("SELECT password_hash FROM damareen_users WHERE username = ? AND user_id = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['account_delete_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;
@@ -66,7 +66,7 @@
             if ($result->num_rows == 1){
                 $user = $result->fetch_assoc();
                 if (password_verify($password, $user["password_hash"])){
-                    $statement = $connection->prepare("DELETE FROM users WHERE user_id = ? AND username = ?");
+                    $statement = $connection->prepare("DELETE FROM damareen_users WHERE user_id = ? AND username = ?");
                     $statement->bind_param("is", $_SESSION["user_id"], $username);
                     $statement->execute();
                     session_start();

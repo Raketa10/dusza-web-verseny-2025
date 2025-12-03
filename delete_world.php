@@ -9,7 +9,7 @@
     // -------------------
 
     if(isset($_SESSION["user_id"])){
-        $statement = $connection->prepare("DELETE FROM worlds WHERE world_id = ? AND user_id = ?;");
+        $statement = $connection->prepare("DELETE FROM damareen_worlds WHERE world_id = ? AND user_id = ?;");
         $statement->bind_param("ii", $world['id'],  $_SESSION["user_id"]);
         $statement->execute();
     }

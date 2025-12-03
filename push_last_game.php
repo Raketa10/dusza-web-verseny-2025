@@ -7,7 +7,7 @@
     // -------------------
 
     if(isset($_SESSION["user_id"])){
-        $statement = $connection->prepare("UPDATE users SET last_game_json = ? WHERE user_id = ?");
+        $statement = $connection->prepare("UPDATE damareen_users SET last_game_json = ? WHERE user_id = ?");
         $statement->bind_param("si", $inputData, $_SESSION["user_id"]);
         $statement->execute();
     }

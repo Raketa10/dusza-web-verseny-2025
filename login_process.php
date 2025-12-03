@@ -33,7 +33,7 @@
                 exit();
             }
 
-            $statement = $connection->prepare("SELECT user_id, username, password_hash, registration_date FROM users WHERE username = ?");
+            $statement = $connection->prepare("SELECT user_id, username, password_hash, registration_date FROM damareen_users WHERE username = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['login_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;

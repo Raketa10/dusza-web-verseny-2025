@@ -45,7 +45,7 @@
                 exit();
             }
 
-            $statement = $connection->prepare("SELECT password_hash FROM users WHERE username = ? AND user_id = ?");
+            $statement = $connection->prepare("SELECT password_hash FROM damareen_users WHERE username = ? AND user_id = ?");
             if ($statement === false) {
                 // Check if prepare() fails
                 $_SESSION['password_modify_error'] = "Hiba történt a lekérdezés előkészítése során: " . $connection->error;
