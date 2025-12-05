@@ -83,7 +83,7 @@
                 exit();
             }
 
-            // Seraching for email verification code in unverified users DB
+            // Seraching for email verification code in unverified users table
             $statement = $connection->prepare("SELECT email_verification_code FROM " . $_ENV["TABLE_UNVERIFIED"] . " WHERE email_address = ?");
             if ($statement === false) {
                 // Check if prepare() fails
@@ -109,6 +109,11 @@
                     $statement = $connection->prepare("INSERT INTO " . $_ENV["TABLE_USERS"] . " (username, email_address, password_hash) VALUES (?, ?, ?)");
                     $password_hash = password_hash($password, PASSWORD_DEFAULT);
                     $statement->bind_param("sss", $username, $email, $password_hash);
+                    $statement->execute();
+
+                    // Delete user from unverified users table
+                    $statement = $connection->prepare("DELETE FROM " . $_ENV["TABLE_UNVERIFIED"] . " WHERE email_address = ?");
+                    $statement->bind_param("is", $_SESSION["user_id"], $username);
                     $statement->execute();
 
                     // Set up session for the logged-in user
