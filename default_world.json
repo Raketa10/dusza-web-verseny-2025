@@ -1,6 +1,6 @@
 {
   "id": 1,
-  "name": "Default World",
+  "name": "Kezdővilág",
   "default": true,
   "cards": [
     {
@@ -275,12 +275,12 @@
     }
   ],
   "casemates": [
-    { "id": 1, "name": "Encounter 1", "type": 1, "cards": [2] },
-    { "id": 2, "name": "Encounter 2", "type": 2, "cards": [2, 16, 4, 11] },
-    { "id": 3, "name": "Encounter 3 ", "type": 2, "cards": [14, 4, 21, 15] },
+    { "id": 1, "name": "Találkozás 1", "type": 1, "cards": [2] },
+    { "id": 2, "name": "Találkozás 2", "type": 2, "cards": [2, 16, 4, 11] },
+    { "id": 3, "name": "Találkozás 3 ", "type": 2, "cards": [14, 4, 21, 15] },
     {
       "id": 4,
-      "name": "Encounter 4",
+      "name": "Találkozás 4",
       "type": 3,
       "cards": [6, 12, 10, 24, 28, 13]
     }
