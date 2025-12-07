@@ -148,6 +148,11 @@ function setScreen(screen) {
             fetchLastGame();
         }, 200);
     }
+
+    if (screen == "game-deck" && loggedIn) {
+        uploadLastGame(game);
+        lastGame = structuredClone(game);
+    }
 }
 
 
